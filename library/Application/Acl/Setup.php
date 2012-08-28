@@ -72,6 +72,7 @@ class Application_Acl_Setup
         $this->_acl->addResource( new Zend_Acl_Resource('auth') );
     	$this->_acl->addResource( new Zend_Acl_Resource('index') );
     	$this->_acl->addResource( new Zend_Acl_Resource('celula') );
+    	$this->_acl->addResource( new Zend_Acl_Resource('admin') );
     	$this->_acl->addResource( new Zend_Acl_Resource('recursos') );
     	$this->_acl->addResource( new Zend_Acl_Resource('configuracoes') );
     	$this->_acl->addResource( new Zend_Acl_Resource('error') );
