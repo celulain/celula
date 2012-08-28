@@ -1,0 +1,149 @@
+<!doctype html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="pt-BR"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="pt-BR"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="pt-BR"> <![endif]-->
+<!-- Consider adding a manifest.appcache: h5bp.com/d/Offline -->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="pt-BR"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+
+  <!-- Use the .htaccess and remove these lines to avoid edge case issues.
+       More info: h5bp.com/i/378 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Sistema de Células</title>
+  <meta name="description" content="Sistema de células para igrejas em células">
+
+  <!-- Mobile viewport optimized: h5bp.com/viewport -->
+  <meta name="viewport" content="width=device-width">
+
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory: mathiasbynens.be/notes/touch-icons -->
+
+  
+  <link rel="stylesheet" href="/css/libs/bootstrap/bootstrap.css">
+  <link rel="stylesheet" href="/css/libs/font-awesome.css">
+  <link rel="stylesheet" href="/css/celula.css">
+  <link rel="stylesheet" href="/css/libs/bootstrap/responsive.css">
+
+  <!-- More ideas for your <head> here: h5bp.com/d/head-Tips -->
+
+  <!-- All JavaScript at the bottom, except this Modernizr build.
+       Modernizr enables HTML5 elements & feature detects for optimal performance.
+       Create your own custom Modernizr build: www.modernizr.com/download/ -->
+  <script src="/js/libs/modernizr/modernizr-2.5.3.min.js"></script>
+
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon-57-precomposed.png">
+</head>
+<body>
+  <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you support IE 6.
+       chromium.org/developers/how-tos/chrome-frame-getting-started -->
+  <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+  
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="/">Nome da Igreja</a>
+            <div class="btn-group pull-right">
+                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="icon-user"></i> <?=$_SESSION['userInformation']['login']?>
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                <li>
+                    <a href="/configuracoes/perfil">
+                        <i class="icon-wrench"></i> Configurações
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="/auth/logout">
+                        <i class="icon-signout"></i> Sair
+                    </a>
+                </li>
+                </ul>
+            </div>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Célula
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/celula/frequencia">Frequência</a></li>
+                            <li><a href="/celula/membros">Participantes</a></li>
+                            <li><a href="/celula/cadastro">Cadastro</a></li>
+                            <li><a href="/celula/perfil">Perfil</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Setor
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/setor/celulas">Células</a></li>
+                            <li><a href="/setor/perfil">Perfil</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Área
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/area/setores">Setores</a></li>
+                            <li><a href="/area/perfil">Perfil</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Rede
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/rede/areas">Áreas</a></li>
+                            <li><a href="/rede/perfil">Perfil</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Recursos
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/recursos/licoes-de-celula">Lições de Célula</a></li>
+                            <li><a href="/recursos/louvor">Louvor</a></li>
+                            <li><a href="/recursos/dinamicas">Dinâmicas</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div><!--/.conatiner-fluid -->
+    </div>
+</div><!--/.navbar -->
+
+<div class="container-fluid">
+    <?php echo $this->layout()->content; ?>
+
+    <hr>
+    <footer>
+        <p>OpenSource</p>
+    </footer>
+</div><!--/.fluid-container-->
+
+  <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="/js/libs/jquery/jquery-1.8.0.min.js"><\/script>')</script>
+
+  <script src="/js/libs/bootstrap/bootstrap.min.js"></script>
+  <script src="/js/celula.js"></script>
+
+</body>
+</html>

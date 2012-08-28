@@ -1,0 +1,175 @@
+@import url(http://fonts.googleapis.com/css?family=Montserrat);
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both;
+}
+.hide-text {
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+.input-block-level {
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both;
+}
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+.sidebar-nav {
+  padding: 9px 0;
+}
+/* --------------------------------------------------
+ *
+ * LOGIN
+ *
+ * -------------------------------------------------- */
+body.access {
+  background-color: #f4f4f4;
+}
+section.access {
+  position: relative;
+  width: 960px;
+  margin: 0 auto;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background: #fff;
+  width: 392px;
+  margin: 100px auto 50px;
+}
+section.shadow {
+  -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0 0 3px 3px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.1) 0 0 3px 3px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 0 3px 3px;
+  border: 1px solid #e7e7e7 9;
+}
+.content {
+  display: block;
+  padding: 20px 40px;
+  position: relative;
+}
+.footer {
+  border-top: 1px solid #e5e5e5;
+  padding: 40px;
+}
+.center {
+  width: 100%;
+  text-align: center;
+  font-family: Helvetica;
+  font-size: 14px;
+}
+section.access h1.login-title {
+  display: block;
+  width: auto;
+  line-height: 28px;
+  font-size: 28px;
+  font-family: 'Montserrat', sans-serif;
+  color: #333;
+  padding: 40px 0 20px;
+}
+section.access form {
+  display: block;
+}
+.field {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 0;
+}
+.margin30 {
+  margin-top: 30px;
+}
+.margin20 {
+  margin-top: 20px;
+}
+.margin25 {
+  margin-top: 25px;
+}
+.field input[type="text"],
+.field input[type="password"] {
+  width: 280px;
+  height: auto;
+  padding: 11px 15px;
+  margin: 0;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background: none;
+  border: 1px solid #ccc;
+  font: normal 15px "Helvetica Neue", "Helvetica", Arial;
+  color: #333;
+  z-index: 10;
+  line-height: normal;
+}
+.btn-login {
+  height: 52px;
+  font-size: 18px;
+  display: inline-block;
+  padding: 0 131px;
+}
+footer.access {
+  border: 0;
+}
+/* /register
+ * -------------------------------------------------- */
+/* /auth/login
+ * -------------------------------------------------- */
+.login-footer .btn {
+  float: right;
+  margin-left: 5px;
+  margin-bottom: 0;
+}
+.form-login input {
+  width: 250px;
+}
+/* /password-resets/new
+ * -------------------------------------------------- */
+.form-reset-password input {
+  width: 179px;
+}
+/* TABLES */
+.table td,
+.table th {
+  text-align: center;
+}
+td.td-left {
+  text-align: left;
+}
+th.th-left {
+  text-align: left;
+}
+.avaliacao-star > a {
+  text-decoration: none;
+}
+.frequencia-presente {
+  color: #46a546;
+}
+.frequencia-ausente {
+  color: #9d261d;
+}
