@@ -82,6 +82,10 @@ class AuthController extends Zend_Controller_Action
     				}
     				else
     				{
+    					if($authNamespace->user_id == 1)
+    					{
+    						return $this->_helper->redirector->goToRoute( array('controller' => 'admin', 'action' => 'index'), null, true);
+    					}
 	    				return $this->_helper->redirector->goToRoute( array('controller' => 'celula', 'action' => 'frequencia'), null, true);
     				}
     			} 

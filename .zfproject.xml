@@ -26,6 +26,15 @@
         </controllerFile>
         <controllerFile controllerName="Admin">
           <actionMethod actionName="index"/>
+          <actionMethod actionName="dados"/>
+          <actionMethod actionName="pastores"/>
+          <actionMethod actionName="addmembro"/>
+          <actionMethod actionName="editmembro"/>
+          <actionMethod actionName="sistema"/>
+          <actionMethod actionName="perfil"/>
+          <actionMethod actionName="licoes"/>
+          <actionMethod actionName="louvor"/>
+          <actionMethod actionName="dinamicas"/>
         </controllerFile>
         <controllerFile controllerName="Auth">
           <actionMethod actionName="index"/>
@@ -190,6 +199,33 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Celula">
             <viewScriptFile forActionName="save"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Admin">
+            <viewScriptFile forActionName="dados"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Admin">
+            <viewScriptFile forActionName="pastores"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Admin">
+            <viewScriptFile forActionName="addmembro"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Admin">
+            <viewScriptFile forActionName="editmembro"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Admin">
+            <viewScriptFile forActionName="sistema"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Admin">
+            <viewScriptFile forActionName="perfil"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Admin">
+            <viewScriptFile forActionName="licoes"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Admin">
+            <viewScriptFile forActionName="louvor"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Admin">
+            <viewScriptFile forActionName="dinamicas"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

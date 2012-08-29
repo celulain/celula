@@ -55,7 +55,7 @@
             <a class="brand" href="/">Nome da Igreja</a>
             <div class="btn-group pull-right">
                 <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="icon-user"></i> Username
+                    <i class="icon-user"></i> <?=$_SESSION['userInformation']['login']?>
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
@@ -76,41 +76,30 @@
             <div class="nav-collapse">
                 <ul class="nav">
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Célula
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Administrativo
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="/celula/frequencia">Frequência</a></li>
-                            <li><a href="/celula/membros">Participantes</a></li>
-                            <li><a href="/celula/cadastro">Cadastro</a></li>
-                            <li><a href="/celula/perfil">Perfil</a></li>
+                            <li><a href="/admin/dados">Dados da igreja</a></li>
+                            <li><a href="/admin/pastores">Pastores</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Setor
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Membros
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="/setor/celulas">Células</a></li>
-                            <li><a href="/setor/perfil">Perfil</a></li>
+                            <li><a href="/admin/addmembro">Adicionar membro</a></li>
+                            <li><a href="/admin/editmembro">Editar Membro</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Área
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Configurações
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="/area/setores">Setores</a></li>
-                            <li><a href="/area/perfil">Perfil</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Rede
-                            <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/rede/areas">Áreas</a></li>
-                            <li><a href="/rede/perfil">Perfil</a></li>
+                            <li><a href="/admin/sistema">Sistema de célula</a></li>
+                            <li><a href="/admin/perfil">Perfil</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -118,9 +107,9 @@
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="/recursos/licoes-de-celula">Lições de Célula</a></li>
-                            <li><a href="/recursos/louvor">Louvor</a></li>
-                            <li><a href="/recursos/dinamicas">Dinâmicas</a></li>
+                            <li><a href="/admin/licoes">Lições de Célula</a></li>
+                            <li><a href="/admin/louvor">Louvor</a></li>
+                            <li><a href="/admin/dinamicas">Dinâmicas</a></li>
                         </ul>
                     </li>
                 </ul>

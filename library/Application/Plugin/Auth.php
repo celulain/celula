@@ -72,7 +72,9 @@ class Application_Plugin_Auth extends Zend_Controller_Plugin_Abstract
         $this->_acl = Zend_Registry::get('acl');
         if($this->_auth->hasIdentity() )
         {
-        	if($_SESSION['userInformation']['login'] == "andre")
+        	$authNamespace = new Zend_Session_Namespace('userInformation');
+        	
+        	if($authNamespace->user_id == 1)
         	{
         		$user = "admin";
         	}
