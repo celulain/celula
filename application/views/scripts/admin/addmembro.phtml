@@ -1,4 +1,22 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Admin</b> and script/action name <b>addmembro</b></p>
+<div class="row-fluid">
+    <form class="form-horizontal" method="post" name="registerCell" action="/celula/cadastro">
+	<fieldset>
+		<legend>Novo Membro</legend>
+			<div class="control-group">
+				<label class="control-label" for="input01">Nome</label>
+				<div class="controls">
+					<input type="text" class="input-xlarge" id="address" name="address" value="<?=$this->address?>">
+				</div><!--/.controls -->
+			</div><!--/.control-group -->
+			<div class="control-group">
+				<label class="control-label" for="input01">Sobrenome</label>
+				<div class="controls">
+					<input type="text" class="input-xlarge" id="address" name="address" value="<?=$this->address?>">
+				</div><!--/.controls -->
+			</div><!--/.control-group -->
+	</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary">Salvar alterações</button>
+			</div>
+		</form>
 </div>
