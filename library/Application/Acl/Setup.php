@@ -73,6 +73,7 @@ class Application_Acl_Setup
     	$this->_acl->addResource( new Zend_Acl_Resource('index') );
     	$this->_acl->addResource( new Zend_Acl_Resource('celula') );
     	$this->_acl->addResource( new Zend_Acl_Resource('admin') );
+        $this->_acl->addResource( new Zend_Acl_Resource('app') );
     	$this->_acl->addResource( new Zend_Acl_Resource('recursos') );
     	$this->_acl->addResource( new Zend_Acl_Resource('configuracoes') );
     	$this->_acl->addResource( new Zend_Acl_Resource('error') );
@@ -88,7 +89,9 @@ class Application_Acl_Setup
      */
     protected function _setupPrivileges()
     {
-        $this->_acl	->allow( 'guest', 'index', 'index' )
+        $this->_acl	->allow( 'guest', 'admin',array('index','addmembro','dados','editmembro','pastores','perfil','sistema','dinamicas','louvor','licoes') )
+                    ->allow( 'guest', 'index', 'index' )
+                    ->allow( 'guest', 'app', 'index' )
         			->allow( 'guest', 'auth', array('index', 'login') );
         $this->_acl	->allow( 'user', 'index', 'index' )
         			->allow( 'user', 'celula', array('frequencia','membros','cadastro','perfil') )
