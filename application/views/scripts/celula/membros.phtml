@@ -22,7 +22,6 @@
                     <th class="th-left">Nome</th>
                     <th>Função</th>
                     <th>Categoria</th>
-                    <th>Presença</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,13 +31,12 @@
 	            ?>
 	            <tr>
 	            	<td class="td-left">
-                        <a href="#participante1" data-toggle="modal">
+                        <a href="#participante<?=$members->user_id?>" data-toggle="modal">
                             <?=$members->name." ".$members->surname?>
                         </a>
                     </td>
                     <td><?=$members->role?></td>
                     <td><?if($members->type == 1)echo "Membro IBC"; else echo "Não membro";?></td>
-                    <td>0</td>
 	            </tr>
 	            <?
 	            }
@@ -137,144 +135,93 @@
 
 <!-- MODAIS PARTICIPANTES-->
 
-<div class="modal hide" id="participante1">
+<? 
+foreach($this->membersRows as $members)
+{
+?>
+<form class="form-horizontal" action="/celula/membros" method="post" name="editMember">
+<div class="modal hide" id="participante<?=$members->user_id?>">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal">×</button>
-    <h3>Luiz Carlos Menezes</h3>
+    <h3><?=$members->name." ".$members->surname?></h3>
   </div>
   <div class="modal-body">
-    <p>Dados do participante</p>
+    <div class="control-group">
+                <label class="control-label" for="input01">Nome</label>
+                <div class="controls">
+                    <input type="text" value="<?=$members->name." ".$members->surname?>" class="input-large typeahead" id="input01" name="new_name" placeholder="nome completo" data-provide="typeahead">
+                </div><!--/.controls -->
+            </div><!--/.control-group -->
+                        <div class="control-group">
+                            <label class="control-label" for="input01">Apelido</label>
+                            <div class="controls">
+                                <input type="text" value="<?=$members->nickname?>" class="input-large" id="input01" name="new_nick" placeholder="como quer ser chamado">
+                            </div><!--/.controls -->
+                        </div><!--/.control-group -->
+                        <div class="control-group">
+                            <label class="control-label" for="input01">Sexo</label>
+                            <div class="controls">
+                                <label for="male" class="radio">
+                                    <input type="radio" value="1" name="new_sex" id="male" <?if($members->gender == 1){?>checked="checked" <?}?>>
+                                    Masculino
+                                </label>
+                                <label for="female" class="radio">
+                                    <input type="radio" value="2" name="new_sex" id="female" <?if($members->gender == 2){?>checked="checked" <?}?>>
+                                    Feminino
+                                </label>
+                            </div><!--/.controls -->
+                        </div><!--/.control-group -->
+                        <div class="control-group">
+                            <label class="control-label" for="input01">Data de nascimento</label>
+                            <div class="controls">
+                                <input type="text" value="<?if($members->birthday != '0000-00-00') echo $members->birthday;?>" class="input-large" id="input01" name="new_birthday" placeholder="dd/mm/aaaa (não obrigatório)">
+                            </div><!--/.controls -->
+                        </div><!--/.control-group -->
+                        <div class="control-group">
+                            <label class="control-label" for="input01">Batizado</label>
+                            <div class="controls">
+                                <label for="baptized_ibc" class="radio">
+                                    <input type="radio" value="1" name="baptized" id="baptized_ibc">
+                                    Na IBC
+                                </label>
+                                <label for="baptized_other" class="radio">
+                                    <input type="radio"  value="2" name="baptized" id="baptized_other">
+                                    Em outra igreja
+                                </label>
+                                <label for="baptized_no" class="radio">
+                                    <input type="radio"  value="3" name="baptized" id="baptized_no">
+                                    Não
+                                </label>
+                            </div><!--/.controls -->
+                        </div><!--/.control-group -->
+                         <div class="control-group">
+                            <label class="control-label" for="input01">Função</label>
+                            <div class="controls">
+                                <label for="baptized_ibc" class="radio">
+                                    <input type="radio" value="4" name="role" id="role">
+                                    Líder em Treinamento
+                                </label>
+                                <label for="baptized_other" class="radio">
+                                    <input type="radio" value="2" name="role" id="role">
+                                    Participante
+                                </label>
+                                <label for="baptized_no" class="radio">
+                                    <input type="radio"  value="5"  name="role" id="role">
+                                    Visitante
+                                </label>
+                                <label for="baptized_no" class="radio">
+                                    <input type="radio"  value="3"  name="role" id="role">
+                                    Anfitrião
+                                </label>
+                            </div><!--/.controls -->
+                        </div><!--/.control-group -->
   </div>
   <div class="modal-footer">
     <a href="#" class="btn" data-dismiss="modal">Cancelar</a>
-    <a href="#" class="btn btn-primary">Salvar alterações</a>
+    <a href="#" class="btn btn-primary" onclick="document.editMember.submit();">Salvar alterações</a>
   </div>
 </div>
-
-<div class="modal hide" id="participante2">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">×</button>
-    <h3>Nome</h3>
-  </div>
-  <div class="modal-body">
-    <p>Dados do participante</p>
-  </div>
-  <div class="modal-footer">
-    <a href="#" class="btn" data-dismiss="modal">Cancelar</a>
-    <a href="#" class="btn btn-primary">Salvar alterações</a>
-  </div>
-</div>
-
-<div class="modal hide" id="participante3">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">×</button>
-    <h3>Nome</h3>
-  </div>
-  <div class="modal-body">
-    <p>Dados do participante</p>
-  </div>
-  <div class="modal-footer">
-    <a href="#" class="btn" data-dismiss="modal">Cancelar</a>
-    <a href="#" class="btn btn-primary">Salvar alterações</a>
-  </div>
-</div>
-
-<div class="modal hide" id="participante4">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">×</button>
-    <h3>Nome</h3>
-  </div>
-  <div class="modal-body">
-    <p>Dados do participante</p>
-  </div>
-  <div class="modal-footer">
-    <a href="#" class="btn" data-dismiss="modal">Cancelar</a>
-    <a href="#" class="btn btn-primary">Salvar alterações</a>
-  </div>
-</div>
-
-<div class="modal hide" id="participante5">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">×</button>
-    <h3>Nome</h3>
-  </div>
-  <div class="modal-body">
-    <p>Dados do participante</p>
-  </div>
-  <div class="modal-footer">
-    <a href="#" class="btn" data-dismiss="modal">Cancelar</a>
-    <a href="#" class="btn btn-primary">Salvar alterações</a>
-  </div>
-</div>
-
-<div class="modal hide" id="participante6">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">×</button>
-    <h3>Nome</h3>
-  </div>
-  <div class="modal-body">
-    <p>Dados do participante</p>
-  </div>
-  <div class="modal-footer">
-    <a href="#" class="btn" data-dismiss="modal">Cancelar</a>
-    <a href="#" class="btn btn-primary">Salvar alterações</a>
-  </div>
-</div>
-
-<div class="modal hide" id="participante7">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">×</button>
-    <h3>Nome</h3>
-  </div>
-  <div class="modal-body">
-    <p>Dados do participante</p>
-  </div>
-  <div class="modal-footer">
-    <a href="#" class="btn" data-dismiss="modal">Cancelar</a>
-    <a href="#" class="btn btn-primary">Salvar alterações</a>
-  </div>
-</div>
-
-<div class="modal hide" id="participante8">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">×</button>
-    <h3>Nome</h3>
-  </div>
-  <div class="modal-body">
-    <p>Dados do participante</p>
-  </div>
-  <div class="modal-footer">
-    <a href="#" class="btn" data-dismiss="modal">Cancelar</a>
-    <a href="#" class="btn btn-primary">Salvar alterações</a>
-  </div>
-</div>
-
-<div class="modal hide" id="participante9">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">×</button>
-    <h3>Nome</h3>
-  </div>
-  <div class="modal-body">
-    <p>Dados do participante</p>
-  </div>
-  <div class="modal-footer">
-    <a href="#" class="btn" data-dismiss="modal">Cancelar</a>
-    <a href="#" class="btn btn-primary">Salvar alterações</a>
-  </div>
-</div>
-
-<div class="modal hide" id="participante10">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">×</button>
-    <h3>Renato Vargas</h3>
-  </div>
-  <div class="modal-body">
-    <p>Dados do participante</p>
-  </div>
-  <div class="modal-footer">
-    <a href="#" class="btn" data-dismiss="modal">Cancelar</a>
-    <a href="#" class="btn btn-primary">Salvar alterações</a>
-  </div>
-</div>
-
+<?
+}
+?>
 

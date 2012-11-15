@@ -23,7 +23,7 @@ class ConfiguracoesController extends Zend_Controller_Action
         	$user_detailed_row = $userDetailed->fetchRow($userDetailed->select()->where("user_id = ?",$authNamespace->user_id));
         	$user_detailed_row->name = $data['name'];
         	$user_detailed_row->surname = $data['surname'];
-        	$user_detailed_row->gender_id = $data['gender'];
+        	$user_detailed_row->gender = $data['gender'];
         	$user_detailed_row->birthday = $data['birthday'];
         	$user_detailed_row->nickname = $data['nickname'];
         	$user_detailed_row->save();
@@ -31,7 +31,7 @@ class ConfiguracoesController extends Zend_Controller_Action
         $row = $userDetailed->fetchRow($userDetailed->select()->where("user_id = ?",$authNamespace->user_id));
         $this->view->name = $row->name;
         $this->view->surname = $row->surname;
-        $this->view->gender = $row->gender_id;
+        $this->view->gender = $row->gender;
         $this->view->nickname = $row->nickname;
         $this->view->birthday = $row->birthday;
     }

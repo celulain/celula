@@ -60,13 +60,18 @@
 						            </tr>
 						            <?
 					            	}
-					            	else{
-						           	?>
-                                    <tr>
+						            }
+						            ?>
+						            <tr>
                                       <td colspan="8">Visitantes</td>
                                     </tr>
+						            <?
+						            foreach($this->membersRows as $members)
+						            {
+					            	if($members->type == 3){
+						           	?>
                                     <tr>
-                                        <td></td>
+                                        <td>Visitante</td>
                                         <td class="td-left"><?=$members->name." ".$members->surname?></td>
                                         <td class="frequencia">
                                           <i class="icon-remove frequencia-ausente"></i>

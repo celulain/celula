@@ -87,7 +87,7 @@ class CelulaController extends Zend_Controller_Action
     	$select	->from(array('c' => 'cell'), array('cell_id'))
     			->joinInner(array('m' => 'cell_user'),'c.cell_id = m.cell_id', array('user_id') )
 		    	->joinInner(array('mr' => 'cell_role') , 'm.role_id = mr.role_id', array('role'=>'name'))
-		    	->joinInner(array('a' => 'core_user_detailed'),'m.user_id = a.user_id', array('name'=>'name','surname'=>'surname'))
+		    	->joinInner(array('a' => 'core_user_detailed'),'m.user_id = a.user_id')
 		    	->joinInner(array('b' => 'core_user_information'),'m.user_id = b.user_id', array('type'))
 		    	->where('c.cell_id = ?', $authNamespace->cell_id_leader);
     	$this->view->cell_id = $authNamespace->cell_id_leader;
