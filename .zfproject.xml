@@ -76,6 +76,7 @@
       <formsDirectory>
         <formFile formName="Login"/>
         <formFile formName="UserPerfil"/>
+        <formFile formName="Participantes"/>
       </formsDirectory>
       <layoutsDirectory>
         <layoutScriptsDirectory>
@@ -104,8 +105,13 @@
           <dbTableFile dbTableName="CellUser"/>
           <dbTableFile dbTableName="CoreUserInformation"/>
           <dbTableFile dbTableName="CellHost"/>
+          <dbTableFile dbTableName="CellGoalParticipants"/>
+          <dbTableFile dbTableName="CellGoalDateMultiplication"/>
         </dbTableDirectory>
         <modelFile modelName="Cell"/>
+        <modelFile modelName="Participantes"/>
+        <modelFile modelName="TextDecorator"/>
+        <modelFile modelName="RadioDecorator"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>

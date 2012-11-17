@@ -23,16 +23,16 @@ class CelulaController extends Zend_Controller_Action
     {
     	$this->_helper->layout()->setLayout('layout');
     	$authNamespace = new Zend_Session_Namespace('userInformation');
-        $cell = new Application_Model_DbTable_Cell();
-    	$select = $cell->select()->setIntegrityCheck(false);
-    	$select	->from(array('c' => 'cell'), array('cell_id'))
-    			->joinInner(array('m' => 'cell_user'),'c.cell_id = m.cell_id', array('user_id') )
-		    	->joinInner(array('mr' => 'cell_role') , 'm.role_id = mr.role_id', array('role'=>'name'))
-		    	->joinInner(array('a' => 'core_user_detailed'),'m.user_id = a.user_id', array('name'=>'name','surname'=>'surname'))
-		    	->joinInner(array('b' => 'core_user_information'),'m.user_id = b.user_id', array('type'))
-		    	->where('c.cell_id = ?', $authNamespace->cell_id_leader);
+        $cell = new Application_Model_Cell();
+        $this->view->membersRows = $cell->returnMembers($authNamespace->cell_id_leader);
+        $this->view->goalParticipants = $cell->returnGoalParticipants($authNamespace->cell_id_leader);
+        $this->view->actualParticipants = $cell->returnGoalActualParticipants($authNamespace->cell_id_leader);
+        $dateMultiplication = $cell->returnDateMultiplication($authNamespace->cell_id_leader);
+        $this->view->amountDays = $cell->calculateDayMultiplication($dateMultiplication);
+        $date = explode("-",$dateMultiplication);
+        $this->view->dateMultiplication = $date[2]."/".$date[1]."/".$date[0];
+        $this->view->amountWeeks = $cell->calculateWeeks($dateMultiplication);
     	$this->view->cell_id = $authNamespace->cell_id_leader;
-    	$this->view->membersRows = $cell->fetchAll($select);
     }
 
     public function cadastroAction()
@@ -73,25 +73,35 @@ class CelulaController extends Zend_Controller_Action
     	try{
     	$authNamespace = new Zend_Session_Namespace('userInformation');
     	$cellClass = new Application_Model_Cell();
+    	$newParticipantForm = new Application_Form_Participantes();
+    	$newParticipantForm->setCellId($authNamespace->cell_id_leader);
     	if($this->getRequest()->isPost())
     	{
     		$data = $this->getRequest()->getPost();
-    		if(isset($data['new_name']) && $data['new_name'] != "")
+    		if($newParticipantForm->isValid($data))
     		{
-    			$cellClass->addMember($data);
+    			$cellClass->saveMember($data,$data['user_id']);
+    			$newParticipantForm->reset();
+    		}
+    		else
+    		{
+    			if($newParticipantForm->isErrors())
+    			{
+    				echo "tem erros";
+    				print_r($newParticipantForm->getMessages());
+    				exit;
+    			}
     		}
     	}
     	
-    	$cell = new Application_Model_DbTable_Cell();
-    	$select = $cell->select()->setIntegrityCheck(false);
-    	$select	->from(array('c' => 'cell'), array('cell_id'))
-    			->joinInner(array('m' => 'cell_user'),'c.cell_id = m.cell_id', array('user_id') )
-		    	->joinInner(array('mr' => 'cell_role') , 'm.role_id = mr.role_id', array('role'=>'name'))
-		    	->joinInner(array('a' => 'core_user_detailed'),'m.user_id = a.user_id')
-		    	->joinInner(array('b' => 'core_user_information'),'m.user_id = b.user_id', array('type'))
-		    	->where('c.cell_id = ?', $authNamespace->cell_id_leader);
+    	$participantes = new Application_Model_Participantes();
+    	$members = $participantes->retornaParticipantes($authNamespace->cell_id_leader);
+    	$forms = $participantes->retornaForms($members);
+    	$newParticipantForm->initForm();
+    	$this->view->newParticipantForm = $newParticipantForm->returnForm();
     	$this->view->cell_id = $authNamespace->cell_id_leader;
-    	$this->view->membersRows = $cell->fetchAll($select);
+    	$this->view->membersRows = $members;
+    	$this->view->participantesForm = $forms;
     	}catch(Zend_Exception $e){
     		echo $e->getMessage();
     	}

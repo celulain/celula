@@ -54,174 +54,18 @@
         <h3>Adicionar Participante</h3>
     </div>
     <div class="modal-body">
-        <form class="form-horizontal" action="/celula/membros" method="post" name="addMember">
-        <input type="hidden" id="cell_id" name="cell_id" value="<?=$this->cell_id?>" />
-            <div class="control-group">
-                <label class="control-label" for="input01">Nome</label>
-                <div class="controls">
-                    <input type="text" class="input-large typeahead" id="input01" name="new_name" placeholder="nome completo" data-provide="typeahead">
-                </div><!--/.controls -->
-            </div><!--/.control-group -->
-                        <div class="control-group">
-                            <label class="control-label" for="input01">Apelido</label>
-                            <div class="controls">
-                                <input type="text" class="input-large" id="input01" name="new_nick" placeholder="como quer ser chamado">
-                            </div><!--/.controls -->
-                        </div><!--/.control-group -->
-                        <div class="control-group">
-                            <label class="control-label" for="input01">Sexo</label>
-                            <div class="controls">
-                                <label for="male" class="radio">
-                                    <input type="radio" value="1" name="new_sex" id="male">
-                                    Masculino
-                                </label>
-                                <label for="female" class="radio">
-                                    <input type="radio" value="2" name="new_sex" id="female">
-                                    Feminino
-                                </label>
-                            </div><!--/.controls -->
-                        </div><!--/.control-group -->
-                        <div class="control-group">
-                            <label class="control-label" for="input01">Data de nascimento</label>
-                            <div class="controls">
-                                <input type="text" class="input-large" id="input01" name="new_birthday" placeholder="dd/mm/aaaa (não obrigatório)">
-                            </div><!--/.controls -->
-                        </div><!--/.control-group -->
-                        <div class="control-group">
-                            <label class="control-label" for="input01">Batizado</label>
-                            <div class="controls">
-                                <label for="baptized_ibc" class="radio">
-                                    <input type="radio" value="1" name="baptized" id="baptized_ibc">
-                                    Na IBC
-                                </label>
-                                <label for="baptized_other" class="radio">
-                                    <input type="radio"  value="2" name="baptized" id="baptized_other">
-                                    Em outra igreja
-                                </label>
-                                <label for="baptized_no" class="radio">
-                                    <input type="radio"  value="3" name="baptized" id="baptized_no">
-                                    Não
-                                </label>
-                            </div><!--/.controls -->
-                        </div><!--/.control-group -->
-                         <div class="control-group">
-                            <label class="control-label" for="input01">Função</label>
-                            <div class="controls">
-                                <label for="baptized_ibc" class="radio">
-                                    <input type="radio" value="4" name="role" id="role">
-                                    Líder em Treinamento
-                                </label>
-                                <label for="baptized_other" class="radio">
-                                    <input type="radio" value="2" name="role" id="role">
-                                    Participante
-                                </label>
-                                <label for="baptized_no" class="radio">
-                                    <input type="radio"  value="5"  name="role" id="role">
-                                    Visitante
-                                </label>
-                                <label for="baptized_no" class="radio">
-                                    <input type="radio"  value="3"  name="role" id="role">
-                                    Anfitrião
-                                </label>
-                            </div><!--/.controls -->
-                        </div><!--/.control-group -->
-    </div>
-    <div class="modal-footer">
-        <a href="#" class="btn" data-dismiss="modal">Cancelar</a>
-        <a href="#" class="btn btn-primary" onclick="document.addMember.submit();">Salvar</a>
-    </div>
-        </form>
+    	<?=$this->newParticipantForm?>
+	</div>
 </div>
 
-<!-- MODAIS PARTICIPANTES-->
-
-<? 
-foreach($this->membersRows as $members)
-{
-?>
-<form class="form-horizontal" action="/celula/membros" method="post" name="editMember">
-<div class="modal hide" id="participante<?=$members->user_id?>">
+<?foreach($this->participantesForm as $formul){?>
+<div class="modal hide" id="participante<?=$formul->getUserId()?>">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal">×</button>
-    <h3><?=$members->name." ".$members->surname?></h3>
+    <h3><?=$formul->getUserName()?></h3>
   </div>
   <div class="modal-body">
-    <div class="control-group">
-                <label class="control-label" for="input01">Nome</label>
-                <div class="controls">
-                    <input type="text" value="<?=$members->name." ".$members->surname?>" class="input-large typeahead" id="input01" name="new_name" placeholder="nome completo" data-provide="typeahead">
-                </div><!--/.controls -->
-            </div><!--/.control-group -->
-                        <div class="control-group">
-                            <label class="control-label" for="input01">Apelido</label>
-                            <div class="controls">
-                                <input type="text" value="<?=$members->nickname?>" class="input-large" id="input01" name="new_nick" placeholder="como quer ser chamado">
-                            </div><!--/.controls -->
-                        </div><!--/.control-group -->
-                        <div class="control-group">
-                            <label class="control-label" for="input01">Sexo</label>
-                            <div class="controls">
-                                <label for="male" class="radio">
-                                    <input type="radio" value="1" name="new_sex" id="male" <?if($members->gender == 1){?>checked="checked" <?}?>>
-                                    Masculino
-                                </label>
-                                <label for="female" class="radio">
-                                    <input type="radio" value="2" name="new_sex" id="female" <?if($members->gender == 2){?>checked="checked" <?}?>>
-                                    Feminino
-                                </label>
-                            </div><!--/.controls -->
-                        </div><!--/.control-group -->
-                        <div class="control-group">
-                            <label class="control-label" for="input01">Data de nascimento</label>
-                            <div class="controls">
-                                <input type="text" value="<?if($members->birthday != '0000-00-00') echo $members->birthday;?>" class="input-large" id="input01" name="new_birthday" placeholder="dd/mm/aaaa (não obrigatório)">
-                            </div><!--/.controls -->
-                        </div><!--/.control-group -->
-                        <div class="control-group">
-                            <label class="control-label" for="input01">Batizado</label>
-                            <div class="controls">
-                                <label for="baptized_ibc" class="radio">
-                                    <input type="radio" value="1" name="baptized" id="baptized_ibc">
-                                    Na IBC
-                                </label>
-                                <label for="baptized_other" class="radio">
-                                    <input type="radio"  value="2" name="baptized" id="baptized_other">
-                                    Em outra igreja
-                                </label>
-                                <label for="baptized_no" class="radio">
-                                    <input type="radio"  value="3" name="baptized" id="baptized_no">
-                                    Não
-                                </label>
-                            </div><!--/.controls -->
-                        </div><!--/.control-group -->
-                         <div class="control-group">
-                            <label class="control-label" for="input01">Função</label>
-                            <div class="controls">
-                                <label for="baptized_ibc" class="radio">
-                                    <input type="radio" value="4" name="role" id="role">
-                                    Líder em Treinamento
-                                </label>
-                                <label for="baptized_other" class="radio">
-                                    <input type="radio" value="2" name="role" id="role">
-                                    Participante
-                                </label>
-                                <label for="baptized_no" class="radio">
-                                    <input type="radio"  value="5"  name="role" id="role">
-                                    Visitante
-                                </label>
-                                <label for="baptized_no" class="radio">
-                                    <input type="radio"  value="3"  name="role" id="role">
-                                    Anfitrião
-                                </label>
-                            </div><!--/.controls -->
-                        </div><!--/.control-group -->
-  </div>
-  <div class="modal-footer">
-    <a href="#" class="btn" data-dismiss="modal">Cancelar</a>
-    <a href="#" class="btn btn-primary" onclick="document.editMember.submit();">Salvar alterações</a>
+    <?=$formul?>
   </div>
 </div>
-<?
-}
-?>
-
+<?}?>
