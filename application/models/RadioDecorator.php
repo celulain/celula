@@ -2,17 +2,21 @@
 
 class Application_Model_RadioDecorator extends Zend_Form_Decorator_Abstract
 {
-	protected $_format = '<label class="radio" for="%s">%s</label><div class="controls"><input id="%s" name="%s" type="radio" value="%s"/></div>';
+	protected $_format = '<label class="control-group" for="%s">%s</label><div class="controls">%s %s %s %s %s</div>';
 	
 	public function render($content)
 	{
 		$element = $this->getElement();
 		$name    = htmlentities($element->getFullyQualifiedName());
 		$label   = htmlentities($element->getLabel());
-		$id      = htmlentities($element->getId());
+
+		$name_i  = htmlentities($element->getName());
 		$value   = htmlentities($element->getValue());
+		$attribs = $element->getAttribs();
+		$options = $element->getMultiOptions();
+		$separa  = htmlentities($element->getSeparator());
 	
-		$markup  = sprintf($this->_format, $name, $label, $id, $name, $value);
+		$markup  = sprintf($this->_format, $name, $label, $name_i, $value, $attribs, $options, $separa);
 		return $markup;
 	}
 

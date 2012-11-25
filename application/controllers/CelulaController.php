@@ -25,6 +25,8 @@ class CelulaController extends Zend_Controller_Action
     	$authNamespace = new Zend_Session_Namespace('userInformation');
         $cell = new Application_Model_Cell();
         $this->view->membersRows = $cell->returnMembers($authNamespace->cell_id_leader);
+        $this->view->dateMeetings = $cell->dateMeeting($authNamespace->cell_id_leader);
+        $this->view->presenceMeeting = $cell->presenceMeeting($authNamespace->cell_id_leader);
         $this->view->goalParticipants = $cell->returnGoalParticipants($authNamespace->cell_id_leader);
         $this->view->actualParticipants = $cell->returnGoalActualParticipants($authNamespace->cell_id_leader);
         $dateMultiplication = $cell->returnDateMultiplication($authNamespace->cell_id_leader);
@@ -41,26 +43,25 @@ class CelulaController extends Zend_Controller_Action
     	try{
     	$authNamespace = new Zend_Session_Namespace('userInformation');
 		$cellHost = new Application_Model_DbTable_CellHost();
+		$cell = new Application_Model_Cell();
+		$cellProfileForm = new Application_Form_CellProfile();
 		if($this->getRequest()->isPost())
 		{
 			$data = $this->getRequest()->getPost();
-			$cellHostRow = $cellHost->fetchRow($cellHost->select()->where("cell_id = ?",$authNamespace->cell_id_leader));
-			$cellHostRow->address = $data['address'];
-			$cellHostRow->number = $data['number'];
-			$cellHostRow->apartament = $data['apartament'];
-			$cellHostRow->district = $data['district'];
-			$cellHostRow->city = $data['city'];
-			$cellHostRow->zip_code = $data['zip_code'];
-			$cellHostRow->save();
+			$cell->profileCell($data,$authNamespace->cell_id_leader);
 		}
 		$cellHost = $cellHost->fetchRow($cellHost->select()->where("cell_id = ?",$authNamespace->cell_id_leader));
-		$this->view->cell_id = $authNamespace->cell_id_leader;
-		$this->view->address = $cellHost->address;
-		$this->view->number = $cellHost->number;
-		$this->view->apartament = $cellHost->apartament;
-		$this->view->district = $cellHost->district;
-		$this->view->city = $cellHost->city;
-		$this->view->zip_code = $cellHost->zip_code;
+		$values = array	(
+							"cell_id" 		=> $authNamespace->cell_id_leader,
+							"address" 		=> $cellHost->address,
+							"number" 		=> $cellHost->number,
+							"apartament" 	=> $cellHost->apartament,
+							"district" 		=> $cellHost->district,
+							"city" 			=> $cellHost->city,
+							"zip_code" 		=> $cellHost->zip_code
+						);
+		$cellProfileForm->populate($values);
+		$this->view->cellProfileForm = $cellProfileForm;
     	}catch(Zend_Exception $e){
     		echo $e->getMessage();
     	}

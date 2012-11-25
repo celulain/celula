@@ -10,6 +10,8 @@ class Application_Form_Participantes extends Zend_Form
     {
     	
     	$textDecorator = new Application_Model_TextDecorator();
+        $radioDecorator = new Application_Model_RadioDecorator();
+    	$this->setAttrib('class', 'form-horizontal');
     	
     	$name = new Zend_Form_Element_Text('name');
     	$name	->setLabel('Nome:')
@@ -33,11 +35,17 @@ class Application_Form_Participantes extends Zend_Form
 			    	->addMultiOptions(array(
 		    			'1' => 'Masculino',
 		    			'2' => 'Feminino'))
-    				->setAttrib('class', 'radio')
-    				->setAttrib('label_class', 'radio');
+    				->setSeparator('')
+                    ->addDecorators(array(
+                        array('ViewHelper'),
+                        array('Errors'),
+                        array('Description', array('tag' => 'p', 'class' => 'description')),
+                        array('HtmlTag', array('tag' => 'div', 'class' => 'control-group-radio')),
+                        array('Label', array('tag' => 'div', 'class' => 'control-group-radio-label')),
+                    ));
     	 
     	$birthday = new Zend_Form_Element_Text('birthday');
-    	$birthday 	->setLabel('Data de Nascimento')
+    	$birthday 	->setLabel('Data de Nascimento:')
 			    	->setRequired(false)
 			    	->setValidators( array(
 			    			array('date', false, array('dd/mm/yyyy'))
@@ -51,8 +59,15 @@ class Application_Form_Participantes extends Zend_Form
 			    			'1' => 'Na IBC',
 			    			'2' => 'Em outra igreja',
 			    			'3'	=> 'Não'))
-    				->setAttrib('class', 'radio')
-    				->setAttrib('label_class', 'radio');
+                    ->setSeparator('')
+                    ->addDecorators(array(
+                        array('ViewHelper'),
+                        array('Errors'),
+                        array('Description', array('tag' => 'p', 'class' => 'description')),
+                        array('HtmlTag', array('tag' => 'div', 'class' => 'control-group-radio')),
+                        array('Label', array('tag' => 'div', 'class' => 'control-group-radio-label')),
+                    ));
+    				
     	 
     	$position = new Zend_Form_Element_Radio('position');
     	$position	->setLabel('Função:')
@@ -63,8 +78,14 @@ class Application_Form_Participantes extends Zend_Form
 			    			'3'	=> 'Visitante',
 			    			'4'	=> 'Anfitrião',
 			    			'5'	=> 'Líder em Treinamento'))
-    				->setAttrib('class', 'radio')
-    				->setAttrib('label_class', 'radio');
+    				->setSeparator('')
+                    ->addDecorators(array(
+                        array('ViewHelper'),
+                        array('Errors'),
+                        array('Description', array('tag' => 'p', 'class' => 'description')),
+                        array('HtmlTag', array('tag' => 'div', 'class' => 'control-group-radio')),
+                        array('Label', array('tag' => 'div', 'class' => 'control-group-radio-label')),
+                    ));;
     	
     	$submit = new Zend_Form_Element_Submit('submit');
     	$submit	->setLabel('Salvar')

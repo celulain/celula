@@ -1,8 +1,11 @@
 var Cell = Em.Application.create();
 Cell.ApplicationController = Em.Controller.extend();
 Cell.CelulaCadastroController = Em.Controller.extend();
-Cell.CelulaFrequenciaController = Em.Controller.extend();
-Cell.CelulaParticipantesController = Em.Controller.extend();
+//Cell.CelulaFrequenciaController = Em.Controller.extend();
+
+function savePresence(meeting_id){
+	alert(meeting_id);
+}Cell.CelulaParticipantesController = Em.Controller.extend();
 Cell.CelulaPerfilController = Em.Controller.extend();
 Cell.CelulaController = Em.Controller.extend();
 Cell.HomeController = Em.Controller.extend();

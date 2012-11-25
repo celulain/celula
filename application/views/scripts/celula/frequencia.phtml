@@ -25,11 +25,9 @@
                                     <tr>
                                         <th></th>
                                         <th class="th-left">Nome</th>
-                                        <th>17-11</th>
-                                        <th>24-11</th>
-                                        <th>01-12</th>
-                                        <th>08-12</th>
-                                        <th>15-12</th>
+                                        <? foreach($this->dateMeetings as $dateMeetings){ ?>
+                                        <th><?=$dateMeetings->dateMeeting?></th>
+                                        <? } ?>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -44,22 +42,25 @@
 						            <tr>
 						                <td><?=$members->role?></td>
                                         <td class="td-left"><?=$members->name." ".$members->surname?></td>
-                                        <td class="frequencia">
-                                          <i class="icon-ok frequencia-presente"></i>
-                                        </td>
-                                        <td class="frequencia">
-                                          <i class="icon-ok frequencia-presente"></i>
-                                        </td>
-                                        <td class="frequencia">
-                                          <i class="icon-ok frequencia-presente"></i>
-                                        </td>
-                                        <td class="frequencia">
-                                          <i class="icon-ok frequencia-presente"></i>
-                                        </td>
-                                        <td></td>
+                                        <? 
+                                        foreach($this->presenceMeeting as $presenceMeeting){
+                                            if($presenceMeeting->user_id==$members->user_id){ ?>
+                                                <td class="frequencia">
+                                                    <?
+                                                        if($presenceMeeting->presence == 1){
+                                                            echo '<i class="icon-ok frequencia-presente" id="meet_'.$presenceMeeting->meeting_id.'_'.$presenceMeeting->user_id.'"></i>';
+                                                        }else{
+                                                            echo '<i class="icon-remove frequencia-ausente" id="meet_'.$presenceMeeting->meeting_id.'_'.$presenceMeeting->user_id.'"></i>';
+                                                        }
+                                                    ?>
+                                                </td>
+                                        <? 
+                                            } 
+                                        } 
+                                        ?>
 						            </tr>
 						            <?
-					            	}
+                                    }     
 						            }
 						            ?>
 						            <tr>
@@ -73,24 +74,33 @@
                                     <tr>
                                         <td>Visitante</td>
                                         <td class="td-left"><?=$members->name." ".$members->surname?></td>
-                                        <td class="frequencia">
-                                          <i class="icon-remove frequencia-ausente"></i>
-                                        </td>
-                                        <td class="frequencia">
-                                          <i class="icon-ok frequencia-presente"></i>
-                                        </td>
-                                        <td class="frequencia">
-                                          <i class="icon-ok frequencia-presente"></i>
-                                        </td>
-                                        <td class="frequencia">
-                                          <i class="icon-remove frequencia-ausente"></i>
-                                        </td>
-                                        <td class="frequencia"></td>
+                                       <? 
+                                        foreach($this->presenceMeeting as $presenceMeeting){
+                                            if($presenceMeeting->user_id==$members->user_id){ ?>
+                                                <td class="frequencia">
+                                                    <?
+                                                        if($presenceMeeting->presence == 1){
+                                                            echo '<i class="icon-ok frequencia-presente" id="meet_'.$presenceMeeting->meeting_id.'_'.$presenceMeeting->user_id.'"></i>';
+                                                        }else{
+                                                            echo '<i class="icon-remove frequencia-ausente" id="meet_'.$presenceMeeting->meeting_id.'_'.$presenceMeeting->user_id.'"></i>';
+                                                        }
+                                                    ?>
+                                                </td>
+                                        <? 
+                                            } 
+                                        } 
+                                        ?>
                                     </tr>
                                     <?
 					            	}
 					            	}
 						            ?>
+                                    <tr>
+                                        <td colspan="2">&nbsp;</td>
+                                        <? foreach($this->dateMeetings as $dateMeetings){ ?>
+                                        <td><button onclick="savePresence('<?=$dateMeetings->meeting_id?>')">Salvar <?=$dateMeetings->meeting_id?></button></td>
+                                        <? } ?>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div><!--/.span12 -->

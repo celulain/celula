@@ -134,5 +134,46 @@ class Application_Model_Cell
 		$datediff = $now - $multiplication;
 		return (floor($datediff/648000)*-1);
 	}
+	
+	public function profileCell($data,$cellId)
+	{
+		$cellHost = new Application_Model_DbTable_CellHost();
+		$cellHost = $cellHost->fetchRow($cellHost->select()->where("cell_id = ?",$cellId));
+		if(!count($cellHost))
+			$cellHost = $cellHost->createRow();
+		$cellHost->address = $data['address'];
+		$cellHost->number = $data['number'];
+		$cellHost->apartament = $data['apartament'];
+		$cellHost->district = $data['district'];
+		$cellHost->city = $data['city'];
+		$cellHost->zip_code = $data['zip_code'];
+		$cellHost->cell_id = $cellId;
+		$cellHost->save();
+	}
+
+	public function presenceMeeting($cellId)
+	{
+		$cell = new Application_Model_DbTable_CellMeeting();
+		$select = $cell->select()->setIntegrityCheck(false);
+		$select	->from(array('cm' => 'cell_meeting'), array('dateMeeting'=>'DATE_FORMAT(cm.date,"%d-%m")','meeting_id'))
+				->joinInner(array('cu' => 'cell_user'),'cu.cell_id = cm.cell_id', array('user_id') )
+				->joinLeft(array('cmp' => 'cell_meeting_presence'),'cu.user_id=cmp.user_id and cmp.meeting_id=cm.meeting_id',array('presence'=>'if(cmp.user_id is null,0,1)'))
+				->where('cm.cell_id = ?', $cellId)
+				->group(array('cm.date','cu.user_id'))
+				->order('cm.date ASC');
+		return $cell->fetchAll($select);
+	}
+
+	public function dateMeeting($cellId)
+	{
+		$cell_meeting = new Application_Model_DbTable_CellMeeting();
+		$select = $cell_meeting->select()->setIntegrityCheck(false);
+		$select	->from('cell_meeting',array('DATE_FORMAT(date,"%d/%m") AS dateMeeting','meeting_id'))
+				->where("cell_id = ?",$cellId)
+				->group('date')
+				->limit(4)
+				->order('date ASC');
+		return $cell_meeting->fetchAll($select);
+	}
 }
 
