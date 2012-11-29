@@ -6,3 +6,5 @@ extras/documentation
 
 
 public/js/libs/handlebars/.DS_Store
+
+public/js/libs/jquery/.DS_Store
