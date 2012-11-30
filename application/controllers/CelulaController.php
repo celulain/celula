@@ -21,7 +21,7 @@ class CelulaController extends Zend_Controller_Action
 
     public function frequenciaAction()
     {
-    	$this->_helper->layout()->setLayout('layout');
+    	$this->_helper->layout()->setLayout('layout-frequencia');
     	$authNamespace = new Zend_Session_Namespace('userInformation');
         $cell = new Application_Model_Cell();
         $this->view->membersRows = $cell->returnMembers($authNamespace->cell_id_leader);
