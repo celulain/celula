@@ -71,6 +71,7 @@ class Application_Acl_Setup
     {
         $this->_acl->addResource( new Zend_Acl_Resource('auth') );
     	$this->_acl->addResource( new Zend_Acl_Resource('index') );
+        $this->_acl->addResource( new Zend_Acl_Resource('api') );
     	$this->_acl->addResource( new Zend_Acl_Resource('celula') );
     	$this->_acl->addResource( new Zend_Acl_Resource('admin') );
         $this->_acl->addResource( new Zend_Acl_Resource('app') );
@@ -94,6 +95,7 @@ class Application_Acl_Setup
                     ->allow( 'guest', 'app', 'index' )
         			->allow( 'guest', 'auth', array('index', 'login') );
         $this->_acl	->allow( 'user', 'index', 'index' )
+                    ->allow( 'user', 'api', array('subgoals') )
         			->allow( 'user', 'celula', array('frequencia','membros','cadastro','perfil') )
         			->allow( 'user', 'recursos', array('licoes-de-celula','louvor','dinamicas') )
         			->allow( 'user', 'configuracoes', array('perfil','contato','endereco','senha') )
