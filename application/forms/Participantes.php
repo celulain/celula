@@ -89,7 +89,8 @@ class Application_Form_Participantes extends Zend_Form
     	
     	$submit = new Zend_Form_Element_Submit('submit');
     	$submit	->setLabel('Salvar')
-    			->setAttrib('id', 'submitbutton');
+    			->setAttrib('id', 'submitbutton')
+                ->setAttrib('class', 'btn btn-primary');
     	
     	$idUser = new Zend_Form_Element_Hidden("user_id");
     	

@@ -48,41 +48,72 @@ class Application_Model_Cell
 	public function saveUserAddress($data,$userId)
 	{
 		$userAddress = new Application_Model_DbTable_CoreUserAddress();
-		$userAddress = $userAddress->fetchRow($userAddress->select()->where("user_id = ?",$userId));
-		if(!count($userAddress))
-			$userAddress = $userAddress->createRow();
-		$userAddress->user_id = $userId;
-		$userAddress->city_id = 0;
-		$userAddress->save();
+		$userAddressRow = $userAddress->fetchRow($userAddress->select()->where("user_id = ?",$userId));
+		if(!count($userAddressRow))
+		{
+			$newUserAddress = $userAddress->createRow();
+			$newUserAddress->user_id = $userId;
+			$newUserAddress->city_id = 0;
+			$newUserAddress->save();
+		}
+		else
+		{
+			$userAddressRow->user_id = $userId;
+			$userAddressRow->city_id = 0;
+			$userAddressRow->save();
+		}	
 	}
 	
 	public function saveUserInformation($data,$userId)
 	{
 		$userInformation = new Application_Model_DbTable_CoreUserInformation();
-		$userInformation = $userInformation->fetchRow($userInformation->select()->where("user_id = ?",$userId));
-		if(!count($userInformation))
-			$userInformation = $userInformation->createRow();
-		$userInformation->user_id = $userId;
-		if($data['baptized'] == 1)
-			$type = 1;
+		$userInformationRow = $userInformation->fetchRow($userInformation->select()->where("user_id = ?",$userId));
+		if(!count($userInformationRow))
+		{
+			$newUserInformation = $userInformation->createRow();
+			$newUserInformation->user_id = $userId;
+			if($data['baptized'] == 1)
+				$type = 1;
+			else
+				$type = 2;
+			$newUserInformation->type = $type;
+			$newUserInformation->baptized = $data['baptized'];
+			$newUserInformation->save();
+		}
 		else
-			$type = 2;
-		$userInformation->type = $type;
-		$userInformation->baptized = $data['baptized'];
-		$userInformation->save();
+		{
+			$userInformationRow->user_id = $userId;
+			if($data['baptized'] == 1)
+				$type = 1;
+			else
+				$type = 2;
+			$userInformationRow->type = $type;
+			$userInformationRow->baptized = $data['baptized'];
+			$userInformationRow->save();
+		}
 	}
 	
 	public function saveCellUser($data,$userId)
 	{
 		$userCell = new Application_Model_DbTable_CellUser();
-		$userCell = $userCell->fetchRow($userCell->select()->where("user_id = ?",$userId));
-		if(!count($userCell))
-			$userCell = $userCell->createRow();
-		$userCell->cell_id = $data['cell_id'];
-		$userCell->user_id = $userId;
-		$userCell->role_id = $data['position'];
-		$userCell->date_start = new Zend_Db_Expr('NOW()');
-		$userCell->save();
+		$userCellRow = $userCell->fetchRow($userCell->select()->where("user_id = ?",$userId));
+		if(!count($userCellRow))
+		{
+			$newUserCell = $userCell->createRow();
+			$newUserCell->cell_id = $data['cell_id'];
+			$newUserCell->user_id = $userId;
+			$newUserCell->role_id = $data['position'];
+			$newUserCell->date_start = new Zend_Db_Expr('NOW()');
+			$newUserCell->save();
+		}
+		else
+		{
+			$userCellRow->cell_id = $data['cell_id'];
+			$userCellRow->user_id = $userId;
+			$userCellRow->role_id = $data['position'];
+			$userCellRow->date_start = new Zend_Db_Expr('NOW()');
+			$userCellRow->save();
+		}
 	}
 	
 	public function returnMembers($cellId)
@@ -138,17 +169,30 @@ class Application_Model_Cell
 	public function profileCell($data,$cellId)
 	{
 		$cellHost = new Application_Model_DbTable_CellHost();
-		$cellHost = $cellHost->fetchRow($cellHost->select()->where("cell_id = ?",$cellId));
-		if(!count($cellHost))
-			$cellHost = $cellHost->createRow();
-		$cellHost->address = $data['address'];
-		$cellHost->number = $data['number'];
-		$cellHost->apartament = $data['apartament'];
-		$cellHost->district = $data['district'];
-		$cellHost->city = $data['city'];
-		$cellHost->zip_code = $data['zip_code'];
-		$cellHost->cell_id = $cellId;
-		$cellHost->save();
+		$cellHostRow = $cellHost->fetchRow($cellHost->select()->where("cell_id = ?",$cellId));
+		if(!count($cellHostRow))
+		{
+			$newCellHost = $cellHost->createRow();
+			$newCellHost->address = $data['address'];
+			$newCellHost->number = $data['number'];
+			$newCellHost->apartament = $data['apartament'];
+			$newCellHost->district = $data['district'];
+			$newCellHost->city = $data['city'];
+			$newCellHost->zip_code = $data['zip_code'];
+			$newCellHost->cell_id = $cellId;
+			$newCellHost->save();
+		}
+		else
+		{
+			$cellHostRow->address = $data['address'];
+			$cellHostRow->number = $data['number'];
+			$cellHostRow->apartament = $data['apartament'];
+			$cellHostRow->district = $data['district'];
+			$cellHostRow->city = $data['city'];
+			$cellHostRow->zip_code = $data['zip_code'];
+			$cellHostRow->cell_id = $cellId;
+			$cellHostRow->save();
+		}	
 	}
 
 	public function presenceMeeting($cellId)
