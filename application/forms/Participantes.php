@@ -85,7 +85,7 @@ class Application_Form_Participantes extends Zend_Form
                         array('Description', array('tag' => 'p', 'class' => 'description')),
                         array('HtmlTag', array('tag' => 'div', 'class' => 'control-group-radio')),
                         array('Label', array('tag' => 'div', 'class' => 'control-group-radio-label')),
-                    ));;
+                    ));
     	
     	$submit = new Zend_Form_Element_Submit('submit');
     	$submit	->setLabel('Salvar')

@@ -90,7 +90,7 @@ class Application_Acl_Setup
      */
     protected function _setupPrivileges()
     {
-        $this->_acl	->allow( 'guest', 'admin',array('index','addmembro','dados','editmembro','pastores','perfil','sistema','dinamicas','louvor','licoes') )
+        $this->_acl	->allow( 'admin', 'admin',array('index','addmembro','dados','editmembro','pastores','perfil','sistema','dinamicas','louvor','licoes','return-cities') )
                     ->allow( 'guest', 'index', 'index' )
                     ->allow( 'guest', 'app', 'index' )
         			->allow( 'guest', 'auth', array('index', 'login') );
@@ -101,7 +101,7 @@ class Application_Acl_Setup
         			->allow( 'user', 'configuracoes', array('perfil','contato','endereco','senha') )
         			->allow( 'user', 'auth', array('index', 'login') );
         $this->_acl	->allow( 'admin', 'index', 'index' )
-        			->allow( 'admin', 'admin',array('index','addmembro','dados','editmembro','pastores','perfil','sistema','dinamicas','louvor','licoes') )
+        			->allow( 'admin', 'admin',array('index','addmembro','dados','editmembro','pastores','perfil','sistema','dinamicas','louvor','licoes','return-cities') )
         			->allow( 'admin', 'celula', array('frequencia','membros','cadastro','perfil') )
         			->allow( 'admin', 'recursos', array('licoes-de-celula','louvor','dinamicas') )
         			->allow( 'admin', 'configuracoes', array('perfil','contato','endereco','senha') )
