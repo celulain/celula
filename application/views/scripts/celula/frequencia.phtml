@@ -1,174 +1,174 @@
-<div class="row-fluid">
-    <div class="span8">
-        <div class="row-fluid">
-            <div class="span12">
-                <div class="page-header">
-                    <h1>Lançamento de frequência</h1>
-                </div>                    
-            </div>
-        </div><!--/.row-fluid -->
-            
-        <div class="row-fluid">
-            <div class="span12">
-                <ul class="nav nav-tabs">
-                    <li class="active">
-                        <a href="#frequencia" data-toggle="tab">Célula</a>
-                    </li>
-                    <!--  <li><a href="#frequencia-cultos" data-toggle="tab">Cultos</a></li>-->
-                </ul>
+<script type="text/x-handlebars" data-template-name="application">
+<div class="container-fluid">
+  <div class="row-fluid">
 
-                <div class="tab-content">
-                    <div class="tab-pane active" id="frequencia">
-                        <div class="span12">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th class="th-left">Nome</th>
-                                        <? foreach($this->dateMeetings as $dateMeetings){ ?>
-                                        <th><?=$dateMeetings->dateMeeting?></th>
-                                        <? } ?>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td colspan="8">Membros IBC</td>
-                                    </tr>
-                                   	<? 
-						            foreach($this->membersRows as $members)
-						            {
-					            	if($members->position != 3){
-						            ?>
-						            <tr>
-						                <td><?=$members->role?></td>
-                                        <td class="td-left"><?=$members->name." ".$members->surname?></td>
-                                        <? 
-                                        foreach($this->presenceMeeting as $presenceMeeting){
-                                            if($presenceMeeting->user_id==$members->user_id){ ?>
-                                                <td class="frequencia">
-                                                    <?
-                                                        if($presenceMeeting->presence == 1){
-                                                            echo '<i class="icon-ok frequencia-presente" id="meet_'.$presenceMeeting->meeting_id.'_'.$presenceMeeting->user_id.'"></i>';
-                                                        }else{
-                                                            echo '<i class="icon-remove frequencia-ausente" id="meet_'.$presenceMeeting->meeting_id.'_'.$presenceMeeting->user_id.'"></i>';
-                                                        }
-                                                    ?>
-                                                </td>
-                                        <? 
-                                            } 
-                                        } 
-                                        ?>
-						            </tr>
-						            <?
-                                    }     
-						            }
-						            ?>
-						            <tr>
-                                      <td colspan="8">Visitantes</td>
-                                    </tr>
-						            <?
-						            foreach($this->membersRows as $members)
-						            {
-					            	if($members->position == 3){
-						           	?>
-                                    <tr>
-                                        <td>Visitante</td>
-                                        <td class="td-left"><?=$members->name." ".$members->surname?></td>
-                                       <? 
-                                        foreach($this->presenceMeeting as $presenceMeeting){
-                                            if($presenceMeeting->user_id==$members->user_id){ ?>
-                                                <td class="frequencia">
-                                                    <?
-                                                        if($presenceMeeting->presence == 1){
-                                                            echo '<i class="icon-ok frequencia-presente" id="meet_'.$presenceMeeting->meeting_id.'_'.$presenceMeeting->user_id.'"></i>';
-                                                        }else{
-                                                            echo '<i class="icon-remove frequencia-ausente" id="meet_'.$presenceMeeting->meeting_id.'_'.$presenceMeeting->user_id.'"></i>';
-                                                        }
-                                                    ?>
-                                                </td>
-                                        <? 
-                                            } 
-                                        } 
-                                        ?>
-                                    </tr>
-                                    <?
-					            	}
-					            	}
-						            ?>
-                                    <tr>
-                                        <td colspan="2">&nbsp;</td>
-                                        <? foreach($this->dateMeetings as $dateMeetings){ ?>
-                                        <td><button onclick="savePresence('<?=$dateMeetings->meeting_id?>')">Salvar <?=$dateMeetings->meeting_id?></button></td>
-                                        <? } ?>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div><!--/.span12 -->
-                    </div><!--/.tab-pane -->
-                </div><!--/.tab-content -->
-            </div><!--/.span12 -->
-        </div><!--/.row-fluid -->
-    </div><!--/span8 -->
-    
-    <div class="span4">
-        <div class="page-header">
-            <h1>5 Submetas</h1>
+  <div class="span8">
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="page-header">
+            <h1>Lançamento de frequência</h1>
+          </div>                    
         </div>
+      </div><!--/.row-fluid -->
+            
+      <div class="row-fluid">
+        <div class="span12">
+          <ul class="nav nav-tabs">
+            <li class="active">
+              <a href="#frequencia" data-toggle="tab">Célula</a>
+            </li>
+            <!--  <li><a href="#frequencia-cultos" data-toggle="tab">Cultos</a></li>-->
+          </ul>
 
-        <div class="accordion" id="submetas">
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <a href="#submeta1" class="accordion-toggle submetas-info" data-toggle="collapse" data-parent="#submetas">
-                        Data de multiplicação
-                    </a>
-                </div>
-                <div id="submeta1" class="accordion-body collapse">
-                    <div class="accordion-inner">
-                        <div class="row-fluid">
-                            <div class="span12">
-                                Faltam <strong><?=$this->amountDays?></strong> dias ou <strong><?=$this->amountWeeks?></strong> semanas
-                            </div>
-                        </div>
-                        
-                        <div class="row-fluid">
-                            <div class="span12">
-                                <form action="">
-                                    <div class="input-append">
-                                        <span class="input-small uneditable-input">
-                                            <?=$this->dateMultiplication?>
-                                        </span><button class="btn"><i class="icon-pencil"></i></button>
-                                    </div>
-                                    
-                                </form>
-                            </div>
-                        </div>
+          <div class="tab-content">
+            <div class="tab-pane active" id="frequencia">
+              <div class="span12">
+              
+              {{outlet frequencia}}
 
-                        
-                    </div>
-                </div>
-            </div><!--/.accordion-group -->
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <a href="#submeta2" class="accordion-toggle submetas-info" data-toggle="collapse" data-parent="#submetas">
-                        Presença de Deus
-                    </a>
-                </div>
-                <div id="submeta2" class="accordion-body collapse">
-                    <div class="accordion-inner">
-                        <input class="span12" type="range">
-                    </div>
-                </div>
-            </div><!--/.accordion-group -->
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <a href="#submeta3" class="accordion-toggle submetas-info" data-toggle="collapse" data-parent="#submetas">
-                        Novo Líder
-                    </a>
-                </div>
-                <div id="submeta3" class="accordion-body collapse">
-                    <div class="accordion-inner">
-                    	<? foreach($this->membersRows as $members){
-					       if($members->position == 5){ ?>
+            </div><!--/.span12 -->
+          </div><!--/.tab-pane -->
+        </div><!--/.tab-content -->
+      </div><!--/.span12 -->
+    </div><!--/.row-fluid -->
+  </div><!--/span8 -->
+
+  {{outlet subgoals}}
+</div><!--/.row-fluid -->
+
+<hr>
+    <footer>
+        <p>OpenSource</p>
+    </footer>
+</div><!--/.fluid-container-->
+</script>
+    
+<script type="text/x-handlebars" data-template-name="frequencia">
+  
+Selecionar reunião: 
+{{view Ember.Select
+  contentBinding="allMeetings"
+  optionLabelPath="content.date"
+  optionValuePath="content.date"
+  valueBinding="lastSelectedMeeting"}}
+
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th></th>
+      <th class="th-left">Nome</th>
+      {{#each dateMeetings}}
+        <th>{{date}}</th>
+      {{/each}}
+    </tr>
+  </thead>
+  
+  <tbody>
+    <tr>
+      <td colspan="8">Membros IBC</td>
+    </tr>
+    {{#each members}}
+      <tr>
+        <td>{{funcao}}</td>
+        <td>{{nome}}</td>
+        {{#each dateMeetings}}
+          <td>
+            <input type="checkbox">
+          </td>
+        {{/each}}
+      </tr>
+    {{/each}}
+
+    <tr>
+      <td colspan="8">Visitantes</td>
+    </tr>
+    {{#each visitors}}
+      <tr>
+        <td>{{funcao}}</td>
+        <td>{{nome}}</td>
+        {{#each dateMeetings}}
+          <td>
+            <input type="checkbox">
+          </td>
+        {{/each}}
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+{{#if salvo}}
+  <a class="btn btn-success disabled">Salvo</a>
+{{else}}
+  <a {{action "salvarFrequencia"}} class="btn btn-success">Salvar</a>
+{{/if}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="subgoals">
+<div class="span4">
+  <div class="page-header">
+    <h1>5 Submetas</h1>
+  </div>
+
+  <div class="accordion" id="submetas">
+    <div class="accordion-group">
+      <div class="accordion-heading">
+        <a {{action "closeSubgoal1"}} href="#submeta1" class="accordion-toggle submetas-info" data-toggle="collapse" data-parent="#submetas">
+          Data de multiplicação
+        </a>
+      </div>
+      <div id="submeta1" class="accordion-body collapse">
+        <div class="accordion-inner">
+          <div class="row-fluid">
+            <div class="span12">
+              
+              <p {{action "editSubgoal1"}} class="subgoal-text">
+                {{multiplicationDate}}
+              </p>
+
+              <div class="edit-subgoal-1">
+
+                {{view Ember.TextField  placeholder="dd/mm/aaaa" valueBinding="newMultiplicationDate"}}
+
+              <a {{action "saveSubgoal1"}} class="btn btn-success">Salvar</a>
+              <a {{action "closeSubgoal1"}}>
+                <i class="icon-remove"></i>
+              </a>
+            </div><!-- /.edit-subgoal-1 -->
+
+
+              
+              <br>
+              Faltam <strong>{{#each content}}{{remainingDays}}{{/each}}</strong> dias ou <strong><?=$this->amountWeeks?></strong> semanas
+            </div>
+          </div>
+        </div>
+      </div><!-- /.accordion-body -->
+    </div><!--/.accordion-group -->
+      
+    <!-- SUBMETA: Presença de Deus -->
+    <div class="accordion-group">
+      <div class="accordion-heading">
+        <a href="#submeta2" class="accordion-toggle submetas-info" data-toggle="collapse" data-parent="#submetas">Presença de Deus</a>
+      </div>
+      
+      <div id="submeta2" class="accordion-body collapse">
+        <div class="accordion-inner">
+          <input class="span12" type="range">
+        </div>
+      </div>
+    </div><!--/.accordion-group -->
+
+    <!-- SUBMETA: Novo líder -->
+    <div class="accordion-group">
+      <div class="accordion-heading">
+        <a href="#submeta3" class="accordion-toggle submetas-info" data-toggle="collapse" data-parent="#submetas">Novo Líder</a>
+      </div>
+      
+      <div id="submeta3" class="accordion-body collapse">
+        <div class="accordion-inner">
+          <? foreach($this->membersRows as $members){
+                           if($members->position == 5){ ?>
                         <div class="row-fluid">
                             <div class="span8">
                                 <p><?=$members->name." ".$members->surname?></p>
@@ -199,90 +199,77 @@
                         <?} }?>
                     </div>
                 </div>
-            </div><!--/.accordion-group -->
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <a href="#submeta4" class="accordion-toggle submetas-info" data-toggle="collapse" data-parent="#submetas">
-                        Novos Participantes
-                    </a>
-                </div>
-                <div id="submeta4" class="accordion-body collapse">
-                    <div class="accordion-inner">
-                        <div class="row-fluid">
-                            <div class="span4">
-                                <div class="row-fluid">
-                                    <div class="span12">
-                                        Atual
-                                    </div>
-                                </div>
-                                <div class="row-fluid">
-                                    <div class="span12">
-                                        <strong><?=$this->actualParticipants?></strong>
-                                    </div>
-                                </div>
-                                
-                            </div><!--/.span4 -->
-                            <div class="span4">
-                                <div class="row-fluid">
-                                    <div class="span12">
-                                        Alvo
-                                    </div>
-                                </div>
-                                <div class="row-fluid">
-                                    <div class="span12">
-                                        <strong><?=$this->goalParticipants?></strong>
-                                    </div>
-                                </div>
-                                
-                            </div><!--/.span4 -->
-                            <div class="span4">
-                                <div class="row-fluid">
-                                    <div class="span12">
-                                        Faltam
-                                    </div>
-                                </div>
-                                <div class="row-fluid">
-                                    <div class="span12">
-                                        <strong><?if($this->goalParticipants>$this->actualParticipants) echo $this->goalParticipants-$this->actualParticipants; else echo 0;?></strong>
-                                    </div>
-                                </div>
-                                
-                            </div><!--/.span4 -->
+    </div><!--/.accordion-group -->
+    
+    <!-- SUBMETA: Novos participantes -->
+    <div class="accordion-group">
+      <div class="accordion-heading">
+        <a href="#submeta4" class="accordion-toggle submetas-info" data-toggle="collapse" data-parent="#submetas">Novos Participantes</a>
+      </div>
+      
+      <div id="submeta4" class="accordion-body collapse">
+        <div class="accordion-inner">
+          <div class="row-fluid">
+            <div class="span4">
+              <div class="row-fluid">
+                <div class="span12">Atual</div>
+              </div>
+              
+              <div class="row-fluid">
+                <div class="span12"><strong><?=$this->actualParticipants?></strong></div>
+              </div>
+            </div><!--/.span4 -->
+            
+            <div class="span4">
+              <div class="row-fluid">
+                <div class="span12">Alvo</div>
+              </div>
+              
+              <div class="row-fluid">
+                <div class="span12"><strong><?=$this->goalParticipants?></strong></div>
+              </div>                 
+            </div><!--/.span4 -->
+            
+            <div class="span4">
+              <div class="row-fluid">
+                <div class="span12">Faltam</div>
+              </div>
+              
+              <div class="row-fluid">
+                <div class="span12"><strong><?if($this->goalParticipants>$this->actualParticipants) echo $this->goalParticipants-$this->actualParticipants; else echo 0;?></strong></div>
+              </div>
+            </div><!--/.span4 -->
+          </div><!-- /.row-fluid -->
+        </div><!-- /.accordion-inner -->
+      </div><!-- /.accordion-body -->
+    </div><!--/.accordion-group -->
+    
+    <!-- SUBMETA: Novo anfitrião -->
+    <div class="accordion-group">
+      <div class="accordion-heading">
+        <a {{action "closeSubgoal5"}} href="#submeta5" class="accordion-toggle submetas-info" data-toggle="collapse" data-parent="#submetas">Novo Anfitrião</a>
+      </div>
+      
+      <div id="submeta5" class="accordion-body collapse">
+        <div class="accordion-inner">
+          <div class="row-fluid">
 
-                        </div>
+            <p {{action "editSubgoal5"}} class="subgoal-text">
+              {{newHost}}
+            </p>
+            <div class="edit-subgoal-5">
+              {{view Ember.TextField valueBinding="newHostInput" placeholder="Nome do futuro anfitrião"}}
 
-                    </div>
-                </div>
-            </div><!--/.accordion-group -->
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <a href="#submeta5" class="accordion-toggle submetas-info" data-toggle="collapse" data-parent="#submetas">
-                        Novo Anfitrião
-                    </a>
-                </div>
-                <div id="submeta5" class="accordion-body collapse">
-                    <div class="accordion-inner">
-                        <div class="row-fluid">
-                            <form action="">
-                                <div class="input-append">
-                                    <span class="input-large uneditable-input">
-                                        João Paulo Santos
-                                    </span><button class="btn"><i class="icon-pencil"></i></button>
-                                </div>
-                                
-                            </form>
-                        </div>
-                        
-                    </div>
-                </div>
-            </div><!--/.accordion-group -->
-        </div><!--/.accordion -->
-    </div><!--/span-->
-</div><!--/.row-fluid -->
+              <a {{action "saveSubgoal5"}} class="btn btn-success">Salvar</a>
+              <a {{action "closeSubgoal5"}}>
+                <i class="icon-remove"></i>
+              </a>
+            </div><!-- /.edit-subgoal-5 -->
 
-<div class="teste">
-<span class="multi-toggle-group" data-multi-toggle="">
-  <i class="icon-ok" class="multi-toggle"></i>
-  <i class="icon-remove" class="multi-toggle"></i>
-</span>
-</div>
+          </div>
+        </div><!-- /.accordion-inner -->
+      </div><!-- /.accordion-body -->
+    </div><!--/.accordion-group -->
+  </div><!--/.accordion -->
+</div><!--/span4 -->
+</script>
