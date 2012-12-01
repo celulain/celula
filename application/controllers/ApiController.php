@@ -50,8 +50,55 @@ class ApiController extends Zend_Controller_Action
         echo Zend_Json::encode($json);
     }
 
+    public function presenceAction()
+    {
+        $this->_helper->layout()->setLayout('json');
+        $db = Zend_Registry::get("db");
+        $rs = $db->query(
+                'SELECT 
+                        cm.meeting_id,
+                        cm.cell_id,
+                        cm.date,
+                        cmp.user_id,
+                        cu.date_start,
+                        cu.role_id,
+                        cr.name,
+                        IF(cud.nickname="",CONCAT(cud.name," ",cud.surname),cud.nickname) AS name_user
+                FROM 
+                        cell_meeting cm
+                INNER JOIN
+                        cell_meeting_presence cmp ON (cmp.meeting_id=cm.meeting_id) 
+                INNER JOIN
+                       cell_user cu ON (cu.user_id=cmp.user_id)
+                INNER JOIN
+                       cell_role cr ON (cu.role_id=cr.role_id)
+                INNER JOIN
+                       core_user_information cui ON (cui.user_id=cu.user_id)
+                INNER JOIN
+                       core_user_detailed cud ON (cud.user_id=cu.user_id)
+                WHERE 
+                        cm.cell_id=1
+                ORDER BY
+                        cm.date DESC'
+            );
+
+        $statusCode = '200';
+        $statusMessage = 'Ok';
+        $data = $rs->fetchAll();
+
+        $return = array(
+            'statusCode' => $statusCode,
+            'statusMessage' => $statusMessage,
+            'data' => $data
+            );
+
+        echo Zend_Json::encode($return);
+    }
+
 
 }
+
+
 
 
 

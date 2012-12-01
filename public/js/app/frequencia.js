@@ -120,7 +120,7 @@ App.FrequenciaController = Em.ArrayController.extend({
         {
             funcao: 'Visitante',
             categoria: '2',
-            nome: 'Fabrício',
+            nome: 'Fabrício ggg',
             dateMeetings: [
                 {
                     date: '30-11-2012',
