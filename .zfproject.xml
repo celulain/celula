@@ -35,6 +35,7 @@
           <actionMethod actionName="licoes"/>
           <actionMethod actionName="louvor"/>
           <actionMethod actionName="dinamicas"/>
+          <actionMethod actionName="returnCities"/>
         </controllerFile>
         <controllerFile controllerName="Auth">
           <actionMethod actionName="index"/>
@@ -82,6 +83,7 @@
         <formFile formName="UserPerfil"/>
         <formFile formName="Participantes"/>
         <formFile formName="CellProfile"/>
+        <formFile formName="AddMember"/>
       </formsDirectory>
       <layoutsDirectory>
         <layoutScriptsDirectory>
@@ -114,6 +116,8 @@
           <dbTableFile dbTableName="CellGoalDateMultiplication"/>
           <dbTableFile dbTableName="CellMeeting"/>
           <dbTableFile dbTableName="CellMeetingPresence"/>
+          <dbTableFile dbTableName="SysCity"/>
+          <dbTableFile dbTableName="SysState"/>
         </dbTableDirectory>
         <modelFile modelName="Cell"/>
         <modelFile modelName="Participantes"/>
@@ -121,6 +125,7 @@
         <modelFile modelName="RadioDecorator"/>
         <modelFile modelName="SelectDecorator"/>
         <modelFile modelName="SubmitDecorator"/>
+        <modelFile modelName="Member"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>
@@ -253,6 +258,9 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Api">
             <viewScriptFile forActionName="subgoals"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Admin">
+            <viewScriptFile forActionName="returnCities"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

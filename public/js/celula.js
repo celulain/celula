@@ -78,3 +78,7 @@ function savePresence(meeting_id){
     }
     alert(meeting_id);
 }
+
+$("#state").change(function(){
+    $("#city").load('/admin/return-cities/state/'+this.value);
+})
