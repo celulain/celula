@@ -26,6 +26,7 @@
               
               {{outlet frequencia}}
 
+              {{outlet newParticipant}}
             </div><!--/.span12 -->
           </div><!--/.tab-pane -->
         </div><!--/.tab-content -->
@@ -52,6 +53,11 @@ Selecionar reunião:
   optionValuePath="content.date"
   valueBinding="lastSelectedMeeting"}}
 
+{{#if salvo}}
+  <a style="float: right;" class="btn btn-success disabled">Salvo</a>
+{{else}}
+  <a style="float: right;" {{action "salvarFrequencia"}} class="btn btn-success">Salvar</a>
+{{/if}}
 
 <table class="table table-bordered">
   <thead>
@@ -97,11 +103,6 @@ Selecionar reunião:
   </tbody>
 </table>
 
-{{#if salvo}}
-  <a class="btn btn-success disabled">Salvo</a>
-{{else}}
-  <a {{action "salvarFrequencia"}} class="btn btn-success">Salvar</a>
-{{/if}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="subgoals">
@@ -139,7 +140,10 @@ Selecionar reunião:
 
               
               <br>
-              Faltam <strong>{{#each content}}{{remainingDays}}{{/each}}</strong> dias ou <strong><?=$this->amountWeeks?></strong> semanas
+              
+              {{#if hasMultiplicationDate}}
+                Faltam <strong>{{remainingDays}}</strong> dias ou <strong>{{remainingWeeks}}</strong> semanas
+              {{/if}}
             </div>
           </div>
         </div>
@@ -272,4 +276,30 @@ Selecionar reunião:
     </div><!--/.accordion-group -->
   </div><!--/.accordion -->
 </div><!--/span4 -->
+</script>
+
+<script type="text/x-handlebars" data-template-name="new-participant">
+
+<div class="add-new-visitor-box">
+  {{view Em.TextField valueBinding="name" placeholder="Nome do visitante"}}
+
+  <div>
+  <a {{action "saveNewVisitor"}} class="btn btn-success">Salvar</a>
+  <a {{action "closeNewVisitor"}}>
+    <i class="icon-remove"></i>
+  </a>
+  </div>
+</div>
+
+
+<p class="add-visitor" {{action "addNewVisitor"}}>
+  <i class="icon-plus"></i>
+  Adicionar visitante
+</p>
+
+
+
+
+
+
 </script>

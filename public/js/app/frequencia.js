@@ -2,6 +2,26 @@ var App = Em.Application.create();
 
 // ------------------------------------------------------------ MODELS
 
+// BEGIN Participant Model
+App.Participant = Em.Object.extend({
+    name: null
+});
+App.Participant.reopenClass({
+    url: '/api/participant'
+});
+App.Participant.reopenClass({
+    participants: [],
+
+    find: function() {
+
+    }
+});
+// END Participant model
+
+
+
+
+
 // Subgoals Model
 App.Subgoals = Em.Object.extend({
     multiplicationDate: null,
@@ -60,6 +80,11 @@ App.SubgoalsView = Em.View.extend({
     templateName: 'subgoals'
 });
 
+// New Participant View
+App.NewParticipantView = Em.View.extend({
+    templateName: 'new-participant'
+});
+
 // ------------------------------------------------------------ CONTROLLERS
 // Application controller
 App.ApplicationController = Em.Controller.extend({
@@ -94,6 +119,29 @@ App.FrequenciaController = Em.ArrayController.extend({
         },
         {
             funcao: 'Visitante',
+            categoria: '2',
+            nome: 'Fabrício',
+            dateMeetings: [
+                {
+                    date: '30-11-2012',
+                    present: true
+                },
+                {
+                    date: '23-11-2012',
+                    present: false
+                },
+                {
+                    date: '16-11-2012',
+                    present: false
+                },
+                {
+                    date: '09-11-2012',
+                    present: false
+                }
+            ]
+        },
+        {
+            funcao: 'Líder em treinamento',
             categoria: '2',
             nome: 'Fabrício',
             dateMeetings: [
@@ -184,22 +232,74 @@ App.FrequenciaController = Em.ArrayController.extend({
 // Subgoals controller
 App.SubgoalsController = Em.ArrayController.extend({
     content: [],
-    multiplicationDate: function(){
+    getMultiplicationDate: function(){
         var content = this.get('content');
         var date = "Data à definir"
         console.log(content[0]);
         if (content[0]) {
             date = content[0].date;
+            this.set('multiplicationDate', date);
         }
 
         return date;
     }.property('content'),
+    multiplicationDate: 'Data à definir',
     newMultiplicationDate: null,
+    hasMultiplicationDate: function() {
+        var date = this.get('multiplicationDate');
+
+        if (date == 'Data à definir') {
+            var retorno = false;
+        } else {
+            var retorno = true;
+        }
+
+        return retorno;
+    }.property('multiplicationDate'),
+    remainingDays: function() {
+        var hasMultiplicationDate = this.get('hasMultiplicationDate');
+
+        if (hasMultiplicationDate) {
+            var date = this.get('multiplicationDate'),
+            format = d3.time.format("%d/%m/%Y"),
+            toDate = format.parse(date),
+            today = new Date();
+
+            var days =  Math.floor(( toDate - today ) / 86400000);
+            var beautyPrint = d3.time.format("%d/%m/%Y");
+
+            var retorno = days;
+
+        } else {
+            var retorno = null;
+        }
+
+        return retorno;
+
+    }.property('multiplicationDate', 'hasMultiplicationDate'),
+    remainingWeeks: function() {
+        var days = this.get('remainingDays');
+
+        return Math.round(days / 7);
+    }.property('remainingDays'),
 
     newHost: 'Fabricio',
     newHostInput: null
 
 });
+
+
+// New Participant Controller
+App.NewParticipantController = Em.Controller.extend({
+    content: null,
+    name: null,
+});
+
+// BEGIN Participants Controller
+App.ParticipantsController = Em.ArrayController.extend({
+    content: []
+});
+// END Participants Controller
 
 // ------------------------------------------------------------ ROUTER
 // Router
@@ -211,13 +311,15 @@ App.Router = Em.Router.extend({
             $('.edit-subgoal-1').show();
         },
         saveSubgoal1: function(router, event) {
-
+            var date = router.get('subgoalsController').get('newMultiplicationDate');
+            router.get('subgoalsController').set('multiplicationDate', date);
+            router.get('subgoalsController').set('newMultiplicationDate', null);
             // App.Subgoals.
 
             $('.edit-subgoal-1').hide();
         },
         closeSubgoal1: function(router, event) {
-            App.router.subgoalsController.set('multiplicationDate');
+            App.router.subgoalsController.set('getMultiplicationDate');
 
             $('.edit-subgoal-1').hide();
         },
@@ -237,6 +339,33 @@ App.Router = Em.Router.extend({
             $('.edit-subgoal-5').hide();  
         },
 
+
+        // Adicionar visitante
+        addNewVisitor: function(router, event) {
+            console.log( "YEYE!");
+            $('.add-new-visitor-box').show();
+            $('.add-visitor').hide();
+        },
+        // Salvar visitante
+        saveNewVisitor: function(router, event) {
+            $('.add-new-visitor-box').hide();
+            $('.add-visitor').show();
+
+            var name = router.get('newParticipantController').get('name');
+
+            var participant = App.Participant.create({
+                name: name
+            });
+
+            router.get('participantsController').get('content').addObject(participant);
+
+        },
+        // Fechar box de visitante
+        closeNewVisitor: function(router, event) {
+            $('.add-new-visitor-box').hide();
+            $('.add-visitor').show();
+        },
+
         index: Em.Route.extend({
             route: '/',
             connectOutlets: function(router) {
@@ -245,6 +374,9 @@ App.Router = Em.Router.extend({
 
                 router.get('applicationController')
                     .connectOutlet('subgoals','subgoals', App.Subgoals.find());
+
+                router.get('applicationController')
+                    .connectOutlet('newParticipant','newParticipant');                
             }
         })
     })
