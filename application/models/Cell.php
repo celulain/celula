@@ -53,13 +53,13 @@ class Application_Model_Cell
 		{
 			$newUserAddress = $userAddress->createRow();
 			$newUserAddress->user_id = $userId;
-			$newUserAddress->city_id = 0;
+			$newUserAddress->city_id = 2700;
 			$newUserAddress->save();
 		}
 		else
 		{
 			$userAddressRow->user_id = $userId;
-			$userAddressRow->city_id = 0;
+			$userAddressRow->city_id = 2700;
 			$userAddressRow->save();
 		}	
 	}
@@ -77,6 +77,8 @@ class Application_Model_Cell
 			else
 				$type = 2;
 			$newUserInformation->type = $type;
+			if(!isset($data['baptized']) || $data['baptized'] == '')
+				$data['baptized'] = 3;
 			$newUserInformation->baptized = $data['baptized'];
 			$newUserInformation->save();
 		}
@@ -88,6 +90,8 @@ class Application_Model_Cell
 			else
 				$type = 2;
 			$userInformationRow->type = $type;
+			if(!isset($data['baptized']) || $data['baptized'] == '')
+				$data['baptized'] = 3;
 			$userInformationRow->baptized = $data['baptized'];
 			$userInformationRow->save();
 		}
@@ -102,6 +106,8 @@ class Application_Model_Cell
 			$newUserCell = $userCell->createRow();
 			$newUserCell->cell_id = $data['cell_id'];
 			$newUserCell->user_id = $userId;
+			if(isset($data['position']) || $data['position'] == '')
+				$data['position'] = 3;
 			$newUserCell->role_id = $data['position'];
 			$newUserCell->date_start = new Zend_Db_Expr('NOW()');
 			$newUserCell->save();
@@ -110,6 +116,8 @@ class Application_Model_Cell
 		{
 			$userCellRow->cell_id = $data['cell_id'];
 			$userCellRow->user_id = $userId;
+			if(isset($data['position']) || $data['position'] == '')
+				$data['position'] = 3;
 			$userCellRow->role_id = $data['position'];
 			$userCellRow->date_start = new Zend_Db_Expr('NOW()');
 			$userCellRow->save();
@@ -177,6 +185,8 @@ class Application_Model_Cell
 			$newCellHost->number = $data['number'];
 			$newCellHost->apartament = $data['apartament'];
 			$newCellHost->district = $data['district'];
+			if(isset($data['city']) || $data['city'] == '')
+				$data['city'] = 2700;
 			$newCellHost->city = $data['city'];
 			$newCellHost->zip_code = $data['zip_code'];
 			$newCellHost->cell_id = $cellId;
@@ -189,6 +199,8 @@ class Application_Model_Cell
 			$cellHostRow->apartament = $data['apartament'];
 			$cellHostRow->district = $data['district'];
 			$cellHostRow->city = $data['city'];
+			if(isset($data['city']) || $data['city'] == '')
+				$data['city'] = 2700;
 			$cellHostRow->zip_code = $data['zip_code'];
 			$cellHostRow->cell_id = $cellId;
 			$cellHostRow->save();
