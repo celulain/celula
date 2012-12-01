@@ -31,7 +31,7 @@ class Application_Form_Participantes extends Zend_Form
     	 
     	$gender = new Zend_Form_Element_Radio('gender');
     	$gender		->setLabel('Sexo:')
-			    	->setRequired(true)
+			    	->setRequired(false)
 			    	->addMultiOptions(array(
 		    			'1' => 'Masculino',
 		    			'2' => 'Feminino'))
@@ -54,7 +54,7 @@ class Application_Form_Participantes extends Zend_Form
     	 
     	$baptized = new Zend_Form_Element_Radio('baptized');
     	$baptized	->setLabel('Batizado:')
-			    	->setRequired(true)
+			    	->setRequired(false)
 			    	->addMultiOptions(array(
 			    			'1' => 'Na IBC',
 			    			'2' => 'Em outra igreja',
@@ -71,7 +71,7 @@ class Application_Form_Participantes extends Zend_Form
     	 
     	$position = new Zend_Form_Element_Radio('position');
     	$position	->setLabel('Função:')
-			    	->setRequired(true)
+			    	->setRequired(false)
 			    	->addMultiOptions(array(
 			    			'1' => 'Líder',
 			    			'2' => 'Participante',
