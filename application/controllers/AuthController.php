@@ -52,7 +52,7 @@ class AuthController extends Zend_Controller_Action
     			$password = $form->getValue('password');
     			$dbAdapter = Zend_Db_Table::getDefaultAdapter();
     			$authAdapter = new Zend_Auth_Adapter_DbTable($dbAdapter);
-    			$authAdapter->setTableName('core_user')
+    			$authAdapter->setTableName('core_user_system')
     						->setIdentityColumn('login')
     						->setCredentialColumn('password')
     						->setCredentialTreatment('SHA1(?)');

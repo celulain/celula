@@ -36,6 +36,9 @@
           <actionMethod actionName="louvor"/>
           <actionMethod actionName="dinamicas"/>
           <actionMethod actionName="returnCities"/>
+          <actionMethod actionName="addlider"/>
+          <actionMethod actionName="editlider"/>
+          <actionMethod actionName="removelider"/>
         </controllerFile>
         <controllerFile controllerName="Auth">
           <actionMethod actionName="index"/>
@@ -77,6 +80,7 @@
           <actionMethod actionName="index"/>
           <actionMethod actionName="subgoals"/>
           <actionMethod actionName="presence"/>
+          <actionMethod actionName="getmember"/>
         </controllerFile>
       </controllersDirectory>
       <formsDirectory>
@@ -108,7 +112,6 @@
           <dbTableFile dbTableName="NonMember"/>
           <dbTableFile dbTableName="MemberCell"/>
           <dbTableFile dbTableName="CoreUser"/>
-          <dbTableFile dbTableName="CoreUserDetailed"/>
           <dbTableFile dbTableName="CoreUserAddress"/>
           <dbTableFile dbTableName="CellUser"/>
           <dbTableFile dbTableName="CoreUserInformation"/>
@@ -119,6 +122,7 @@
           <dbTableFile dbTableName="CellMeetingPresence"/>
           <dbTableFile dbTableName="SysCity"/>
           <dbTableFile dbTableName="SysState"/>
+          <dbTableFile dbTableName="CoreUserSystem"/>
         </dbTableDirectory>
         <modelFile modelName="Cell"/>
         <modelFile modelName="Participantes"/>
@@ -265,6 +269,18 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Api">
             <viewScriptFile forActionName="presence"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Admin">
+            <viewScriptFile forActionName="addlider"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Admin">
+            <viewScriptFile forActionName="editlider"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Admin">
+            <viewScriptFile forActionName="removelider"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Api">
+            <viewScriptFile forActionName="getmember"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

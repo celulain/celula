@@ -94,8 +94,29 @@ class AdminController extends Zend_Controller_Action
         echo $return;
     }
 
+    public function addliderAction()
+    {
+        // action body
+    }
+
+    public function editliderAction()
+    {
+        // action body
+    }
+
+    public function removeliderAction()
+    {
+        // action body
+    }
+
 
 }
+
+
+
+
+
+
 
 
 

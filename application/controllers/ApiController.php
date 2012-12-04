@@ -95,8 +95,24 @@ class ApiController extends Zend_Controller_Action
         echo Zend_Json::encode($return);
     }
 
+    public function getmemberAction()
+    {
+        $this->_helper->layout()->setLayout('json');
+        $search = mysql_real_escape_string($_GET['term']);
+        $user = new Application_Model_DbTable_CoreUser();
+        $select = $user->select()->setIntegrityCheck(false);
+        $select ->from(array('u' => 'core_user'), array('id' => 'user_id','label' => 'CONCAT(name," ",surname)'))
+                ->where('u.name LIKE ?', '%'.$search.'%')
+                ->limit(8);
+        $rs = $user->fetchAll($select);   
+        $aux = $rs->toArray();  
+        echo Zend_Json::encode($aux);
+    }
+
 
 }
+
+
 
 
 

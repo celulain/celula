@@ -7,24 +7,22 @@ class Application_Model_Member
 		$userId = $this->saveUserDetailed($data);
 		$this->saveUserAddress($data,$userId);
 		$this->saveUserInformation($data,$userId);
-		$this->saveUserSystem($data,$userId);
 	}
 
 	public function saveUserDetailed($data)
 	{
-		$userDetailed = new Application_Model_DbTable_CoreUserDetailed();
-		$newUserDetailed = $userDetailed->createRow();
-		$newUserDetailed->gender = $data['gender'];
-		$newUserDetailed->name = $data['name'];
-		$newUserDetailed->surname = $data['surname'];
-		$newUserDetailed->nickname = $data['nickname'];
+		$user = new Application_Model_DbTable_CoreUser();
+		$newUser = $user->createRow();
+		$newUser->gender = $data['gender'];
+		$newUser->name = $data['name'];
+		$newUser->surname = $data['surname'];
 		if($data['birthday'] == '0000-00-00' || $data['birthday'] == '')
-			$newUserDetailed->birthday = new Zend_Db_Expr('NULL');
+			$newUser->birthday = new Zend_Db_Expr('NULL');
 		else{
 			$birthday = explode('/',$data['birthday']);
-			$newUserDetailed->birthday = $birthday[2]."-".$birthday[1]."-".$birthday[0];
+			$newUser->birthday = $birthday[2]."-".$birthday[1]."-".$birthday[0];
 		}
-		return $newUserDetailed->save();
+		return $newUser->save();
 	}
 
 	public function saveUserAddress($data,$userId)
@@ -49,6 +47,8 @@ class Application_Model_Member
 		$newUserInformation->user_id = $userId;
 		$newUserInformation->type = 1;
 		$newUserInformation->baptized = 1;
+		$newUserInformation->cpf = $data['cpf'];
+		$newUserInformation->rg = $data['rg'];
 		$newUserInformation->save();
 	}
 

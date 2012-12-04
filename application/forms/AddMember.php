@@ -10,23 +10,7 @@ class Application_Form_AddMember extends Zend_Form
 
     	$this->setAttrib('class', 'form-horizontal');
 
-    	$username = new Zend_Form_Element_Text('username');
-    	$username	->setLabel('Username:')
-			    	->setRequired(true)
-			    	->addFilter('StripTags')
-			    	->addFilter('StringTrim')
-			    	->addValidator('NotEmpty')
-			    	->setDecorators(array($textDecorator));
-
-    	$email = new Zend_Form_Element_Text('email');
-    	$email	->setLabel('Email:')
-		    	->setRequired(true)
-		    	->addFilter('StripTags')
-		    	->addFilter('StringTrim')
-		    	->addValidator('NotEmpty')
-		    	->setDecorators(array($textDecorator));
-    	
-    	$name = new Zend_Form_Element_Text('name');
+       	$name = new Zend_Form_Element_Text('name');
     	$name	->setLabel('Nome:')
 		    	->setRequired(true)
 		    	->addFilter('StripTags')
@@ -42,6 +26,14 @@ class Application_Form_AddMember extends Zend_Form
 			    	->addValidator('NotEmpty')
 			    	->setDecorators(array($textDecorator));
 
+    	$email = new Zend_Form_Element_Text('email');
+    	$email	->setLabel('Email:')
+		    	->setRequired(true)
+		    	->addFilter('StripTags')
+		    	->addFilter('StringTrim')
+		    	->addValidator('NotEmpty')
+		    	->setDecorators(array($textDecorator));
+
 		$gender = new Zend_Form_Element_Radio('gender');
     	$gender	->setLabel('Sexo:')
 			    	->setRequired(true)
@@ -56,6 +48,22 @@ class Application_Form_AddMember extends Zend_Form
                         array('HtmlTag', array('tag' => 'div', 'class' => 'control-group-radio')),
                         array('Label', array('tag' => 'div', 'class' => 'control-group-radio-label')),
                     ));
+
+        $cpf = new Zend_Form_Element_Text('cpf');
+    	$cpf	->setLabel('CPF:')
+		    	->setRequired(true)
+		    	->addFilter('StripTags')
+		    	->addFilter('StringTrim')
+		    	->addValidator('NotEmpty')
+		    	->setDecorators(array($textDecorator));
+
+		$rg = new Zend_Form_Element_Text('rg');
+    	$rg	->setLabel('RG:')
+		    	->setRequired(true)
+		    	->addFilter('StripTags')
+		    	->addFilter('StringTrim')
+		    	->addValidator('NotEmpty')
+		    	->setDecorators(array($textDecorator));
 
         $birthday = new Zend_Form_Element_Text('birthday');
     	$birthday	->setLabel('Data de Nascimento:')
@@ -74,7 +82,7 @@ class Application_Form_AddMember extends Zend_Form
 			    	->setDecorators(array($textDecorator));
 
 		$number = new Zend_Form_Element_Text('number');
-    	$number		->setLabel(utf8_decode('Número:'))
+    	$number		->setLabel('Numero:')
 		    		->setRequired(true)
 			    	->addFilter('StripTags')
 			    	->addFilter('StringTrim')
@@ -156,7 +164,7 @@ class Application_Form_AddMember extends Zend_Form
     			->setAttrib('id', 'submitbutton')
                 ->setAttrib('class', 'btn btn-primary');
 
-    	$this->addElements(array($username, $email, $name, $surname, $gender, $birthday, $address, $number, 
+    	$this->addElements(array($name, $surname, $email, $gender, $cpf, $rg, $birthday, $address, $number, 
     		$apartament, $district, $zipcode, $phone, $state, $cities, $submit));
     }
 
