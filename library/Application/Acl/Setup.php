@@ -100,7 +100,7 @@ class Application_Acl_Setup
         			->allow( 'user', 'auth', array('index', 'login') );
         $this->_acl	->allow( 'admin', 'index', 'index' )
                     ->allow( 'admin', 'api', array('subgoals','presence','getmember') )
-        			->allow( 'admin', 'admin',array('index','addmembro','dados','editmembro','pastores','perfil','sistema','dinamicas','louvor','licoes','return-cities','addlider') )
+        			->allow( 'admin', 'admin',array('index','addmembro','dados','editmembro','pastores','perfil','sistema','dinamicas','louvor','licoes','return-cities','addlider','editlider','removelider') )
         			->allow( 'admin', 'celula', array('frequencia','membros','cadastro','perfil') )
         			->allow( 'admin', 'recursos', array('licoes-de-celula','louvor','dinamicas') )
         			->allow( 'admin', 'configuracoes', array('perfil','contato','endereco','senha') )
