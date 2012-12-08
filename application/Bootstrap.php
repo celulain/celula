@@ -69,5 +69,30 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$registry = Zend_Registry::getInstance();
 		$registry->set('mail',$transport);
 	}
+
+	/**
+	 *
+	 * Load Zend Cache
+	 *
+	 * @access protected
+	 * @return null
+	 */
+	protected function _initCache()
+	{
+		$frontendOptions = array(
+		   'lifetime' => 7200, // cache lifetime of 2 hours
+		   'automatic_serialization' => true
+		);
+		 
+		$backendOptions = array(
+		    'cache_dir' => '/tmp/' // Directory where to put the cache files
+		);
+		 
+		// getting a Zend_Cache_Core object
+		$cache = Zend_Cache::factory('Core',
+		                             'File',
+		                             $frontendOptions,
+		                             $backendOptions);
+	}
 }
 

@@ -18,7 +18,32 @@ class AdminController extends Zend_Controller_Action
 
     public function dadosAction()
     {
-        // action body
+        $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
+        $this->view->messages = $this->_flashMessenger->getMessages();
+        $form = new Application_Form_Addchurch();
+        $this->view->formAddChurch = $form;
+        if ( $this->getRequest()->isPost() ) 
+        {
+            $data = $this->getRequest()->getPost();
+            if ( $form->isValid($data) ) 
+            {
+                $church = new Application_Model_Church();
+                $church->updateData($data);
+                $form->populate($data);
+            }
+            else
+            {
+                $this->_helper->FlashMessenger('Usuário ou senha inválidos!');
+                $form->populate($data);
+            }
+        }
+        $churchDb = new Application_Model_DbTable_Church();
+        $rowset = $churchDb->find(1);
+        if($rowset)
+        {
+            $row = $rowset->current();
+            $form->populate($row->toArray());
+        }
     }
 
     public function pastoresAction()
@@ -109,32 +134,29 @@ class AdminController extends Zend_Controller_Action
         // action body
     }
 
+    public function hierarquiaAction()
+    {
+        $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
+        $this->view->messages = $this->_flashMessenger->getMessages();
+        $form = new Application_Form_Hierarquia();
+        $this->view->formHierarquia = $form;
+        if ( $this->getRequest()->isPost() ) 
+        {
+            $data = $this->getRequest()->getPost();
+            if ( $form->isValid($data) ) 
+            {
+                $church = new Application_Model_Church();
+                $church->registerNewFunction($data);
+                $form->reset();
+            }
+            else
+            {
+                $this->_helper->FlashMessenger('Usuário ou senha inválidos!');
+                $form->populate($data);
+            }
+        }
+    }
+
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

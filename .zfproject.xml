@@ -39,6 +39,7 @@
           <actionMethod actionName="addlider"/>
           <actionMethod actionName="editlider"/>
           <actionMethod actionName="removelider"/>
+          <actionMethod actionName="hierarquia"/>
         </controllerFile>
         <controllerFile controllerName="Auth">
           <actionMethod actionName="index"/>
@@ -89,6 +90,9 @@
         <formFile formName="Participantes"/>
         <formFile formName="CellProfile"/>
         <formFile formName="AddMember"/>
+        <formFile formName="Addchurch"/>
+        <formFile formName="Hierarquia"/>
+        <formFile formName="AddPriest"/>
       </formsDirectory>
       <layoutsDirectory>
         <layoutScriptsDirectory>
@@ -123,6 +127,8 @@
           <dbTableFile dbTableName="SysCity"/>
           <dbTableFile dbTableName="SysState"/>
           <dbTableFile dbTableName="CoreUserSystem"/>
+          <dbTableFile dbTableName="Church"/>
+          <dbTableFile dbTableName="ChurchRole"/>
         </dbTableDirectory>
         <modelFile modelName="Cell"/>
         <modelFile modelName="Participantes"/>
@@ -131,6 +137,7 @@
         <modelFile modelName="SelectDecorator"/>
         <modelFile modelName="SubmitDecorator"/>
         <modelFile modelName="Member"/>
+        <modelFile modelName="Church"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>
@@ -281,6 +288,9 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Api">
             <viewScriptFile forActionName="getmember"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Admin">
+            <viewScriptFile forActionName="hierarquia"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
