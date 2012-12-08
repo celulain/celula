@@ -1,6 +1,6 @@
 <?php
 
-class Application_Form_AddPriest extends Zend_Form
+class Application_Form_AddLeader extends Zend_Form
 {
 
     public function init()
@@ -16,6 +16,20 @@ class Application_Form_AddPriest extends Zend_Form
 		    	->addFilter('StringTrim')
 		    	->addValidator('NotEmpty')
 		    	->setDecorators(array($textDecorator));
+
+    	$idmember = new Zend_Form_Element_Hidden("idmember");
+    	$idmember->setRequired(true);
+
+    	$root_name = new Zend_Form_Element_Text('root_name');
+    	$root_name	->setLabel('Supervisor:')
+		    	->setRequired(true)
+		    	->addFilter('StripTags')
+		    	->addFilter('StringTrim')
+		    	->addValidator('NotEmpty')
+		    	->setDecorators(array($textDecorator));
+
+		$root_idmember = new Zend_Form_Element_Hidden("root_idmember");
+		$root_idmember->setRequired(true);
     	 
     	$type = new Zend_Form_Element_Select('type');
     	$type		->setLabel('Função:')
@@ -41,7 +55,7 @@ class Application_Form_AddPriest extends Zend_Form
     			->setAttrib('id', 'submitbutton')
                 ->setAttrib('class', 'btn btn-primary');
     	
-    	$this->addElements(array($name, $type, $submit));
+    	$this->addElements(array($name, $type, $idmember,  $root_name, $root_idmember,  $submit));
     }
 
 

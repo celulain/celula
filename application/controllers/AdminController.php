@@ -48,7 +48,25 @@ class AdminController extends Zend_Controller_Action
 
     public function pastoresAction()
     {
-        // action body
+        $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
+        $this->view->messages = $this->_flashMessenger->getMessages();
+        $form = new Application_Form_AddPriest();
+        $this->view->formPriest = $form;
+        if ( $this->getRequest()->isPost() ) 
+        {
+            $data = $this->getRequest()->getPost();
+            if ( $form->isValid($data) ) 
+            {
+                $church = new Application_Model_Church();
+                $church->registerPriest($data);
+                $form->reset();
+            }
+            else
+            {
+                $this->_helper->FlashMessenger('Usuário ou senha inválidos!');
+                $form->populate($data);
+            }
+        }
     }
 
     public function addmembroAction()
@@ -121,7 +139,25 @@ class AdminController extends Zend_Controller_Action
 
     public function addliderAction()
     {
-        // action body
+        $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
+        $this->view->messages = $this->_flashMessenger->getMessages();
+        $form = new Application_Form_AddLeader();
+        $this->view->formAddLeader = $form;
+        if ( $this->getRequest()->isPost() ) 
+        {
+            $data = $this->getRequest()->getPost();
+            if ( $form->isValid($data) ) 
+            {
+                $member = new Application_Model_Cell();
+                $member->newLeader($data);
+                $form->reset();
+            }
+            else
+            {
+                $this->_helper->FlashMessenger('Usuário ou senha inválidos!');
+                $form->populate($data);
+            }
+        }
     }
 
     public function editliderAction()

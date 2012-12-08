@@ -231,5 +231,15 @@ class Application_Model_Cell
 				->order('date ASC');
 		return $cell_meeting->fetchAll($select);
 	}
+
+	public function newLeader($data)
+	{
+		$cell_leadership = new Application_Model_DbTable_CellLeadership();
+		$newCellLeadership = $cell_leadership->createRow();
+		$newCellLeadership->user_id = $data['idmember'];
+		$newCellLeadership->leader_id = $data['root_idmember'];
+		$newCellLeadership->position = $data['type'];
+		$newCellLeadership->save();
+	}
 }
 

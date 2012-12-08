@@ -54,5 +54,14 @@ class Application_Model_Church
 		$newRole->name = $data['name'];
 		$newRole->save();
 	}
+
+	public function registerPriest($data)
+	{
+		$churchPriests = new Application_Model_DbTable_ChurchPriests();
+		$newRole = $churchPriests->createRow();
+		$newRole->name_priest = $data['name'];
+		$newRole->role_church_id = $data['type'];
+		$newRole->save();
+	}
 }
 

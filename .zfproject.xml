@@ -93,6 +93,7 @@
         <formFile formName="Addchurch"/>
         <formFile formName="Hierarquia"/>
         <formFile formName="AddPriest"/>
+        <formFile formName="AddLeader"/>
       </formsDirectory>
       <layoutsDirectory>
         <layoutScriptsDirectory>
@@ -129,6 +130,8 @@
           <dbTableFile dbTableName="CoreUserSystem"/>
           <dbTableFile dbTableName="Church"/>
           <dbTableFile dbTableName="ChurchRole"/>
+          <dbTableFile dbTableName="ChurchPriests"/>
+          <dbTableFile dbTableName="CellLeadership"/>
         </dbTableDirectory>
         <modelFile modelName="Cell"/>
         <modelFile modelName="Participantes"/>
