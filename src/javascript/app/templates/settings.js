@@ -1,0 +1,73 @@
+Ember.TEMPLATES["settings"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+helpers = helpers || Ember.Handlebars.helpers;
+  var buffer = '', stack1, stack2, stack3, stack4, foundHelper, tmp1, self=this, escapeExpression=this.escapeExpression, functionType="function", helperMissing=helpers.helperMissing, undef=void 0;
+
+
+  data.buffer.push("<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"span8 offset2\">\n            <div class=\"row\">\n                <div class=\"span2\">\n                    <ul class=\"nav nav-pills nav-stacked\">\n                        <li>\n                            <a ");
+  stack1 = depth0;
+  stack2 = "gotoSettingsProfile";
+  stack3 = {};
+  stack4 = "true";
+  stack3['href'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + ">Perfil</a>\n                        </li>\n                        <li>\n                            <a ");
+  stack1 = depth0;
+  stack2 = "gotoSettingsAddress";
+  stack3 = {};
+  stack4 = "true";
+  stack3['href'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + ">Endereço</a>\n                        </li>\n                        <li>\n                            <a ");
+  stack1 = depth0;
+  stack2 = "gotoSettingsContact";
+  stack3 = {};
+  stack4 = "true";
+  stack3['href'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + ">Contato</a>\n                        </li>\n                        <li>\n                            <a ");
+  stack1 = depth0;
+  stack2 = "gotoSettingsPassword";
+  stack3 = {};
+  stack4 = "true";
+  stack3['href'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + ">Senha</a>\n                        </li>\n                    </ul>\n                </div>\n                <div class=\"span6\">\n                    ");
+  stack1 = depth0;
+  stack2 = "container";
+  foundHelper = helpers.outlet;
+  stack3 = foundHelper || depth0.outlet;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  if(typeof stack3 === functionType) { stack1 = stack3.call(depth0, stack2, tmp1); }
+  else if(stack3=== undef) { stack1 = helperMissing.call(depth0, "outlet", stack2, tmp1); }
+  else { stack1 = stack3; }
+  data.buffer.push(escapeExpression(stack1) + "\n                </div>\n            </div>\n        </div>\n    </div>\n</div>");
+  return buffer;
+});

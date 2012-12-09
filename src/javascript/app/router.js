@@ -3,6 +3,22 @@ App.Router = Em.Router.extend({
     enableLogging: true,
 
     root: Em.Route.extend({
+
+        gotoFrequency: Em.Route.transitionTo('cell.frequency'),
+        gotoParticipants: Em.Route.transitionTo('cell.participants'),
+        gotoRegister: Em.Route.transitionTo('cell.register'),
+        gotoProfile: Em.Route.transitionTo('cell.profile'),
+        gotoLessons: Em.Route.transitionTo('resources.lessons'),
+        gotoPraise: Em.Route.transitionTo('resources.praise'),
+        gotoDynamics: Em.Route.transitionTo('resources.dynamics'),
+
+        gotoSettings: Em.Route.transitionTo('settings.index'),
+        gotoSettingsProfile: Em.Route.transitionTo('settings.profile'),
+        gotoSettingsAddress: Em.Route.transitionTo('settings.address'),
+        gotoSettingsContact: Em.Route.transitionTo('settings.contact'),
+        gotoSettingsPassword: Em.Route.transitionTo('settings.password'),
+
+
         editSubgoal1: function(router, event) {
             $('.edit-subgoal-1').show();
         },
@@ -38,9 +54,13 @@ App.Router = Em.Router.extend({
 
         // Adicionar visitante
         addNewVisitor: function(router, event) {
+            router.get('applicationController')
+                .connectOutlet('window', 'newParticipant');
+
+
             console.log( "YEYE!");
-            $('.add-new-visitor-box').show();
-            $('.add-visitor').hide();
+            // $('.add-new-visitor-box').show();
+            // $('.add-visitor').hide();
         },
         // Salvar visitante
         saveNewVisitor: function(router, event) {
@@ -56,10 +76,9 @@ App.Router = Em.Router.extend({
             router.get('participantsController').get('content').addObject(participant);
 
         },
-        // Fechar box de visitante
-        closeNewVisitor: function(router, event) {
-            $('.add-new-visitor-box').hide();
-            $('.add-visitor').show();
+        // Desconectar WINDOW outlet
+        closeWindow: function(router, event) {
+            router.get('applicationController').disconnectOutlet('window');
         },
 
 
@@ -147,87 +166,134 @@ App.Router = Em.Router.extend({
 
         index: Em.Route.extend({
             route: '/',
-            connectOutlets: function(router) {
-                router.get('applicationController')
-                    .connectOutlet('frequencia','frequency');
-
-                router.get('applicationController')
-                    .connectOutlet('subgoals','subgoals', App.Subgoals.find());
-
-                router.get('applicationController')
-                    .connectOutlet('newParticipant','newParticipant');
-
-
-                // Outlet gráfico de presença de Deus
-                router.get('subgoalsController')
-                    .connectOutlet('godPresence', 'godPresence');
-            }
+            redirectsTo: 'cell.frequency'
         }),
 
         // Cell state
         cell: Em.Route.extend({
-            index: Em.Route.extend({
-                route: '/celula',
-                connectOutlets: function(router) {
+            route: '/celula',
 
-                },
+            index: Em.Route.extend({
+                route: '/',
+                redirectsTo: 'frequency'
             }),
 
             frequency: Em.Route.extend({
                 route: '/frequencia',
                 connectOutlets: function(router) {
+                    router.get('applicationController')
+                        .connectOutlet('container','frequency');
 
+                    router.get('frequencyController')
+                        .connectOutlet('subgoals','subgoals', App.Subgoals.find());
+
+                    router.get('frequencyController')
+                        .connectOutlet('newParticipant','newParticipant');
+
+                    // Outlet gráfico de presença de Deus
+                    router.get('subgoalsController')
+                        .connectOutlet('godPresence', 'godPresence');
                 }
             }),
 
             participants: Em.Route.extend({
                 route: '/participantes',
                 connectOutlets: function(router) {
-
+                    router.get('applicationController')
+                        .connectOutlet('container', 'cellParticipants');
                 }
             }),
 
             register: Em.Route.extend({
                 route: '/cadastro',
                 connectOutlets: function(router) {
-
+                    router.get('applicationController')
+                        .connectOutlet('container', 'cellRegister');
                 }
             }),
 
             profile: Em.Route.extend({
                 route: '/perfil',
                 connectOutlets: function(router) {
-
+                    router.get('applicationController')
+                        .connectOutlet('container', 'cellProfile');
                 }
             })
         }),
 
+        // Resources state
         resources: Em.Route.extend({
+            route: '/recursos',
             index: Em.Route.extend({
-                route: '/recursos',
-                connectOutlets: function(router) {
-
-                },
+                route: '/',
+                redirectsTo: 'lessons'
             }),
 
             lessons: Em.Route.extend({
                 route: '/licoes-de-celula',
                 connectOutlets: function(router) {
-
+                router.get('applicationController')
+                        .connectOutlet('container', 'resourcesLessons');
                 }
             }),
 
             praise: Em.Route.extend({
                 route: '/louvor',
                 connectOutlets: function(router) {
-
+                router.get('applicationController')
+                        .connectOutlet('container', 'resourcesDynamics');
                 }
             }),
 
             dynamics: Em.Route.extend({
                 route: '/dinamica',
                 connectOutlets: function(router) {
+                router.get('applicationController')
+                        .connectOutlet('container', 'resourcesPraise');
+                }
+            })
+        }),
 
+        // Settings state
+        settings: Em.Route.extend({
+            route: '/configuracoes',
+            index: Em.Route.extend({
+                route: '/',
+                connectOutlets: function(router) {
+                    router.get('applicationController')
+                        .connectOutlet('container', 'settings');
+                }
+            }),
+
+            profile: Em.Route.extend({
+                route: '/perfil',
+                connectOutlets: function(router) {
+                    router.get('settingsController')
+                        .connectOutlet('container', 'settingsProfile');
+                }
+            }),
+
+            address: Em.Route.extend({
+                route: '/endereco',
+                connectOutlets: function(router) {
+                router.get('settingsController')
+                        .connectOutlet('container', 'settingsAddress');
+                }
+            }),
+
+            contact: Em.Route.extend({
+                route: '/contato',
+                connectOutlets: function(router) {
+                router.get('settingsController')
+                        .connectOutlet('container', 'settingsContact');
+                }
+            }),
+
+            password: Em.Route.extend({
+                route: '/senha',
+                connectOutlets: function(router) {
+                router.get('settingsController')
+                        .connectOutlet('container', 'settingsPassword');
                 }
             })
         })

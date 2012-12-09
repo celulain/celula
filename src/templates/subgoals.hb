@@ -1,7 +1,4 @@
 <div class="span4">
-  <div class="page-header">
-    <h1>5 Submetas</h1>
-  </div>
 
   <div class="" id="submetas">
     <div class="submeta-1">

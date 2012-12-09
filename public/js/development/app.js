@@ -211,6 +211,11 @@ App.NewParticipantController = Em.Controller.extend({
     content: null,
     name: null,
 });
+App.SettingsAddressController = Em.Controller.extend();
+App.SettingsContactController = Em.Controller.extend();
+App.SettingsPasswordController = Em.Controller.extend();
+App.SettingsProfileController = Em.Controller.extend();
+App.SettingsController = Em.Controller.extend();
 App.SubgoalsController = Em.ArrayController.extend({
     content: [],
     getMultiplicationDate: function(){
@@ -294,6 +299,15 @@ App.SubgoalsController = Em.ArrayController.extend({
         })
     ]
 
+});
+App.CellParticipantsView = Em.View.extend({
+    templateName: 'cell-participants'
+});
+App.CellProfileView = Em.View.extend({
+    templateName: 'cell-profile'
+});
+App.CellRegisterView = Em.View.extend({
+    templateName: 'cell-register'
 });
 App.FrequencyView = Em.View.extend({
     templateName: 'frequency'
@@ -419,17 +433,34 @@ App.GodPresenceView = Em.View.extend({
             // d.date = parseDate(d.date);
             // d.presence = +d.presence;
         // });
-
-        
-    
-
-
-
-
     }
 });
 App.NewParticipantView = Em.View.extend({
-    templateName: 'new-participant'
+    templateName: 'new-participant-window'
+});
+App.ResourcesDynamicsView = Em.View.extend({
+    templateName: 'resources-dynamics'
+});
+App.ResourcesLessonsView = Em.View.extend({
+    templateName: 'resources-lessons'
+});
+App.ResourcesPraiseView = Em.View.extend({
+    templateName: 'resources-praise'
+});
+App.SettingsAddressView = Em.View.extend({
+    templateName: 'settings-address'
+});
+App.SettingsContactView = Em.View.extend({
+    templateName: 'settings-contact'
+});
+App.SettingsPasswordView = Em.View.extend({
+    templateName: 'settings-password'
+});
+App.SettingsProfileView = Em.View.extend({
+    templateName: 'settings-profile'
+});
+App.SettingsView = Em.View.extend({
+    templateName: 'settings'
 });
 App.SubgoalsView = Em.View.extend({
     templateName: 'subgoals'
@@ -439,6 +470,22 @@ App.Router = Em.Router.extend({
     enableLogging: true,
 
     root: Em.Route.extend({
+
+        gotoFrequency: Em.Route.transitionTo('cell.frequency'),
+        gotoParticipants: Em.Route.transitionTo('cell.participants'),
+        gotoRegister: Em.Route.transitionTo('cell.register'),
+        gotoProfile: Em.Route.transitionTo('cell.profile'),
+        gotoLessons: Em.Route.transitionTo('resources.lessons'),
+        gotoPraise: Em.Route.transitionTo('resources.praise'),
+        gotoDynamics: Em.Route.transitionTo('resources.dynamics'),
+
+        gotoSettings: Em.Route.transitionTo('settings.index'),
+        gotoSettingsProfile: Em.Route.transitionTo('settings.profile'),
+        gotoSettingsAddress: Em.Route.transitionTo('settings.address'),
+        gotoSettingsContact: Em.Route.transitionTo('settings.contact'),
+        gotoSettingsPassword: Em.Route.transitionTo('settings.password'),
+
+
         editSubgoal1: function(router, event) {
             $('.edit-subgoal-1').show();
         },
@@ -474,9 +521,13 @@ App.Router = Em.Router.extend({
 
         // Adicionar visitante
         addNewVisitor: function(router, event) {
+            router.get('applicationController')
+                .connectOutlet('window', 'newParticipant');
+
+
             console.log( "YEYE!");
-            $('.add-new-visitor-box').show();
-            $('.add-visitor').hide();
+            // $('.add-new-visitor-box').show();
+            // $('.add-visitor').hide();
         },
         // Salvar visitante
         saveNewVisitor: function(router, event) {
@@ -492,10 +543,9 @@ App.Router = Em.Router.extend({
             router.get('participantsController').get('content').addObject(participant);
 
         },
-        // Fechar box de visitante
-        closeNewVisitor: function(router, event) {
-            $('.add-new-visitor-box').hide();
-            $('.add-visitor').show();
+        // Desconectar WINDOW outlet
+        closeWindow: function(router, event) {
+            router.get('applicationController').disconnectOutlet('window');
         },
 
 
@@ -583,21 +633,136 @@ App.Router = Em.Router.extend({
 
         index: Em.Route.extend({
             route: '/',
-            connectOutlets: function(router) {
+            redirectsTo: 'cell.frequency'
+        }),
+
+        // Cell state
+        cell: Em.Route.extend({
+            route: '/celula',
+
+            index: Em.Route.extend({
+                route: '/',
+                redirectsTo: 'frequency'
+            }),
+
+            frequency: Em.Route.extend({
+                route: '/frequencia',
+                connectOutlets: function(router) {
+                    router.get('applicationController')
+                        .connectOutlet('container','frequency');
+
+                    router.get('frequencyController')
+                        .connectOutlet('subgoals','subgoals', App.Subgoals.find());
+
+                    router.get('frequencyController')
+                        .connectOutlet('newParticipant','newParticipant');
+
+                    // Outlet gráfico de presença de Deus
+                    router.get('subgoalsController')
+                        .connectOutlet('godPresence', 'godPresence');
+                }
+            }),
+
+            participants: Em.Route.extend({
+                route: '/participantes',
+                connectOutlets: function(router) {
+                    router.get('applicationController')
+                        .connectOutlet('container', 'cellParticipants');
+                }
+            }),
+
+            register: Em.Route.extend({
+                route: '/cadastro',
+                connectOutlets: function(router) {
+                    router.get('applicationController')
+                        .connectOutlet('container', 'cellRegister');
+                }
+            }),
+
+            profile: Em.Route.extend({
+                route: '/perfil',
+                connectOutlets: function(router) {
+                    router.get('applicationController')
+                        .connectOutlet('container', 'cellProfile');
+                }
+            })
+        }),
+
+        // Resources state
+        resources: Em.Route.extend({
+            route: '/recursos',
+            index: Em.Route.extend({
+                route: '/',
+                redirectsTo: 'lessons'
+            }),
+
+            lessons: Em.Route.extend({
+                route: '/licoes-de-celula',
+                connectOutlets: function(router) {
                 router.get('applicationController')
-                    .connectOutlet('frequencia','frequency');
+                        .connectOutlet('container', 'resourcesLessons');
+                }
+            }),
 
+            praise: Em.Route.extend({
+                route: '/louvor',
+                connectOutlets: function(router) {
                 router.get('applicationController')
-                    .connectOutlet('subgoals','subgoals', App.Subgoals.find());
+                        .connectOutlet('container', 'resourcesDynamics');
+                }
+            }),
 
+            dynamics: Em.Route.extend({
+                route: '/dinamica',
+                connectOutlets: function(router) {
                 router.get('applicationController')
-                    .connectOutlet('newParticipant','newParticipant');
+                        .connectOutlet('container', 'resourcesPraise');
+                }
+            })
+        }),
 
+        // Settings state
+        settings: Em.Route.extend({
+            route: '/configuracoes',
+            index: Em.Route.extend({
+                route: '/',
+                connectOutlets: function(router) {
+                    router.get('applicationController')
+                        .connectOutlet('container', 'settings');
+                }
+            }),
 
-                // Outlet gráfico de presença de Deus
-                router.get('subgoalsController')
-                    .connectOutlet('godPresence', 'godPresence');
-            }
+            profile: Em.Route.extend({
+                route: '/perfil',
+                connectOutlets: function(router) {
+                    router.get('settingsController')
+                        .connectOutlet('container', 'settingsProfile');
+                }
+            }),
+
+            address: Em.Route.extend({
+                route: '/endereco',
+                connectOutlets: function(router) {
+                router.get('settingsController')
+                        .connectOutlet('container', 'settingsAddress');
+                }
+            }),
+
+            contact: Em.Route.extend({
+                route: '/contato',
+                connectOutlets: function(router) {
+                router.get('settingsController')
+                        .connectOutlet('container', 'settingsContact');
+                }
+            }),
+
+            password: Em.Route.extend({
+                route: '/senha',
+                connectOutlets: function(router) {
+                router.get('settingsController')
+                        .connectOutlet('container', 'settingsPassword');
+                }
+            })
         })
     })
 });
@@ -605,12 +770,11 @@ App.Router = Em.Router.extend({
 App.initialize();
 Ember.TEMPLATES["application"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 helpers = helpers || Ember.Handlebars.helpers;
-  var buffer = '', stack1, stack2, stack3, foundHelper, tmp1, self=this, functionType="function", helperMissing=helpers.helperMissing, undef=void 0, escapeExpression=this.escapeExpression;
+  var buffer = '', stack1, stack2, stack3, stack4, foundHelper, tmp1, self=this, functionType="function", helperMissing=helpers.helperMissing, undef=void 0, escapeExpression=this.escapeExpression;
 
 
-  data.buffer.push("<div class=\"navbar navbar-inverse navbar-fixed-top\">\n    <div class=\"navbar-inner\">\n        <div class=\"container-fluid\">\n            <a class=\"btn btn-navbar\" data-toggle=\"collapse\" data-target=\".nav-collapse\">\n                <span class=\"icon-bar\"></span>\n                <span class=\"icon-bar\"></span>\n                <span class=\"icon-bar\"></span>\n            </a>\n            <a class=\"brand\" href=\"/\">Igreja Batista Central</a>\n            <div class=\"btn-group pull-right\">\n                <a class=\"btn btn-inverse dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">\n                    <i class=\"icon-user\"></i>\n                    <span class=\"caret\"></span>\n                </a>\n                <ul class=\"dropdown-menu\">\n                <li>\n                    <a href=\"/configuracoes/perfil\">\n                        <i class=\"icon-wrench\"></i> Configurações\n                    </a>\n                </li>\n                <li class=\"divider\"></li>\n                <li>\n                    <a href=\"/auth/logout\">\n                        <i class=\"icon-signout\"></i> Sair\n                    </a>\n                </li>\n                </ul>\n            </div>\n\n            <div class=\"nav-collapse\">\n                <ul class=\"nav\">\n                    <li class=\"dropdown\">\n                        <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"> Célula\n                            <b class=\"caret\"></b>\n                        </a>\n                        <ul class=\"dropdown-menu\">\n                            <li><a href=\"/celula/frequencia\">Frequência</a></li>\n                            <li><a href=\"/celula/membros\">Participantes</a></li>\n                            <li><a href=\"/celula/cadastro\">Cadastro</a></li>\n                            <li><a href=\"/celula/perfil\">Perfil</a></li>\n                        </ul>\n                    </li>\n                    <!--\n                    <li class=\"dropdown\">\n                        <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"> Setor\n                            <b class=\"caret\"></b>\n                        </a>\n                        <ul class=\"dropdown-menu\">\n                            <li><a href=\"/setor/celulas\">Células</a></li>\n                            <li><a href=\"/setor/perfil\">Perfil</a></li>\n                        </ul>\n                    </li>\n\n                    <li class=\"dropdown\">\n                        <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"> Área\n                            <b class=\"caret\"></b>\n                        </a>\n                        <ul class=\"dropdown-menu\">\n                            <li><a href=\"/area/setores\">Setores</a></li>\n                            <li><a href=\"/area/perfil\">Perfil</a></li>\n                        </ul>\n                    </li>\n                    <li class=\"dropdown\">\n                        <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"> Rede\n                            <b class=\"caret\"></b>\n                        </a>\n                        <ul class=\"dropdown-menu\">\n                            <li><a href=\"/rede/areas\">Áreas</a></li>\n                            <li><a href=\"/rede/perfil\">Perfil</a></li>\n                        </ul>\n                    </li>\n                  -->\n                    <li class=\"dropdown\">\n                        <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"> Recursos\n                            <b class=\"caret\"></b>\n                        </a>\n                        <ul class=\"dropdown-menu\">\n                            <li><a href=\"/recursos/licoes-de-celula\">Lições de Célula</a></li>\n                            <li><a href=\"/recursos/louvor\">Louvor</a></li>\n                            <li><a href=\"/recursos/dinamicas\">Dinâmicas</a></li>\n                        </ul>\n                    </li>\n                </ul>\n            </div><!--/.nav-collapse -->\n        </div><!--/.conatiner-fluid -->\n    </div>\n</div><!--/.navbar -->\n\n<div class=\"container-fluid\">\n  <div class=\"row-fluid\">\n\n  <div class=\"span8\">\n      <div class=\"row-fluid\">\n        <div class=\"span12\">\n          <div class=\"page-header\">\n            <h1>Lançamento de frequência</h1>\n          </div>                    \n        </div>\n      </div><!--/.row-fluid -->\n            \n      <div class=\"row-fluid\">\n        <div class=\"span12\">\n          <ul class=\"nav nav-tabs\">\n            <li class=\"active\">\n              <a href=\"#frequencia\" data-toggle=\"tab\">Célula</a>\n            </li>\n            <!--  <li><a href=\"#frequencia-cultos\" data-toggle=\"tab\">Cultos</a></li>-->\n          </ul>\n\n          <div class=\"tab-content\">\n            <div class=\"tab-pane active\" id=\"frequencia\">\n              <div class=\"span12\">\n              \n              ");
   stack1 = depth0;
-  stack2 = "frequencia";
+  stack2 = "window";
   foundHelper = helpers.outlet;
   stack3 = foundHelper || depth0.outlet;
   tmp1 = {};
@@ -621,9 +785,113 @@ helpers = helpers || Ember.Handlebars.helpers;
   if(typeof stack3 === functionType) { stack1 = stack3.call(depth0, stack2, tmp1); }
   else if(stack3=== undef) { stack1 = helperMissing.call(depth0, "outlet", stack2, tmp1); }
   else { stack1 = stack3; }
-  data.buffer.push(escapeExpression(stack1) + "\n\n              ");
+  data.buffer.push(escapeExpression(stack1) + "\n\n<div class=\"navbar navbar-inverse navbar-fixed-top\">\n    <div class=\"navbar-inner\">\n        <div class=\"container-fluid\">\n            <a class=\"btn btn-navbar\" data-toggle=\"collapse\" data-target=\".nav-collapse\">\n                <span class=\"icon-bar\"></span>\n                <span class=\"icon-bar\"></span>\n                <span class=\"icon-bar\"></span>\n            </a>\n            <a class=\"brand\" href=\"/\">Igreja Batista Central</a>\n            <div class=\"btn-group pull-right\">\n                <a class=\"btn btn-inverse dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">\n                    <i class=\"icon-user\"></i>\n                    <span class=\"caret\"></span>\n                </a>\n                <ul class=\"dropdown-menu\">\n                <li>\n                    <a ");
   stack1 = depth0;
-  stack2 = "newParticipant";
+  stack2 = "gotoSettings";
+  stack3 = {};
+  stack4 = "true";
+  stack3['href'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + ">\n                        <i class=\"icon-wrench\"></i> Configurações\n                    </a>\n                </li>\n                <li class=\"divider\"></li>\n                <li>\n                    <a href=\"/auth/logout\">\n                        <i class=\"icon-signout\"></i> Sair\n                    </a>\n                </li>\n                </ul>\n            </div>\n\n            <div class=\"nav-collapse\">\n                <ul class=\"nav\">\n                    <li class=\"dropdown\">\n                        <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"> Célula\n                            <b class=\"caret\"></b>\n                        </a>\n                        <ul class=\"dropdown-menu\">\n                            <li><a ");
+  stack1 = depth0;
+  stack2 = "gotoFrequency";
+  stack3 = {};
+  stack4 = "true";
+  stack3['href'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + ">Frequência</a></li>\n                            <li><a ");
+  stack1 = depth0;
+  stack2 = "gotoParticipants";
+  stack3 = {};
+  stack4 = "true";
+  stack3['href'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + ">Participantes</a></li>\n                            <li><a ");
+  stack1 = depth0;
+  stack2 = "gotoRegister";
+  stack3 = {};
+  stack4 = "true";
+  stack3['href'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + ">Cadastro</a></li>\n                            <li><a ");
+  stack1 = depth0;
+  stack2 = "gotoProfile";
+  stack3 = {};
+  stack4 = "true";
+  stack3['href'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + ">Perfil</a></li>\n                        </ul>\n                    </li>\n                    <!--\n                    <li class=\"dropdown\">\n                        <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"> Setor\n                            <b class=\"caret\"></b>\n                        </a>\n                        <ul class=\"dropdown-menu\">\n                            <li><a href=\"/setor/celulas\">Células</a></li>\n                            <li><a href=\"/setor/perfil\">Perfil</a></li>\n                        </ul>\n                    </li>\n\n                    <li class=\"dropdown\">\n                        <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"> Área\n                            <b class=\"caret\"></b>\n                        </a>\n                        <ul class=\"dropdown-menu\">\n                            <li><a href=\"/area/setores\">Setores</a></li>\n                            <li><a href=\"/area/perfil\">Perfil</a></li>\n                        </ul>\n                    </li>\n                    <li class=\"dropdown\">\n                        <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"> Rede\n                            <b class=\"caret\"></b>\n                        </a>\n                        <ul class=\"dropdown-menu\">\n                            <li><a href=\"/rede/areas\">Áreas</a></li>\n                            <li><a href=\"/rede/perfil\">Perfil</a></li>\n                        </ul>\n                    </li>\n                  -->\n                    <li class=\"dropdown\">\n                        <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"> Recursos\n                            <b class=\"caret\"></b>\n                        </a>\n                        <ul class=\"dropdown-menu\">\n                            <li><a ");
+  stack1 = depth0;
+  stack2 = "gotoLessons";
+  stack3 = {};
+  stack4 = "true";
+  stack3['href'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + ">Lições de Célula</a></li>\n                            <li><a ");
+  stack1 = depth0;
+  stack2 = "gotoPraise";
+  stack3 = {};
+  stack4 = "true";
+  stack3['href'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + ">Louvor</a></li>\n                            <li><a ");
+  stack1 = depth0;
+  stack2 = "gotoDynamics";
+  stack3 = {};
+  stack4 = "true";
+  stack3['href'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + ">Dinâmicas</a></li>\n                        </ul>\n                    </li>\n                </ul>\n            </div><!--/.nav-collapse -->\n        </div><!--/.conatiner-fluid -->\n    </div>\n</div><!--/.navbar -->\n\n");
+  stack1 = depth0;
+  stack2 = "container";
   foundHelper = helpers.outlet;
   stack3 = foundHelper || depth0.outlet;
   tmp1 = {};
@@ -634,21 +902,57 @@ helpers = helpers || Ember.Handlebars.helpers;
   if(typeof stack3 === functionType) { stack1 = stack3.call(depth0, stack2, tmp1); }
   else if(stack3=== undef) { stack1 = helperMissing.call(depth0, "outlet", stack2, tmp1); }
   else { stack1 = stack3; }
-  data.buffer.push(escapeExpression(stack1) + "\n            </div><!--/.span12 -->\n          </div><!--/.tab-pane -->\n        </div><!--/.tab-content -->\n      </div><!--/.span12 -->\n    </div><!--/.row-fluid -->\n  </div><!--/span8 -->\n\n  ");
-  stack1 = depth0;
-  stack2 = "subgoals";
-  foundHelper = helpers.outlet;
-  stack3 = foundHelper || depth0.outlet;
-  tmp1 = {};
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.data = data;
-  if(typeof stack3 === functionType) { stack1 = stack3.call(depth0, stack2, tmp1); }
-  else if(stack3=== undef) { stack1 = helperMissing.call(depth0, "outlet", stack2, tmp1); }
-  else { stack1 = stack3; }
-  data.buffer.push(escapeExpression(stack1) + "\n</div><!--/.row-fluid -->\n\n<hr>\n    <footer>\n        <p>Desenvolvido por <a href=\"http://twitter.com/andrehigher\">André</a> & <a href=\"http://twitter.com/fabriciotav\">Fabrício</a></p>\n    </footer>\n</div><!--/.fluid-container-->\n\n\n\n\n    \n");
+  data.buffer.push(escapeExpression(stack1) + "\n");
   return buffer;
+});Ember.TEMPLATES["cell-participants"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+helpers = helpers || Ember.Handlebars.helpers;
+  var buffer = '', stack1, stack2, stack3, foundHelper, tmp1, self=this, escapeExpression=this.escapeExpression;
+
+
+  data.buffer.push("<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"span8 offset2\">\n      <a class=\"btn btn-block btn-large\" ");
+  stack1 = depth0;
+  stack2 = "addNewVisitor";
+  stack3 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + ">\n        Adicionar Participante\n      </a>\n    </div>\n  </div>\n  <hr class=\"space\">\n  <div class=\"row\">\n    <div class=\"span8 offset2\">\n      <table class=\"table table-striped table-bordered\">\n        <thead>\n          <tr>\n            <th class=\"th-left\">Nome</th>\n            <th>Função</th>\n            <th>Membresia</th>\n          </tr>\n        </thead>\n\n        <tbody>\n          <tr>\n            <td class=\"td-left\"><a ");
+  stack1 = depth0;
+  stack2 = "editParticipant";
+  stack3 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + ">Fabrício</a></td>\n            <td>Lider</td>\n            <td>IBCBH</td>\n          </tr>\n          <tr>\n            <td class=\"td-left\"><a ");
+  stack1 = depth0;
+  stack2 = "editParticipant";
+  stack3 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + ">Fabrício</a></td>\n            <td>Anfitrião</td>\n            <td>Getsêmani</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n</div>");
+  return buffer;
+});Ember.TEMPLATES["cell-profile"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+helpers = helpers || Ember.Handlebars.helpers;
+  var foundHelper, self=this;
+
+
+  data.buffer.push("<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"span8 offset2\">\n            <img src=\"\" class=\"img-polaroid\">\n        </div>\n    </div>\n\n    <div class=\"row\">\n        <div class=\"span8 offset2\">\n            <table class=\"table table-bordered\">\n                <tr>\n                    <td>\n                        <strong>Líder</strong>\n                    </td>\n                    <td>\n                        Fabrício\n                    </td>\n                </tr>\n                <tr>\n                    <td>\n                        <strong>Gênero</strong>\n                    </td>\n                    <td>\n                        Masculina Par\n                    </td>\n                </tr>\n                <tr>\n                    <td>\n                        <strong>Faixa etária</strong>\n                    </td>\n                    <td>\n                        Masculina Par\n                    </td>\n                </tr>\n                <tr>\n                    <td>\n                        <strong>Bairro</strong>\n                    </td>\n                    <td>\n                        Masculina Par\n                    </td>\n                </tr>\n                <tr>\n                    <td>\n                        <strong>Discipulador</strong>\n                    </td>\n                    <td>\n                        Masculina Par\n                    </td>\n                </tr>\n                <tr>\n                    <td>\n                        <strong>Coordenador</strong>\n                    </td>\n                    <td>\n                        Masculina Par\n                    </td>\n                </tr>\n                <tr>\n                    <td>\n                        <strong>Rede</strong>\n                    </td>\n                    <td>\n                        Masculina Par\n                    </td>\n                </tr>\n                <tr>\n                    <td>\n                        <strong>Congregação</strong>\n                    </td>\n                    <td>\n                        Igreja Batista Central\n                    </td>\n                </tr>\n            </table>\n        </div>\n    </div>\n</div>");
+});Ember.TEMPLATES["cell-register"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+helpers = helpers || Ember.Handlebars.helpers;
+  var foundHelper, self=this;
+
+
+  data.buffer.push("cadastro");
 });Ember.TEMPLATES["cell_application"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 helpers = helpers || Ember.Handlebars.helpers;
   var buffer = '', stack1, stack2, stack3, foundHelper, tmp1, self=this, escapeExpression=this.escapeExpression;
@@ -922,17 +1226,17 @@ helpers = helpers || Ember.Handlebars.helpers;
   data.buffer.push("<div class=\"row\">\n    <div class=\"span3\">\n        <ul class=\"nav nav-tabs nav-stacked\">\n            <li class=\"active\"><a href=\"\">Dinâmicas</a></li>\n            <li><a href=\"\">Lições de Célula</a></li>\n            <li><a href=\"\">Louvor</a></li>\n        </ul>\n    </div>\n\n    <div class=\"span9\">\n        <ul class=\"nav nav-tabs\">\n            <li class=\"active\"><a href=\"#\">Listar</a></li>\n            <li><a href=\"#\">Adicionar</a></li>\n            <li><a href=\"#\">Remover</a></li>\n        </ul>\n    </div>\n</div>");
 });Ember.TEMPLATES["frequency"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 helpers = helpers || Ember.Handlebars.helpers;
-  var buffer = '', stack1, stack2, stack3, stack4, foundHelper, tmp1, self=this, escapeExpression=this.escapeExpression;
+  var buffer = '', stack1, stack2, stack3, stack4, foundHelper, tmp1, self=this, escapeExpression=this.escapeExpression, functionType="function", helperMissing=helpers.helperMissing, undef=void 0;
 
 function program1(depth0,data) {
   
   
-  data.buffer.push("\n  <a style=\"float: right;\" class=\"btn btn-success disabled\">Salvo</a>\n");}
+  data.buffer.push("\n            <a style=\"float: right;\" class=\"btn btn-success disabled\">Salvo</a>\n          ");}
 
 function program3(depth0,data) {
   
   var buffer = '', stack1, stack2, stack3;
-  data.buffer.push("\n  <a style=\"float: right;\" ");
+  data.buffer.push("\n            <a style=\"float: right;\" ");
   stack1 = depth0;
   stack2 = "salvarFrequencia";
   stack3 = helpers.action;
@@ -942,13 +1246,13 @@ function program3(depth0,data) {
   tmp1.contexts.push(stack1);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + " class=\"btn btn-success\">Salvar</a>\n");
+  data.buffer.push(escapeExpression(stack1) + " class=\"btn btn-success\">Salvar</a>\n          ");
   return buffer;}
 
 function program5(depth0,data) {
   
   var buffer = '', stack1, stack2, stack3;
-  data.buffer.push("\n        <th>");
+  data.buffer.push("\n                  <th>");
   stack1 = depth0;
   stack2 = "date";
   stack3 = helpers._triageMustache;
@@ -958,13 +1262,13 @@ function program5(depth0,data) {
   tmp1.contexts.push(stack1);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "</th>\n      ");
+  data.buffer.push(escapeExpression(stack1) + "</th>\n                ");
   return buffer;}
 
 function program7(depth0,data) {
   
   var buffer = '', stack1, stack2, stack3;
-  data.buffer.push("\n      <tr>\n        <td>");
+  data.buffer.push("\n                <tr>\n                  <td>");
   stack1 = depth0;
   stack2 = "funcao";
   stack3 = helpers._triageMustache;
@@ -974,7 +1278,7 @@ function program7(depth0,data) {
   tmp1.contexts.push(stack1);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "</td>\n        <td>");
+  data.buffer.push(escapeExpression(stack1) + "</td>\n                  <td>");
   stack1 = depth0;
   stack2 = "nome";
   stack3 = helpers._triageMustache;
@@ -984,7 +1288,7 @@ function program7(depth0,data) {
   tmp1.contexts.push(stack1);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "</td>\n        ");
+  data.buffer.push(escapeExpression(stack1) + "</td>\n                  ");
   stack1 = depth0;
   stack2 = "dateMeetings";
   stack3 = helpers.each;
@@ -997,17 +1301,17 @@ function program7(depth0,data) {
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n      </tr>\n    ");
+  data.buffer.push("\n                </tr>\n              ");
   return buffer;}
 function program8(depth0,data) {
   
   
-  data.buffer.push("\n          <td>\n            <input type=\"checkbox\">\n          </td>\n        ");}
+  data.buffer.push("\n                    <td>\n                      <input type=\"checkbox\">\n                    </td>\n                  ");}
 
 function program10(depth0,data) {
   
   var buffer = '', stack1, stack2, stack3;
-  data.buffer.push("\n      <tr>\n        <td>");
+  data.buffer.push("\n                <tr>\n                  <td>");
   stack1 = depth0;
   stack2 = "funcao";
   stack3 = helpers._triageMustache;
@@ -1017,7 +1321,7 @@ function program10(depth0,data) {
   tmp1.contexts.push(stack1);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "</td>\n        <td>");
+  data.buffer.push(escapeExpression(stack1) + "</td>\n                  <td>");
   stack1 = depth0;
   stack2 = "nome";
   stack3 = helpers._triageMustache;
@@ -1027,7 +1331,7 @@ function program10(depth0,data) {
   tmp1.contexts.push(stack1);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "</td>\n        ");
+  data.buffer.push(escapeExpression(stack1) + "</td>\n                  ");
   stack1 = depth0;
   stack2 = "dateMeetings";
   stack3 = helpers.each;
@@ -1040,14 +1344,14 @@ function program10(depth0,data) {
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n      </tr>\n    ");
+  data.buffer.push("\n                </tr>\n              ");
   return buffer;}
 function program11(depth0,data) {
   
   
-  data.buffer.push("\n          <td>\n            <input type=\"checkbox\">\n          </td>\n        ");}
+  data.buffer.push("\n                    <td>\n                      <input type=\"checkbox\">\n                    </td>\n                  ");}
 
-  data.buffer.push("Selecionar reunião: \n");
+  data.buffer.push("<div class=\"container-fluid\">\n  <div class=\"row-fluid\">\n    <div class=\"span8\">\n           \n      <div class=\"row-fluid\">\n        <div class=\"span12\">\n              \n          Selecionar reunião:\n          ");
   stack1 = depth0;
   stack2 = "Ember.Select";
   stack3 = {};
@@ -1066,7 +1370,7 @@ function program11(depth0,data) {
   tmp1.contexts.push(stack1);
   tmp1.data = data;
   stack1 = stack4.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "\n\n");
+  data.buffer.push(escapeExpression(stack1) + "\n          \n          ");
   stack1 = depth0;
   stack2 = "salvo";
   stack3 = helpers['if'];
@@ -1079,7 +1383,7 @@ function program11(depth0,data) {
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n\n<table class=\"table table-bordered\">\n  <thead>\n    <tr>\n      <th></th>\n      <th class=\"th-left\">Nome</th>\n      ");
+  data.buffer.push("\n          \n          <table class=\"table table-bordered\">\n            <thead>\n              <tr>\n                <th></th>\n                <th class=\"th-left\">Nome</th>\n                ");
   stack1 = depth0;
   stack2 = "dateMeetings";
   stack3 = helpers.each;
@@ -1092,7 +1396,7 @@ function program11(depth0,data) {
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n    </tr>\n  </thead>\n  \n  <tbody>\n    <tr>\n      <td colspan=\"8\">Membros IBC</td>\n    </tr>\n    ");
+  data.buffer.push("\n              </tr>\n            </thead>\n            \n            <tbody>\n              <tr>\n                <td colspan=\"8\">Membros IBC</td>\n              </tr>\n              ");
   stack1 = depth0;
   stack2 = "members";
   stack3 = helpers.each;
@@ -1105,7 +1409,7 @@ function program11(depth0,data) {
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n\n    <tr>\n      <td colspan=\"8\">Visitantes</td>\n    </tr>\n    ");
+  data.buffer.push("\n          \n              <tr>\n                <td colspan=\"8\">Visitantes</td>\n              </tr>\n              ");
   stack1 = depth0;
   stack2 = "visitors";
   stack3 = helpers.each;
@@ -1118,7 +1422,30 @@ function program11(depth0,data) {
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n  </tbody>\n</table>\n");
+  data.buffer.push("\n            </tbody>\n          </table>\n\n\n      <p class=\"add-visitor\">\n        <a ");
+  stack1 = depth0;
+  stack2 = "addNewVisitor";
+  stack3 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + " class=\"btn btn-block btn-large\">Adicionar Visitante</a>\n      </p>\n\n      </div><!--/.span12 -->\n    </div><!--/.row-fluid -->\n  </div><!--/span8 -->\n\n  ");
+  stack1 = depth0;
+  stack2 = "subgoals";
+  foundHelper = helpers.outlet;
+  stack3 = foundHelper || depth0.outlet;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  if(typeof stack3 === functionType) { stack1 = stack3.call(depth0, stack2, tmp1); }
+  else if(stack3=== undef) { stack1 = helperMissing.call(depth0, "outlet", stack2, tmp1); }
+  else { stack1 = stack3; }
+  data.buffer.push(escapeExpression(stack1) + "\n  </div><!--/.row-fluid -->\n\n</div><!--/.container-fluid -->");
   return buffer;
 });Ember.TEMPLATES["god-presence"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 helpers = helpers || Ember.Handlebars.helpers;
@@ -1144,6 +1471,29 @@ helpers = helpers || Ember.Handlebars.helpers;
 
 
   data.buffer.push("<div class=\"row\">\n    <div class=\"span3\">\n        <ul class=\"nav nav-tabs nav-stacked\">\n            <li class=\"active\"><a href=\"\">Membros</a></li>\n        </ul>\n    </div>\n\n    <div class=\"span9\">\n        <ul class=\"nav nav-tabs\">\n            <li class=\"active\"><a href=\"#\">Listar</a></li>\n            <li><a href=\"#\">Adicionar</a></li>\n            <li><a href=\"#\">Remover</a></li>\n        </ul>\n    </div>\n</div>");
+});Ember.TEMPLATES["new-participant-box"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+helpers = helpers || Ember.Handlebars.helpers;
+  var foundHelper, self=this;
+
+
+  data.buffer.push("<div class=\"window-overlay\">\n    <div class=\"window\">\n        <div class=\"window-wrapper\">\n            fdfdf\n        </div>\n    </div>\n</div>");
+});Ember.TEMPLATES["new-participant-window"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+helpers = helpers || Ember.Handlebars.helpers;
+  var buffer = '', stack1, stack2, stack3, foundHelper, tmp1, self=this, escapeExpression=this.escapeExpression;
+
+
+  data.buffer.push("<div class=\"window-overlay\">\n    <div class=\"window\">\n        <div class=\"window-wrapper\">\n            <div class=\"clearfix\">\n                <div class=\"window-header\">\n                    <a ");
+  stack1 = depth0;
+  stack2 = "closeWindow";
+  stack3 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + ">\n                        <i class=\"icon-remove\"></i>\n                    </a>\n                </div>\n\n                <div class=\"window-main-col\">\n                    main content\n                </div>\n            </div>\n        </div>\n    </div>\n</div>");
+  return buffer;
 });Ember.TEMPLATES["new-participant"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 helpers = helpers || Ember.Handlebars.helpers;
   var buffer = '', stack1, stack2, stack3, stack4, foundHelper, tmp1, self=this, escapeExpression=this.escapeExpression;
@@ -1184,17 +1534,121 @@ helpers = helpers || Ember.Handlebars.helpers;
   tmp1.contexts.push(stack1);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + ">\n    <i class=\"icon-remove style-icon-remove\"></i>\n  </a>\n  </div>\n</div>\n\n\n<p class=\"add-visitor\" ");
+  data.buffer.push(escapeExpression(stack1) + ">\n    <i class=\"icon-remove style-icon-remove\"></i>\n  </a>\n  </div>\n</div>\n\n\n");
+  return buffer;
+});Ember.TEMPLATES["resources-dynamics"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+helpers = helpers || Ember.Handlebars.helpers;
+  var foundHelper, self=this;
+
+
+  data.buffer.push("<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"span8 offset2\">\n            Dinamicas\n        </div>\n    </div>\n</div>");
+});Ember.TEMPLATES["resources-lessons"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+helpers = helpers || Ember.Handlebars.helpers;
+  var foundHelper, self=this;
+
+
+  data.buffer.push("<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"span8 offset2\">\n            lições\n        </div>\n    </div>\n</div>");
+});Ember.TEMPLATES["resources-praise"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+helpers = helpers || Ember.Handlebars.helpers;
+  var foundHelper, self=this;
+
+
+  data.buffer.push("<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"span8 offset2\">\n            louvor\n        </div>\n    </div>\n</div>");
+});Ember.TEMPLATES["settings-address"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+helpers = helpers || Ember.Handlebars.helpers;
+  var foundHelper, self=this;
+
+
+  data.buffer.push("set address");
+});Ember.TEMPLATES["settings-contact"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+helpers = helpers || Ember.Handlebars.helpers;
+  var foundHelper, self=this;
+
+
+  data.buffer.push("set conatct");
+});Ember.TEMPLATES["settings-password"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+helpers = helpers || Ember.Handlebars.helpers;
+  var foundHelper, self=this;
+
+
+  data.buffer.push("set pass");
+});Ember.TEMPLATES["settings-profile"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+helpers = helpers || Ember.Handlebars.helpers;
+  var foundHelper, self=this;
+
+
+  data.buffer.push("set profile");
+});Ember.TEMPLATES["settings"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+helpers = helpers || Ember.Handlebars.helpers;
+  var buffer = '', stack1, stack2, stack3, stack4, foundHelper, tmp1, self=this, escapeExpression=this.escapeExpression, functionType="function", helperMissing=helpers.helperMissing, undef=void 0;
+
+
+  data.buffer.push("<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"span8 offset2\">\n            <div class=\"row\">\n                <div class=\"span2\">\n                    <ul class=\"nav nav-pills nav-stacked\">\n                        <li>\n                            <a ");
   stack1 = depth0;
-  stack2 = "addNewVisitor";
-  stack3 = helpers.action;
+  stack2 = "gotoSettingsProfile";
+  stack3 = {};
+  stack4 = "true";
+  stack3['href'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + ">Perfil</a>\n                        </li>\n                        <li>\n                            <a ");
+  stack1 = depth0;
+  stack2 = "gotoSettingsAddress";
+  stack3 = {};
+  stack4 = "true";
+  stack3['href'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + ">Endereço</a>\n                        </li>\n                        <li>\n                            <a ");
+  stack1 = depth0;
+  stack2 = "gotoSettingsContact";
+  stack3 = {};
+  stack4 = "true";
+  stack3['href'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + ">Contato</a>\n                        </li>\n                        <li>\n                            <a ");
+  stack1 = depth0;
+  stack2 = "gotoSettingsPassword";
+  stack3 = {};
+  stack4 = "true";
+  stack3['href'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + ">Senha</a>\n                        </li>\n                    </ul>\n                </div>\n                <div class=\"span6\">\n                    ");
+  stack1 = depth0;
+  stack2 = "container";
+  foundHelper = helpers.outlet;
+  stack3 = foundHelper || depth0.outlet;
   tmp1 = {};
   tmp1.hash = {};
   tmp1.contexts = [];
   tmp1.contexts.push(stack1);
   tmp1.data = data;
-  stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + ">\n  <i class=\"icon-plus\"></i>\n  Adicionar visitante\n</p>");
+  if(typeof stack3 === functionType) { stack1 = stack3.call(depth0, stack2, tmp1); }
+  else if(stack3=== undef) { stack1 = helperMissing.call(depth0, "outlet", stack2, tmp1); }
+  else { stack1 = stack3; }
+  data.buffer.push(escapeExpression(stack1) + "\n                </div>\n            </div>\n        </div>\n    </div>\n</div>");
   return buffer;
 });Ember.TEMPLATES["subgoals"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 helpers = helpers || Ember.Handlebars.helpers;
@@ -1493,7 +1947,7 @@ function program30(depth0,data) {
   
   data.buffer.push("\n              <i class=\"icon-star-empty\"></i>\n            ");}
 
-  data.buffer.push("<div class=\"span4\">\n  <div class=\"page-header\">\n    <h1>5 Submetas</h1>\n  </div>\n\n  <div class=\"\" id=\"submetas\">\n    <div class=\"submeta-1\">\n      <h3>Data de Multiplicação</h3>\n\n      <p ");
+  data.buffer.push("<div class=\"span4\">\n\n  <div class=\"\" id=\"submetas\">\n    <div class=\"submeta-1\">\n      <h3>Data de Multiplicação</h3>\n\n      <p ");
   stack1 = depth0;
   stack2 = "editSubgoal1";
   stack3 = helpers.action;

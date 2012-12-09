@@ -10,7 +10,3 @@
 </div>
 
 
-<p class="add-visitor" {{action "addNewVisitor"}}>
-  <i class="icon-plus"></i>
-  Adicionar visitante
-</p>

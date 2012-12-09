@@ -1,3 +1,5 @@
+{{outlet window}}
+
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container-fluid">
@@ -14,7 +16,7 @@
                 </a>
                 <ul class="dropdown-menu">
                 <li>
-                    <a href="/configuracoes/perfil">
+                    <a {{action "gotoSettings" href="true"}}>
                         <i class="icon-wrench"></i> Configurações
                     </a>
                 </li>
@@ -34,10 +36,10 @@
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="/celula/frequencia">Frequência</a></li>
-                            <li><a href="/celula/membros">Participantes</a></li>
-                            <li><a href="/celula/cadastro">Cadastro</a></li>
-                            <li><a href="/celula/perfil">Perfil</a></li>
+                            <li><a {{action "gotoFrequency" href="true"}}>Frequência</a></li>
+                            <li><a {{action "gotoParticipants" href="true"}}>Participantes</a></li>
+                            <li><a {{action "gotoRegister" href="true"}}>Cadastro</a></li>
+                            <li><a {{action "gotoProfile" href="true"}}>Perfil</a></li>
                         </ul>
                     </li>
                     <!--
@@ -75,9 +77,9 @@
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="/recursos/licoes-de-celula">Lições de Célula</a></li>
-                            <li><a href="/recursos/louvor">Louvor</a></li>
-                            <li><a href="/recursos/dinamicas">Dinâmicas</a></li>
+                            <li><a {{action "gotoLessons" href="true"}}>Lições de Célula</a></li>
+                            <li><a {{action "gotoPraise" href="true"}}>Louvor</a></li>
+                            <li><a {{action "gotoDynamics" href="true"}}>Dinâmicas</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -86,51 +88,4 @@
     </div>
 </div><!--/.navbar -->
 
-<div class="container-fluid">
-  <div class="row-fluid">
-
-  <div class="span8">
-      <div class="row-fluid">
-        <div class="span12">
-          <div class="page-header">
-            <h1>Lançamento de frequência</h1>
-          </div>                    
-        </div>
-      </div><!--/.row-fluid -->
-            
-      <div class="row-fluid">
-        <div class="span12">
-          <ul class="nav nav-tabs">
-            <li class="active">
-              <a href="#frequencia" data-toggle="tab">Célula</a>
-            </li>
-            <!--  <li><a href="#frequencia-cultos" data-toggle="tab">Cultos</a></li>-->
-          </ul>
-
-          <div class="tab-content">
-            <div class="tab-pane active" id="frequencia">
-              <div class="span12">
-              
-              {{outlet frequencia}}
-
-              {{outlet newParticipant}}
-            </div><!--/.span12 -->
-          </div><!--/.tab-pane -->
-        </div><!--/.tab-content -->
-      </div><!--/.span12 -->
-    </div><!--/.row-fluid -->
-  </div><!--/span8 -->
-
-  {{outlet subgoals}}
-</div><!--/.row-fluid -->
-
-<hr>
-    <footer>
-        <p>Desenvolvido por <a href="http://twitter.com/andrehigher">André</a> & <a href="http://twitter.com/fabriciotav">Fabrício</a></p>
-    </footer>
-</div><!--/.fluid-container-->
-
-
-
-
-    
+{{outlet container}}
