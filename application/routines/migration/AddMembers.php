@@ -3,6 +3,82 @@
 $con = mysql_connect("localhost","root","root");
 $db = mysql_select_db("ibcbh");
 
+// registrando no db os usuários da migração
+$sql_migration = "
+	INSERT INTO
+		celula_migration.users_migration
+	SELECT
+		NULL,
+		m.CodMembro
+	FROM
+		celula_antigo.tblmembros m
+	ORDER BY
+		m.CodMembro ASC;
+";
+
+$sql_membresia = "
+	INSERT INTO
+		celula.core_user
+	SELECT
+		cm.user_id_antigo,
+		SUBSTRING_INDEX( m.NomeMembro , ' ', 1 ) AS first,
+		SUBSTRING(m.NomeMembro, LOCATE(' ', m.NomeMembro)+1) AS last,
+		IF(m.SexoMembro='M',1,2),
+		m.Apelido,
+		m.DataNascMembro
+	FROM
+		celula_antigo.tblmembros m
+	INNER JOIN
+		celula_migration.users_migration cm ON (cm.user_id_antigo=m.CodMembro)
+	ORDER BY
+		m.CodMembro ASC;
+";
+
+$sql_membresia_endereco = "
+	INSERT INTO
+		celula.core_user_address
+	SELECT
+		cm.user_id_antigo,
+		m.EnderecoMembro,
+		m.NumeroEndMembro,
+		m.ComplEndMembro,
+		m.BairroEndMembro,
+		2700, #### BELO HORIZONTE POIS O SISTEMA ANTIGO NAO GUARDAVA PELO ID DA CIDADE
+		m.CepEndMembro,
+		m.FoneResMembro		
+	FROM
+		celula_antigo.tblmembros m
+	INNER JOIN
+		celula_migration.users_migration cm ON (cm.user_id_antigo=m.CodMembro)
+	ORDER BY
+		m.CodMembro ASC;
+";
+
+$sql_membresia_informacoes_adicionais = "
+
+	INSERT INTO
+		celula.core_user_information
+	SELECT
+		cm.user_id_antigo,
+		1,
+		IF(m.Igreja LIKE '%Batista Central%',1,2) AS baptized,
+		NULL AS CPF,
+		NULL AS RG,
+		m.DataBatismo,
+		m.EstadoCivilMembro		
+	FROM
+		celula_antigo.tblmembros m
+	INNER JOIN
+		celula_migration.users_migration cm ON (cm.user_id_antigo=m.CodMembro)
+	ORDER BY
+		m.CodMembro ASC;
+
+";
+
+
+
+
+
 // talvez lideres (acesso ao sistema)
 $sql_lideres = "
 	INSERT INTO
@@ -14,61 +90,18 @@ $sql_lideres = "
 		SHA1('ibcbh'),
 		u.usudatacadastro
 	FROM
-		antigo_real.tblmembros m
+		celula_antigo.tblmembros m
 	INNER JOIN
-		antigo_real.tblgrupos g ON (g.Lider=m.CodMembro)
+		celula_antigo.tblgrupos g ON (g.Lider=m.CodMembro)
 	INNER JOIN
-		antigo_real.tblusuarioxcelula tl ON (tl.codcel=g.Codigo)
+		celula_antigo.tblusuarioxcelula tl ON (tl.codcel=g.Codigo)
 	INNER JOIN 
-		antigo_real.tblusuario u ON (tl.codusu=u.usucod)
+		celula_antigo.tblusuario u ON (tl.codusu=u.usucod)
 	GROUP BY
 		m.CodMembro
 	ORDER BY
 		m.CodMembro ASC
 
-";
-mysql_query($sql_lideres);
-$user_id = mysql_insert_id();
-
-$sql_lideres_dados = "
-	INSERT INTO
-		celula.core_user_address
-	SELECT
-		m.CodMembro,
-		m.EnderecoMembro,
-		m.NumeroEndMembro,
-		m.ComplEndMembro,
-		m.BairroEndMembro,
-		0,
-		m.FoneResMembro,
-		m.CepEndMembro
-	FROM
-		antigo_real.tblmembros m
-	ORDER BY
-		m.CodMembro ASC;
-";
-
-mysql_query($sql_lideres_dados);
-
-$sql_lideres_detailed = "
-	INSERT INTO
-		 celula.core_user_detailed
-	SELECT
-		m.CodMembro,
-		SUBSTRING_INDEX( m.NomeMembro , ' ', 1 ) AS first,
-		SUBSTRING(m.NomeMembro, LOCATE(' ', m.NomeMembro)+1) AS last,
-		IF(m.SexoMembro='M',1,2),
-		m.Apelido,
-		m.DataNascMembro
-	FROM
-		antigo_real.tblmembros m
-	ORDER BY
-		m.CodMembro ASC;
-";
-mysql_query($sql_lideres_detailed);
-
-$sql_lideres_information = "
-INSERT INTO core_user_information SELECT user_id,1 FROM core_user_detailed
 ";
 
 
@@ -81,9 +114,9 @@ $sql_cell = "
 		g.DataCriacao,
 		NULL
 	FROM
-		antigo_real.tblmembros m
+		celula_antigo.tblmembros m
 	INNER JOIN
-		antigo_real.tblgrupos g ON (g.Lider=m.CodMembro)
+		celula_antigo.tblgrupos g ON (g.Lider=m.CodMembro)
 	GROUP BY
 		m.CodMembro
 	ORDER BY
@@ -100,13 +133,13 @@ $sql_cell_leader = "
 		1,
 		NULL
 	FROM
-		antigo_real.tblmembros m
+		celula_antigo.tblmembros m
 	INNER JOIN
-		antigo_real.tblgrupos g ON (g.Lider=m.CodMembro)
+		celula_antigo.tblgrupos g ON (g.Lider=m.CodMembro)
 	INNER JOIN
-		antigo_real.tblusuarioxcelula tl ON (tl.codcel=g.Codigo)
+		celula_antigo.tblusuarioxcelula tl ON (tl.codcel=g.Codigo)
 	INNER JOIN 
-		antigo_real.tblusuario u ON (tl.codusu=u.usucod)
+		celula_antigo.tblusuario u ON (tl.codusu=u.usucod)
 	GROUP BY
 		m.CodMembro
 	ORDER BY
@@ -124,9 +157,9 @@ $sql_cell_member = "
 		2,
 		NULL
 	FROM  
-		antigo_real.tblcellgradereuniao c
+		celula_antigo.tblcellgradereuniao c
 	INNER JOIN
-		antigo_real.tblmembros m ON (c.Membro=m.CodMembro)
+		celula_antigo.tblmembros m ON (c.Membro=m.CodMembro)
 	WHERE 
 		1 #c.Celula=178
 		AND c.Tipo=1
@@ -165,7 +198,7 @@ $sql_cell_address = "
 		0,
 		g.Cep
 	FROM
-		antigo_real.tblgrupos g
+		celula_antigo.tblgrupos g
 
 ";
 
@@ -179,7 +212,7 @@ $sql_cell_info = "
 		0,
 		g.Horarioentrada
 	FROM 
-		antigo_real.tblgrupos g
+		celula_antigo.tblgrupos g
 ";
 
 ?>

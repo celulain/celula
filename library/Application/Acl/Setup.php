@@ -78,6 +78,9 @@ class Application_Acl_Setup
     	$this->_acl->addResource( new Zend_Acl_Resource('recursos') );
     	$this->_acl->addResource( new Zend_Acl_Resource('configuracoes') );
     	$this->_acl->addResource( new Zend_Acl_Resource('error') );
+        $this->_acl->addResource( new Zend_Acl_Resource('search') );
+        $this->_acl->addResource( new Zend_Acl_Resource('password') );
+        $this->_acl->addResource( new Zend_Acl_Resource('register') );
     }
 
     /**
@@ -91,18 +94,27 @@ class Application_Acl_Setup
     protected function _setupPrivileges()
     {
         $this->_acl	->allow( 'guest', 'index', 'index' )
+                    ->allow( 'guest', 'search', 'index')
+                    ->allow( 'guest', 'register', 'index')
+                    ->allow( 'guest', 'password', array('index','new'))
         			->allow( 'guest', 'auth', array('index', 'login') )
                     ->allow( 'guest', 'api', array('subgoals','presence','getmember') )
                     ->allow( 'guest', 'celula', array('index', 'frequencia','membros','cadastro','perfil') )
                     ->allow( 'guest', 'recursos', array('licoes-de-celula','louvor','dinamicas') )
                     ->allow( 'guest', 'configuracoes', array('perfil','contato','endereco','senha') );
         $this->_acl	->allow( 'user', 'index', 'index' )
+                    ->allow( 'user', 'search', 'index')
+                    ->allow( 'user', 'register', 'index')
+                    ->allow( 'user', 'password', array('index','new'))
                     ->allow( 'user', 'api', array('subgoals','presence','getmember') )
         			->allow( 'user', 'celula', array('frequencia','membros','cadastro','perfil') )
         			->allow( 'user', 'recursos', array('licoes-de-celula','louvor','dinamicas') )
         			->allow( 'user', 'configuracoes', array('perfil','contato','endereco','senha') )
         			->allow( 'user', 'auth', array('index', 'login') );
         $this->_acl	->allow( 'admin', 'index', 'index' )
+                    ->allow( 'admin', 'search', 'index')
+                    ->allow( 'admin', 'register', 'index')
+                    ->allow( 'admin', 'password', array('index','new'))
                     ->allow( 'admin', 'api', array('subgoals','presence','getmember') )
         			->allow( 'admin', 'admin',array('index','addmembro','dados','editmembro','pastores','perfil','sistema','dinamicas','louvor','licoes','return-cities','addlider','editlider','removelider','hierarquia') )
         			->allow( 'admin', 'celula', array('frequencia','membros','cadastro','perfil') )
