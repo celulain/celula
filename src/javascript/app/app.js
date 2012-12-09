@@ -78,7 +78,7 @@ App.Subgoals.reopenClass({
 // ------------------------------------------------------------ VIEWS
 // Frequência View
 App.FrequenciaView = Em.View.extend({
-    templateName: 'frequencia'
+    templateName: 'frequency'
 });
 
 // Subgoals View

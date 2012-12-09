@@ -6,7 +6,7 @@ var rootDir = '/Users/fabriciotav/GitHub/celula/';
 
 var emberjs = fs.readFileSync( rootDir + 'src/ember+handlebars.js', 'utf8');
 var templatesDir = rootDir + 'src/templates';
-var destinationDir = rootDir + 'src/javascripts/admin-panel/templates';
+var destinationDir = rootDir + 'src/javascript/app/templates';
 
 function compileHandlebarsTemplate(templatesDir, fileName) {
   var file = templatesDir + '/' + fileName;
