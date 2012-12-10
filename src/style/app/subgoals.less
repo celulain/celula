@@ -42,10 +42,33 @@
 }
 
 .suggestions {
-    font-size: 40px;
     cursor: pointer;
-    span {
-        font-size: 20px;
-        color: rgb(68,68,68);
+    color: rgb(100,100,100);
+    .icone {
+        font-size: 40px;
+        float: left;
+        padding-top: 10px;
     }
+    .texto {
+        padding-left: 50px;
+        color: rgb(68,68,68);
+        display: block;
+        font-size: 26px;
+        line-height: 40px;
+    }
+}
+
+.window-suggestion {
+    // display:none;
+    padding-top: 50px;
+    padding-bottom:80px;
+    position:absolute;
+    left: 50%;
+    margin-left: -200px;
+    width:400px;
+    z-index:11;
+}
+
+.suggestion-textarea {
+    width: 360px;
 }

@@ -454,6 +454,6 @@ function program30(depth0,data) {
   tmp1.contexts.push(stack1);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + ">\n    <i class=\"icon-comment-alt\"></i> <span>Sugestões?</span>\n  </div>\n\n\n</div><!--/span4 -->");
+  data.buffer.push(escapeExpression(stack1) + ">\n    <div class=\"icone\">\n      <i class=\"icon-comment\"></i>\n    </div>\n\n    <div class=\"texto\">\n       Sugestões?\n    </div>\n    \n  </div>\n\n\n</div><!--/span4 -->");
   return buffer;
 });

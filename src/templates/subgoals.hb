@@ -136,7 +136,14 @@
   <hr class="hr-subgoal">
 
   <div class="suggestions" {{action "openSuggestionsWindow"}}>
-    <i class="icon-comment-alt"></i> <span>Sugestões?</span>
+    <div class="icone">
+      <i class="icon-comment"></i>
+    </div>
+
+    <div class="texto">
+       Sugestões?
+    </div>
+    
   </div>
 
 
