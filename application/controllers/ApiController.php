@@ -109,8 +109,27 @@ class ApiController extends Zend_Controller_Action
         echo Zend_Json::encode($aux);
     }
 
+    public function getparticipantsAction()
+    {
+        $this->_helper->layout()->setLayout('json');
+        $user = new Application_Model_DbTable_CoreUser();
+        $data = $user->fetchAll($user->select()->where('cell_id = ?', $authNamespace->cell_id_leader));
+        $statusCode = '200';
+        $statusMessage = 'Ok';
+
+        $return = array(
+            'statusCode' => $statusCode,
+            'statusMessage' => $statusMessage,
+            'data' => $data
+            );
+
+        echo Zend_Json::encode($return);
+    }
+
 
 }
+
+
 
 
 

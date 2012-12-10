@@ -18,7 +18,7 @@ $sql_migration = "
 
 $sql_membresia = "
 	INSERT INTO
-		celula.core_user
+		celula_ibcbh.core_user
 	SELECT
 		cm.user_id_antigo,
 		SUBSTRING_INDEX( m.NomeMembro , ' ', 1 ) AS first,
@@ -36,7 +36,7 @@ $sql_membresia = "
 
 $sql_membresia_endereco = "
 	INSERT INTO
-		celula.core_user_address
+		celula_ibcbh.core_user_address
 	SELECT
 		cm.user_id_antigo,
 		m.EnderecoMembro,
@@ -57,7 +57,7 @@ $sql_membresia_endereco = "
 $sql_membresia_informacoes_adicionais = "
 
 	INSERT INTO
-		celula.core_user_information
+		celula_ibcbh.core_user_information
 	SELECT
 		cm.user_id_antigo,
 		1,
@@ -80,12 +80,12 @@ $sql_membresia_informacoes_adicionais = "
 
 
 // talvez lideres (acesso ao sistema)
-$sql_lideres = "
+$sql_login = "
 	INSERT INTO
-		celula.core_user
+		celula_ibcbh.core_user_system
 	SELECT
-		m.CodMembro,
-		u.usulogin,
+		cm.user_id_antigo,
+		LOWER(u.usulogin) AS username,
 		u.email,
 		SHA1('ibcbh'),
 		u.usudatacadastro
@@ -97,6 +97,10 @@ $sql_lideres = "
 		celula_antigo.tblusuarioxcelula tl ON (tl.codcel=g.Codigo)
 	INNER JOIN 
 		celula_antigo.tblusuario u ON (tl.codusu=u.usucod)
+	INNER JOIN
+		celula_migration.users_migration cm ON (cm.user_id_antigo=m.CodMembro)
+	WHERE
+		u.usulogin!='ALCIDES'
 	GROUP BY
 		m.CodMembro
 	ORDER BY
@@ -108,15 +112,17 @@ $sql_lideres = "
 $sql_cell = "
 
 	INSERT INTO
-		celula.cell
+		celula_ibcbh.cell
 	SELECT
 		g.Codigo,
-		g.DataCriacao,
+		IFNULL(g.DataCriacao,DATE(NOW())),
 		NULL
 	FROM
 		celula_antigo.tblmembros m
 	INNER JOIN
 		celula_antigo.tblgrupos g ON (g.Lider=m.CodMembro)
+	INNER JOIN
+		celula_migration.users_migration cm ON (cm.user_id_antigo=m.CodMembro)
 	GROUP BY
 		m.CodMembro
 	ORDER BY
@@ -126,12 +132,12 @@ $sql_cell = "
 $sql_cell_leader = "
 
 	INSERT INTO
-		celula.cell_user
+		celula_ibcbh.cell_user
 	SELECT
 		g.Codigo,
-		m.CodMembro,
-		1,
-		NULL
+		cm.user_id_antigo,
+		DATE(NOW()),
+		1
 	FROM
 		celula_antigo.tblmembros m
 	INNER JOIN
@@ -140,6 +146,8 @@ $sql_cell_leader = "
 		celula_antigo.tblusuarioxcelula tl ON (tl.codcel=g.Codigo)
 	INNER JOIN 
 		celula_antigo.tblusuario u ON (tl.codusu=u.usucod)
+	INNER JOIN 
+		celula_migration.users_migration cm ON (cm.user_id_antigo=m.CodMembro)
 	GROUP BY
 		m.CodMembro
 	ORDER BY
@@ -150,25 +158,29 @@ $sql_cell_leader = "
 $sql_cell_member = "
 
 	INSERT INTO
-		cell_user
+		celula_ibcbh.cell_user
 	SELECT 
 		c.Celula,
-		c.Membro,
-		2,
-		NULL
+		cm.user_id_antigo,
+		DATE(NOW()),
+		2
 	FROM  
 		celula_antigo.tblcellgradereuniao c
 	INNER JOIN
 		celula_antigo.tblmembros m ON (c.Membro=m.CodMembro)
+	INNER JOIN 
+		celula_migration.users_migration cm ON (cm.user_id_antigo=m.CodMembro)
 	WHERE 
 		1 #c.Celula=178
 		AND c.Tipo=1
-		AND m.CodMembro NOT IN (SELECT user_id FROM cell_user)
-	GROUP 
-		BY c.Membro
+		AND cm.user_id_antigo NOT IN (SELECT user_id FROM celula_ibcbh.cell_user)
+	GROUP BY 
+		cm.user_id_antigo
 
 ";
 
+
+// POR ENQUANTO NAO VAMOS IMPORTAR OS FREQUENTADORES
 $sql_cell_goers = "
 
 	SELECT 

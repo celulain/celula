@@ -76,18 +76,12 @@ class AuthController extends Zend_Controller_Action
     					$authNamespace->cell_id_leader = $user_cell->cell_id;
     				}
     				
-    				if(isset($_GET["redirect"]) || $_GET["redirect"] != "")
-    				{
-    					return $this->_helper->redirector->goToRoute( array('controller' => $_GET["redirect"]), null, true);
-    				}
-    				else
-    				{
-    					if($authNamespace->user_id == 1)
-    					{
-    						return $this->_helper->redirector->goToRoute( array('controller' => 'admin', 'action' => 'index'), null, true);
-    					}
-	    				return $this->_helper->redirector->goToRoute( array('controller' => 'celula', 'action' => 'index'), null, true);
-    				}
+					if($authNamespace->user_id == 1)
+					{
+						return $this->_helper->redirector->goToRoute( array('controller' => 'admin', 'action' => 'index'), null, true);
+					}
+    				return $this->_helper->redirector->goToRoute( array('controller' => 'celula', 'action' => 'index'), null, true);
+
     			} 
     			else 
     			{
@@ -118,6 +112,7 @@ class AuthController extends Zend_Controller_Action
     {
         $auth = Zend_Auth::getInstance();
 	    $auth->clearIdentity();
+        session_destroy();
 	    return $this->_redirect('/index');
     }
 

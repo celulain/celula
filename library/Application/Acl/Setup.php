@@ -107,7 +107,7 @@ class Application_Acl_Setup
                     ->allow( 'user', 'register', 'index')
                     ->allow( 'user', 'password', array('index','new'))
                     ->allow( 'user', 'api', array('subgoals','presence','getmember') )
-        			->allow( 'user', 'celula', array('frequencia','membros','cadastro','perfil') )
+        			->allow( 'user', 'celula', array('index','frequencia','membros','cadastro','perfil') )
         			->allow( 'user', 'recursos', array('licoes-de-celula','louvor','dinamicas') )
         			->allow( 'user', 'configuracoes', array('perfil','contato','endereco','senha') )
         			->allow( 'user', 'auth', array('index', 'login') );
@@ -117,7 +117,7 @@ class Application_Acl_Setup
                     ->allow( 'admin', 'password', array('index','new'))
                     ->allow( 'admin', 'api', array('subgoals','presence','getmember') )
         			->allow( 'admin', 'admin',array('index','addmembro','dados','editmembro','pastores','perfil','sistema','dinamicas','louvor','licoes','return-cities','addlider','editlider','removelider','hierarquia') )
-        			->allow( 'admin', 'celula', array('frequencia','membros','cadastro','perfil') )
+        			->allow( 'admin', 'celula', array('index','frequencia','membros','cadastro','perfil') )
         			->allow( 'admin', 'recursos', array('licoes-de-celula','louvor','dinamicas') )
         			->allow( 'admin', 'configuracoes', array('perfil','contato','endereco','senha') )
         			->allow( 'admin', 'auth', array('index', 'login') );

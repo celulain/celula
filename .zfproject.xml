@@ -82,6 +82,7 @@
           <actionMethod actionName="subgoals"/>
           <actionMethod actionName="presence"/>
           <actionMethod actionName="getmember"/>
+          <actionMethod actionName="getparticipants"/>
         </controllerFile>
         <controllerFile controllerName="Password">
           <actionMethod actionName="index"/>
@@ -312,6 +313,9 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Search">
             <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Api">
+            <viewScriptFile forActionName="getparticipants"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
