@@ -42,6 +42,7 @@ app.production: app.development style.app src/lib/lib-app.js
     src/lib/bootstrap/bootstrap.min.js \
 	src/lib/handlebars/handlebars-1.0.rc.1.min.js \
 	src/lib/ember/ember-1.0.0-pre.2.min.js \
+	src/lib/ember/ember-data-latest.min.js \
 	src/lib/d3/d3.v2.min.js \
 	> src/lib/lib-app.js
 	cat src/lib/lib-app.js src/javascript/app.min.js > public/js/all.js
