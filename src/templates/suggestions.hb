@@ -13,11 +13,11 @@
                 <div class="window-main-col">
                     
                   <div>
-                    {{view Ember.TextArea class="suggestion-textarea"}}
+                    {{view Ember.TextArea valueBinding="suggestion" class="suggestion-textarea"}}
                   </div>
 
                   <div>
-                    <a class="btn suggestion-textarea">Enviar</a>
+                    <a {{action "sendSuggestion"}} class="btn suggestion-btn">Enviar</a>
                   </div>
                 </div>
             </div>

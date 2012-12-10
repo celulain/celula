@@ -301,7 +301,7 @@ App.SubgoalsController = Em.ArrayController.extend({
 
 });
 App.SuggestionsController = Em.Controller.extend({
-
+    suggestion: null
 });
 App.CellParticipantsView = Em.View.extend({
     templateName: 'cell-participants'
@@ -491,10 +491,24 @@ App.Router = Em.Router.extend({
         gotoSettingsContact: Em.Route.transitionTo('settings.contact'),
         gotoSettingsPassword: Em.Route.transitionTo('settings.password'),
 
+        // Suggestions
         openSuggestionsWindow: function(router, event) {
             router.get('applicationController')
                 .connectOutlet('window', 'suggestions')
         },
+        sendSuggestion: function(router, event) {
+            var suggestion = router.get('suggestionsController').get('suggestion');
+
+            // TODO: ENVIA SUGESTÃO
+
+            // Apaga atual
+            router.get('suggestionsController').set('suggestion', null);
+
+            router.get('applicationController').disconnectOutlet('window');
+        },
+
+        // ------
+
 
         editSubgoal1: function(router, event) {
             $('.edit-subgoal-1').show();
@@ -2137,6 +2151,8 @@ helpers = helpers || Ember.Handlebars.helpers;
   stack1 = depth0;
   stack2 = "Ember.TextArea";
   stack3 = {};
+  stack4 = "suggestion";
+  stack3['valueBinding'] = stack4;
   stack4 = "suggestion-textarea";
   stack3['class'] = stack4;
   stack4 = helpers.view;
@@ -2146,6 +2162,16 @@ helpers = helpers || Ember.Handlebars.helpers;
   tmp1.contexts.push(stack1);
   tmp1.data = data;
   stack1 = stack4.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "\n                  </div>\n\n                  <div>\n                    <a class=\"btn suggestion-textarea\">Enviar</a>\n                  </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>");
+  data.buffer.push(escapeExpression(stack1) + "\n                  </div>\n\n                  <div>\n                    <a ");
+  stack1 = depth0;
+  stack2 = "sendSuggestion";
+  stack3 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + " class=\"btn suggestion-btn\">Enviar</a>\n                  </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>");
   return buffer;
 });

@@ -18,10 +18,24 @@ App.Router = Em.Router.extend({
         gotoSettingsContact: Em.Route.transitionTo('settings.contact'),
         gotoSettingsPassword: Em.Route.transitionTo('settings.password'),
 
+        // Suggestions
         openSuggestionsWindow: function(router, event) {
             router.get('applicationController')
                 .connectOutlet('window', 'suggestions')
         },
+        sendSuggestion: function(router, event) {
+            var suggestion = router.get('suggestionsController').get('suggestion');
+
+            // TODO: ENVIA SUGESTÃO
+
+            // Apaga atual
+            router.get('suggestionsController').set('suggestion', null);
+
+            router.get('applicationController').disconnectOutlet('window');
+        },
+
+        // ------
+
 
         editSubgoal1: function(router, event) {
             $('.edit-subgoal-1').show();
