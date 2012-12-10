@@ -18,6 +18,10 @@ App.Router = Em.Router.extend({
         gotoSettingsContact: Em.Route.transitionTo('settings.contact'),
         gotoSettingsPassword: Em.Route.transitionTo('settings.password'),
 
+        openSuggestionsWindow: function(router, event) {
+            router.get('applicationController')
+                .connectOutlet('window', 'suggestions')
+        },
 
         editSubgoal1: function(router, event) {
             $('.edit-subgoal-1').show();

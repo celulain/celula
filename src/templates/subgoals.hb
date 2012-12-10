@@ -2,9 +2,9 @@
 
   <div class="" id="submetas">
     <div class="submeta-1">
-      <h3>Data de Multiplicação</h3>
+      <h3 class="subgoal-title">Data de Multiplicação</h3>
 
-      <p {{action "editSubgoal1"}} class="subgoal-text text-large">
+      <p {{action "editSubgoal1"}} class="edit-field">
         {{multiplicationDate}}
       </p>
 
@@ -25,17 +25,17 @@
 
 
     <div class="submeta-2">
-      <h3>Presença de Deus</h3>
+      <h3 class="subgoal-title">Presença de Deus</h3>
 
       {{outlet godPresence}}
     </div>
 
     <!-- SUBGOAL 3: Novo líder -->
     <div class="submeta-3">
-      <h3>Novo Líder</h3>
+      <h3 class="subgoal-title">Novo Líder</h3>
 
       {{#each futureLeader}}
-        <div>
+        <div class="edit-field">
           <span class="text-medium">{{name}}</span>
 
           <span class="ft-requirement" data-requirement="1" {{action "futureLeaderRequirement" name}}>
@@ -98,14 +98,28 @@
 
     </div>
     <div class="submeta-4">
-      <h3>Novos Participantes</h3>
+      <h3 class="subgoal-title">Novos Participantes</h3>
 
+      <div class="edit-field">
+        <span class=""><i class="icon-sign-blank"></i></span>
+        <span class=""><i class="icon-sign-blank"></i></span>
+        <span class=""><i class="icon-sign-blank"></i></span>
+        <span class=""><i class="icon-sign-blank"></i></span>
+        <span class=""><i class="icon-sign-blank"></i></span>
+        <span class=""><i class="icon-sign-blank"></i></span>
+        <span class=""><i class="icon-sign-blank"></i></span>
+        <span class=""><i class="icon-sign-blank"></i></span>
+        <span class=""><i class="icon-sign-blank"></i></span>
+        <span class=""><i class="icon-sign-blank"></i></span>
+        <span class=""><i class="icon-sign-blank"></i></span>
+        <span class=""><i class="icon-sign-blank"></i></span>
+      </div>
 
     </div>
     <div class="submeta-5">
-      <h3>Novo Anfitrião</h3>
+      <h3 class="subgoal-title">Novo Anfitrião</h3>
 
-      <p {{action "editSubgoal5"}} class="subgoal-text">
+      <p {{action "editSubgoal5"}} class="edit-field">
               {{newHost}}
             </p>
             <div class="edit-subgoal-5">
@@ -117,6 +131,12 @@
               </a>
             </div><!-- /.edit-subgoal-5 -->
     </div>
+  </div>
+
+  <hr class="hr-subgoal">
+
+  <div class="suggestions" {{action "openSuggestionsWindow"}}>
+    <i class="icon-comment-alt"></i> <span>Sugestões?</span>
   </div>
 
 
