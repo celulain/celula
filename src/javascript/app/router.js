@@ -211,6 +211,12 @@ App.Router = Em.Router.extend({
                     // Outlet gráfico de presença de Deus
                     router.get('subgoalsController')
                         .connectOutlet('godPresence', 'godPresence');
+                },
+
+                editParticipant: function(router, event) {
+                    console.log("EDITA PARTICIPANT");
+                    // router.get('applicationController')
+                    //     .connectOutlet('window', 'editParticipant');
                 }
             }),
 

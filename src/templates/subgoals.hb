@@ -1,4 +1,4 @@
-<div class="span4">
+<div class="span4 offset1">
 
   <div class="" id="submetas">
     <div class="submeta-1">

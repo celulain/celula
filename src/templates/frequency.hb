@@ -1,30 +1,36 @@
 <div class="container-fluid">
   <div class="row-fluid">
-    <div class="span8">
+    <div class="span7">
            
       <div class="row-fluid">
         <div class="span12">
-              
-          Selecionar reunião:
+          
+              <a class="btn pull-left"><i class="icon-arrow-left"></i></a>
+              <a class="btn pull-right"><i class="icon-arrow-right"></i></a>
+
+              <br><br>
+          <!-- Selecionar reunião:
           {{view Ember.Select
             contentBinding="allMeetings"
             optionLabelPath="content.date"
             optionValuePath="content.date"
-            valueBinding="lastSelectedMeeting"}}
+            valueBinding="lastSelectedMeeting"}} -->
           
-          {{#if salvo}}
+          <!-- {{#if salvo}}
             <a style="float: right;" class="btn btn-success disabled">Salvo</a>
           {{else}}
             <a style="float: right;" {{action "salvarFrequencia"}} class="btn btn-success">Salvar</a>
-          {{/if}}
+          {{/if}} -->
           
+
+
           <table class="table table-bordered">
             <thead>
               <tr>
                 <th></th>
                 <th class="th-left">Nome</th>
                 {{#each dateMeetings}}
-                  <th>{{date}}</th>
+                  <th class="date-meeting">{{date}}</th>
                 {{/each}}
               </tr>
             </thead>
@@ -35,11 +41,13 @@
               </tr>
               {{#each members}}
                 <tr>
-                  <td>{{funcao}}</td>
-                  <td>{{nome}}</td>
+                  <td class="td-left">{{funcao}}</td>
+                  <td class="td-left">
+                    <a {{action "editParticipant"}}>{{nome}}</a>
+                  </td>
                   {{#each dateMeetings}}
                     <td>
-                      <input type="checkbox">
+                      <span class="frequency-checkbox"><i class="icon-check-empty"></i></span>
                     </td>
                   {{/each}}
                 </tr>
@@ -50,11 +58,13 @@
               </tr>
               {{#each visitors}}
                 <tr>
-                  <td>{{funcao}}</td>
-                  <td>{{nome}}</td>
+                  <td class="td-left">{{funcao}}</td>
+                  <td class="td-left">
+                    <a {{action "editParticipant"}}>{{nome}}</a>
+                  </td>
                   {{#each dateMeetings}}
                     <td>
-                      <input type="checkbox">
+                      <span class="frequency-checkbox"><i class="icon-check"></i></span>
                     </td>
                   {{/each}}
                 </tr>

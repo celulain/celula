@@ -295,7 +295,7 @@ function program30(depth0,data) {
   
   data.buffer.push("\n              <i class=\"icon-star-empty\"></i>\n            ");}
 
-  data.buffer.push("<div class=\"span4\">\n\n  <div class=\"\" id=\"submetas\">\n    <div class=\"submeta-1\">\n      <h3 class=\"subgoal-title\">Data de Multiplicação</h3>\n\n      <p ");
+  data.buffer.push("<div class=\"span4 offset1\">\n\n  <div class=\"\" id=\"submetas\">\n    <div class=\"submeta-1\">\n      <h3 class=\"subgoal-title\">Data de Multiplicação</h3>\n\n      <p ");
   stack1 = depth0;
   stack2 = "editSubgoal1";
   stack3 = helpers.action;

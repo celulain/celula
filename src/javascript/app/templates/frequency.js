@@ -26,7 +26,7 @@ function program3(depth0,data) {
 function program5(depth0,data) {
   
   var buffer = '', stack1, stack2, stack3;
-  data.buffer.push("\n                  <th>");
+  data.buffer.push("\n                  <th class=\"date-meeting\">");
   stack1 = depth0;
   stack2 = "date";
   stack3 = helpers._triageMustache;
@@ -42,7 +42,7 @@ function program5(depth0,data) {
 function program7(depth0,data) {
   
   var buffer = '', stack1, stack2, stack3;
-  data.buffer.push("\n                <tr>\n                  <td>");
+  data.buffer.push("\n                <tr>\n                  <td class=\"td-left\">");
   stack1 = depth0;
   stack2 = "funcao";
   stack3 = helpers._triageMustache;
@@ -52,7 +52,17 @@ function program7(depth0,data) {
   tmp1.contexts.push(stack1);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "</td>\n                  <td>");
+  data.buffer.push(escapeExpression(stack1) + "</td>\n                  <td class=\"td-left\">\n                    <a ");
+  stack1 = depth0;
+  stack2 = "editParticipant";
+  stack3 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + ">");
   stack1 = depth0;
   stack2 = "nome";
   stack3 = helpers._triageMustache;
@@ -62,7 +72,7 @@ function program7(depth0,data) {
   tmp1.contexts.push(stack1);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "</td>\n                  ");
+  data.buffer.push(escapeExpression(stack1) + "</a>\n                  </td>\n                  ");
   stack1 = depth0;
   stack2 = "dateMeetings";
   stack3 = helpers.each;
@@ -80,12 +90,12 @@ function program7(depth0,data) {
 function program8(depth0,data) {
   
   
-  data.buffer.push("\n                    <td>\n                      <input type=\"checkbox\">\n                    </td>\n                  ");}
+  data.buffer.push("\n                    <td>\n                      <span class=\"frequency-checkbox\"><i class=\"icon-check-empty\"></i></span>\n                    </td>\n                  ");}
 
 function program10(depth0,data) {
   
   var buffer = '', stack1, stack2, stack3;
-  data.buffer.push("\n                <tr>\n                  <td>");
+  data.buffer.push("\n                <tr>\n                  <td class=\"td-left\">");
   stack1 = depth0;
   stack2 = "funcao";
   stack3 = helpers._triageMustache;
@@ -95,7 +105,17 @@ function program10(depth0,data) {
   tmp1.contexts.push(stack1);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "</td>\n                  <td>");
+  data.buffer.push(escapeExpression(stack1) + "</td>\n                  <td class=\"td-left\">\n                    <a ");
+  stack1 = depth0;
+  stack2 = "editParticipant";
+  stack3 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + ">");
   stack1 = depth0;
   stack2 = "nome";
   stack3 = helpers._triageMustache;
@@ -105,7 +125,7 @@ function program10(depth0,data) {
   tmp1.contexts.push(stack1);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "</td>\n                  ");
+  data.buffer.push(escapeExpression(stack1) + "</a>\n                  </td>\n                  ");
   stack1 = depth0;
   stack2 = "dateMeetings";
   stack3 = helpers.each;
@@ -123,9 +143,9 @@ function program10(depth0,data) {
 function program11(depth0,data) {
   
   
-  data.buffer.push("\n                    <td>\n                      <input type=\"checkbox\">\n                    </td>\n                  ");}
+  data.buffer.push("\n                    <td>\n                      <span class=\"frequency-checkbox\"><i class=\"icon-check\"></i></span>\n                    </td>\n                  ");}
 
-  data.buffer.push("<div class=\"container-fluid\">\n  <div class=\"row-fluid\">\n    <div class=\"span8\">\n           \n      <div class=\"row-fluid\">\n        <div class=\"span12\">\n              \n          Selecionar reunião:\n          ");
+  data.buffer.push("<div class=\"container-fluid\">\n  <div class=\"row-fluid\">\n    <div class=\"span7\">\n           \n      <div class=\"row-fluid\">\n        <div class=\"span12\">\n          \n              <a class=\"btn pull-left\"><i class=\"icon-arrow-left\"></i></a>\n              <a class=\"btn pull-right\"><i class=\"icon-arrow-right\"></i></a>\n\n              <br><br>\n          <!-- Selecionar reunião:\n          ");
   stack1 = depth0;
   stack2 = "Ember.Select";
   stack3 = {};
@@ -144,7 +164,7 @@ function program11(depth0,data) {
   tmp1.contexts.push(stack1);
   tmp1.data = data;
   stack1 = stack4.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "\n          \n          ");
+  data.buffer.push(escapeExpression(stack1) + " -->\n          \n          <!-- ");
   stack1 = depth0;
   stack2 = "salvo";
   stack3 = helpers['if'];
@@ -157,7 +177,7 @@ function program11(depth0,data) {
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n          \n          <table class=\"table table-bordered\">\n            <thead>\n              <tr>\n                <th></th>\n                <th class=\"th-left\">Nome</th>\n                ");
+  data.buffer.push(" -->\n          \n\n\n          <table class=\"table table-bordered\">\n            <thead>\n              <tr>\n                <th></th>\n                <th class=\"th-left\">Nome</th>\n                ");
   stack1 = depth0;
   stack2 = "dateMeetings";
   stack3 = helpers.each;

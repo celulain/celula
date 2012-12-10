@@ -1,3 +1,6 @@
 App.FrequencyView = Em.View.extend({
-    templateName: 'frequency'
+    templateName: 'frequency',
+    didInsertElement: function() {
+        // Adicionar date picker
+    }
 });

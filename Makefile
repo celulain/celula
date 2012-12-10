@@ -38,6 +38,7 @@ app.development: public/js/development/app.js
 app.production: app.development style.app src/lib/lib-app.js
 	uglifyjs public/js/development/app.js > src/javascript/app.min.js
 	cat src/lib/jquery/jquery-1.8.3.uglified.js \
+	src/lib/jquery-ui/jquery-ui-1.8.23.custom.min.js \
     src/lib/bootstrap/bootstrap.min.js \
 	src/lib/handlebars/handlebars-1.0.rc.1.min.js \
 	src/lib/ember/ember-1.0.0-pre.2.min.js \
