@@ -162,8 +162,88 @@ class ApiController extends Zend_Controller_Action
         echo Zend_Json::encode($return);
     }
 
+    public function reunioesAction()
+    {
+        $this->_helper->layout()->setLayout('json');
+        $request = $this->getRequest();
+        $params = $request->getParams();
+        $method = $request->getMethod();
+        $paramsPut = '';
+        if($request->isPut())
+        {
+            $rawBody = $request->getRawBody();
+            parse_str($rawBody, $paramsPut);
+        }
+        $meeting = new Application_Model_Meeting();
+        $data = $meeting->returnMeetings($method,$params,$paramsPut);
+        $statusCode = '200';
+        $statusMessage = 'Ok';
+        $return = array(
+                'statusCode' => $statusCode,
+                'statusMessage' => $statusMessage,
+                'data' => $data
+                );
+
+        echo Zend_Json::encode($return);
+    }
+
+    public function cellAction()
+    {
+        try{
+        $this->_helper->layout()->setLayout('json');
+        $cell = new Application_Model_Cell();
+        $request = $this->getRequest();
+        $params = $request->getParams();
+        $data = $cell->getProfileCell($params['cell_id']);
+        $statusCode = '200';
+        $statusMessage = 'Ok';
+        $return = array(
+                    'statusCode' => $statusCode,
+                    'statusMessage' => $statusMessage,
+                    'data'  => $data
+                    );
+        echo Zend_Json::encode($return);
+    }catch(Zend_Exception $e){
+        echo $e->getMessage();
+    }
+    }
+
+    public function suggestionsAction()
+    {
+        if($this->getRequest()->isPost())
+        {
+            $authNamespace = new Zend_Session_Namespace('userInformation');
+            $this->_helper->layout()->setLayout('json');
+            $data = $this->getRequest()->getPost();
+            $suggestions = new Application_Model_DbTable_CoreSuggestions();
+            $newRow = $suggestions->createRow();
+            $newRow->user_id = $data['user_id'];
+            $newRow->suggestion = $data['suggestion'];
+            $newRow->date = new Zend_Db_Expr('NOW()');
+            $newRow->save();
+            $statusCode = '200';
+            $statusMessage = 'Ok';
+        }
+        else
+        {
+            $statusCode = '400';
+            $statusMessage = 'Bad Request';
+        }
+        $return = array(
+                    'statusCode' => $statusCode,
+                    'statusMessage' => $statusMessage,
+                    );
+        echo Zend_Json::encode($return);
+    }
+
 
 }
+
+
+
+
+
+
 
 
 

@@ -84,6 +84,9 @@
           <actionMethod actionName="getmember"/>
           <actionMethod actionName="getparticipants"/>
           <actionMethod actionName="saveparticipant"/>
+          <actionMethod actionName="reunioes"/>
+          <actionMethod actionName="cell"/>
+          <actionMethod actionName="suggestions"/>
         </controllerFile>
         <controllerFile controllerName="Password">
           <actionMethod actionName="index"/>
@@ -143,6 +146,7 @@
           <dbTableFile dbTableName="ChurchRole"/>
           <dbTableFile dbTableName="ChurchPriests"/>
           <dbTableFile dbTableName="CellLeadership"/>
+          <dbTableFile dbTableName="CoreSuggestions"/>
         </dbTableDirectory>
         <modelFile modelName="Cell"/>
         <modelFile modelName="Participantes"/>
@@ -152,6 +156,7 @@
         <modelFile modelName="SubmitDecorator"/>
         <modelFile modelName="Member"/>
         <modelFile modelName="Church"/>
+        <modelFile modelName="Meeting"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>
@@ -320,6 +325,15 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Api">
             <viewScriptFile forActionName="saveparticipant"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Api">
+            <viewScriptFile forActionName="reunioes"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Api">
+            <viewScriptFile forActionName="cell"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Api">
+            <viewScriptFile forActionName="suggestions"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

@@ -225,12 +225,11 @@ class Application_Model_Cell
 	{
 		$cell_meeting = new Application_Model_DbTable_CellMeeting();
 		$select = $cell_meeting->select()->setIntegrityCheck(false);
-		$select	->from('cell_meeting',array('DATE_FORMAT(date,"%d/%m") AS dateMeeting','meeting_id'))
+		$select	->from('cell_meeting',array('date' => 'DATE_FORMAT(date,"%d-%m-%Y")','id' => 'meeting_id'))
 				->where("cell_id = ?",$cellId)
 				->group('date')
-				->limit(4)
-				->order('date ASC');
-		return $cell_meeting->fetchAll($select);
+				->order('date DESC');
+		return $cell_meeting->fetchAll($select)->toArray();
 	}
 
 	public function newLeader($data)
@@ -268,6 +267,29 @@ class Application_Model_Cell
             array_push($participants,$aux);
         }
         return $participants;
+	}
+
+	public function getProfileCell($cellId)
+	{
+		$cell = new Application_Model_DbTable_Cell();
+        $select = $cell->select()->setIntegrityCheck(false);
+		$select	->from(array('c' => 'cell'), array('date_start' => 'DATE_FORMAT(start_date,"%d-%m-%Y")'))
+				->joinInner(array('cu' => 'cell_user'),'cu.cell_id=c.cell_id AND cu.role_id=1', array('user_id'))
+				->joinInner(array('cou' => 'core_user'),'cu.user_id=cou.user_id',array('name' => 'IF(cou.nickname="",CONCAT(cou.name," ",cou.surname),cou.nickname)'))
+				->joinInner(array('cd' => 'cell_detailed'),'cd.cell_id=c.cell_id',array('week_day_id','gender_id','age_group_id','hour_start'))
+				->where('c.cell_id = ?', $cellId);
+		$data = $cell->fetchRow($select);
+        $information = array(
+                "cell_id"       	=> $cellId,
+                "date_start"    	=> $data->date_start,
+                "leader_id"       	=> $data->user_id,
+                "name"				=> $data->name,
+                "week_day_id"		=> $data->week_day_id,
+                "gender_id"			=> $data->gender_id,
+                "age_group_id"		=> $data->age_group_id,
+                "hour_start"		=> $data->hour_start
+            );
+        return $information;
 	}
 }
 
