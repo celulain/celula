@@ -241,5 +241,32 @@ class Application_Model_Cell
 		$newCellLeadership->position = $data['type'];
 		$newCellLeadership->save();
 	}
+
+	public function getParticipants($cellId)
+	{
+        $cell = new Application_Model_DbTable_CellUser();
+        $select = $cell->select()->setIntegrityCheck(false);
+		$select	->from(array('cu' => 'cell_user'), array('user_id','date_start','role_id'))
+				->joinInner(array('cou' => 'core_user'),'cu.user_id=cou.user_id',array('name' => 'IF(cou.nickname="",CONCAT(cou.name," ",cou.surname),cou.nickname)','gender'))
+				->joinInner(array('cua' => 'core_user_address'),'cua.user_id=cu.user_id',array('phone'))
+				->joinInner(array('cui' => 'core_user_information'),'cui.user_id=cu.user_id',array('baptized'))
+				->where('cu.cell_id = ?', $cellId);
+		$data = $cell->fetchAll($select);
+        $participants = array();
+        foreach($data as $users)
+        {
+            $aux = array(
+                    "user_id"       => $users->user_id,
+                    "date_start"    => $users->date_start,
+                    "role_id"       => $users->role_id,
+                    "name"			=> $users->name,
+                    "gender"		=> $users->gender,
+                    "phone"			=> $users->phone,
+                    "baptized"		=> $users->baptized
+                );
+            array_push($participants,$aux);
+        }
+        return $participants;
+	}
 }
 

@@ -179,6 +179,46 @@ $sql_cell_member = "
 
 ";
 
+$sql_cell_address = "
+
+	INSERT INTO
+		celula.cell_host
+	SELECT
+		g.Codigo,
+		CONVERT(g.Endereco USING utf8),
+		g.NumeroEnd,
+		0,
+		g.Bairro,
+		2700,
+		g.Cep
+	FROM
+		celula_antigo.tblgrupos g
+	WHERE
+		g.codigo IN (SELECT cell_id FROM celula_ibcbh.cell)
+
+";
+
+$sql_cell_info = "
+	INSERT INTO
+		celula_ibcbh.cell_detailed
+	SELECT
+		g.Codigo,
+		IF(g.Dia='Segunda-Feira',1,IF(g.Dia='Terça-Feira',2,IF(g.Dia='Quarta-Feira',3,IF(g.Dia='Quinta-Feira',4,IF(g.Dia='Sexta-Feira',5,IF(g.Dia='S?bado',6,6)))))),
+		0,
+		0,
+		g.Horarioentrada
+	FROM 
+		celula_antigo.tblgrupos g
+	WHERE
+		g.codigo IN (SELECT cell_id FROM celula_ibcbh.cell)
+";
+
+
+$sql_leadership = "
+
+
+
+";
 
 // POR ENQUANTO NAO VAMOS IMPORTAR OS FREQUENTADORES
 $sql_cell_goers = "
@@ -197,34 +237,6 @@ $sql_cell_goers = "
 		
 ";
 
-$sql_cell_address = "
 
-	INSERT INTO
-		celula.cell_host
-	SELECT
-		g.Codigo,
-		g.Endereco,
-		g.NumeroEnd,
-		0,
-		g.Bairro,
-		0,
-		g.Cep
-	FROM
-		celula_antigo.tblgrupos g
-
-";
-
-$sql_cell_info = "
-	INSERT INTO
-		celula.cell_detailed
-	SELECT
-		g.Codigo,
-		IF(g.Dia='Segunda-Feira',1,IF(g.Dia='Terça-Feira',2,IF(g.Dia='Quarta-Feira',3,IF(g.Dia='Quinta-Feira',4,IF(g.Dia='Sexta-Feira',5,IF(g.Dia='S?bado',6,6)))))),
-		0,
-		0,
-		g.Horarioentrada
-	FROM 
-		celula_antigo.tblgrupos g
-";
 
 ?>
