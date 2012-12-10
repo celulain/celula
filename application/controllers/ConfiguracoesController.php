@@ -16,7 +16,7 @@ class ConfiguracoesController extends Zend_Controller_Action
     public function perfilAction()
     {
         $authNamespace = new Zend_Session_Namespace('userInformation');
-        $userDetailed = new Application_Model_DbTable_CoreUserDetailed();
+        $userDetailed = new Application_Model_DbTable_CoreUser();
         if($this->getRequest()->isPost())
         {
         	$data = $this->getRequest()->getPost();
