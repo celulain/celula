@@ -200,7 +200,7 @@ App.Router = Em.Router.extend({
                 route: '/frequencia',
                 connectOutlets: function(router) {
                     router.get('applicationController')
-                        .connectOutlet('container','frequency');
+                        .connectOutlet('container','frequency', App.Participant.find());
 
                     router.get('frequencyController')
                         .connectOutlet('subgoals','subgoals', App.Subgoals.find());

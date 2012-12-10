@@ -43,7 +43,7 @@
                 <tr>
                   <td class="td-left">{{funcao}}</td>
                   <td class="td-left">
-                    <a {{action "editParticipant"}}>{{nome}}</a>
+                    <a {{action "editParticipant"}}>{{name}}</a>
                   </td>
                   {{#each dateMeetings}}
                     <td>
@@ -60,7 +60,7 @@
                 <tr>
                   <td class="td-left">{{funcao}}</td>
                   <td class="td-left">
-                    <a {{action "editParticipant"}}>{{nome}}</a>
+                    <a {{action "editParticipant"}}>{{name}}</a>
                   </td>
                   {{#each dateMeetings}}
                     <td>

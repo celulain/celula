@@ -85,77 +85,7 @@ App.ApplicationController = Em.Controller.extend({
     content: null
 });
 App.FrequencyController = Em.ArrayController.extend({
-    content: [
-        {
-            funcao: 'Líder de célula',
-            categoria: '1',
-            nome: 'André',
-            dateMeetings: [
-                {
-                    date: '30-11-2012',
-                    present: true
-                },
-                {
-                    date: '23-11-2012',
-                    present: true
-                },
-                {
-                    date: '16-11-2012',
-                    present: false
-                },
-                {
-                    date: '09-11-2012',
-                    present: false
-                }
-            ]
-        },
-        {
-            funcao: 'Visitante',
-            categoria: '2',
-            nome: 'Fabrício ggg',
-            dateMeetings: [
-                {
-                    date: '30-11-2012',
-                    present: true
-                },
-                {
-                    date: '23-11-2012',
-                    present: false
-                },
-                {
-                    date: '16-11-2012',
-                    present: false
-                },
-                {
-                    date: '09-11-2012',
-                    present: false
-                }
-            ]
-        },
-        {
-            funcao: 'Líder em treinamento',
-            categoria: '2',
-            nome: 'Fabrício',
-            dateMeetings: [
-                {
-                    date: '30-11-2012',
-                    present: true
-                },
-                {
-                    date: '23-11-2012',
-                    present: false
-                },
-                {
-                    date: '16-11-2012',
-                    present: false
-                },
-                {
-                    date: '09-11-2012',
-                    present: false
-                }
-            ]
-        }
-    ],
+    content: [],
 
     // Frequencia salva
     salvo: true,
@@ -689,7 +619,7 @@ App.Router = Em.Router.extend({
                 route: '/frequencia',
                 connectOutlets: function(router) {
                     router.get('applicationController')
-                        .connectOutlet('container','frequency');
+                        .connectOutlet('container','frequency', App.Participant.find());
 
                     router.get('frequencyController')
                         .connectOutlet('subgoals','subgoals', App.Subgoals.find());
@@ -1336,7 +1266,7 @@ function program7(depth0,data) {
   stack1 = stack3.call(depth0, stack2, tmp1);
   data.buffer.push(escapeExpression(stack1) + ">");
   stack1 = depth0;
-  stack2 = "nome";
+  stack2 = "name";
   stack3 = helpers._triageMustache;
   tmp1 = {};
   tmp1.hash = {};
@@ -1389,7 +1319,7 @@ function program10(depth0,data) {
   stack1 = stack3.call(depth0, stack2, tmp1);
   data.buffer.push(escapeExpression(stack1) + ">");
   stack1 = depth0;
-  stack2 = "nome";
+  stack2 = "name";
   stack3 = helpers._triageMustache;
   tmp1 = {};
   tmp1.hash = {};

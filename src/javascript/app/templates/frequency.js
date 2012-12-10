@@ -64,7 +64,7 @@ function program7(depth0,data) {
   stack1 = stack3.call(depth0, stack2, tmp1);
   data.buffer.push(escapeExpression(stack1) + ">");
   stack1 = depth0;
-  stack2 = "nome";
+  stack2 = "name";
   stack3 = helpers._triageMustache;
   tmp1 = {};
   tmp1.hash = {};
@@ -117,7 +117,7 @@ function program10(depth0,data) {
   stack1 = stack3.call(depth0, stack2, tmp1);
   data.buffer.push(escapeExpression(stack1) + ">");
   stack1 = depth0;
-  stack2 = "nome";
+  stack2 = "name";
   stack3 = helpers._triageMustache;
   tmp1 = {};
   tmp1.hash = {};
