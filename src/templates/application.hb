@@ -16,7 +16,10 @@
                 </a>
                 <ul class="dropdown-menu">
                 <li>
-                    <a {{action "gotoSettings" href="true"}}>
+                    <!-- <a {{action "gotoSettings" href="true"}}>
+                        <i class="icon-wrench"></i> Configurações
+                    </a> -->
+                    <a href="/configuracoes/perfil">
                         <i class="icon-wrench"></i> Configurações
                     </a>
                 </li>
@@ -38,7 +41,8 @@
                         <ul class="dropdown-menu">
                             <li><a {{action "gotoFrequency" href="true"}}>Frequência</a></li>
                             <li><a {{action "gotoParticipants" href="true"}}>Participantes</a></li>
-                            <li><a {{action "gotoRegister" href="true"}}>Cadastro</a></li>
+                            <!-- <li><a {{action "gotoRegister" href="true"}}>Cadastro</a></li> -->
+                            <li><a href="/celula/cadastro">Cadastro</a></li>
                             <li><a {{action "gotoProfile" href="true"}}>Perfil</a></li>
                         </ul>
                     </li>
@@ -77,9 +81,12 @@
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a {{action "gotoLessons" href="true"}}>Lições de Célula</a></li>
+                            <!-- <li><a {{action "gotoLessons" href="true"}}>Lições de Célula</a></li>
                             <li><a {{action "gotoPraise" href="true"}}>Louvor</a></li>
-                            <li><a {{action "gotoDynamics" href="true"}}>Dinâmicas</a></li>
+                            <li><a {{action "gotoDynamics" href="true"}}>Dinâmicas</a></li> -->
+                            <li><a href="/recursos/licoes-de-celula">Lições de Célula</a></li>
+                            <li><a href="/recursos/louvor">Louvor</a></li>
+                            <li><a href="/recursos/dinamicas">Dinâmicas</a></li>
                         </ul>
                     </li>
                 </ul>
