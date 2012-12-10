@@ -133,8 +133,39 @@ class ApiController extends Zend_Controller_Action
         echo Zend_Json::encode($return);
     }
 
+    public function saveparticipantAction()
+    {
+        try{
+            if($this->getRequest()->isPost())
+            {
+                $authNamespace = new Zend_Session_Namespace('userInformation');
+                $this->_helper->layout()->setLayout('json');
+                $data = $this->getRequest()->getPost();
+                $cell = new Application_Model_Cell();
+                $userId = $cell->saveMember($data,$data['userId']);
+                $data = array("user_id" => $userId);
+                $statusCode = '200';
+                $statusMessage = 'Ok';
+            }
+        }catch(Zend_Exception $e)
+        {
+            $statusCode = '400';
+            $statusMessage = 'Error';
+            $data = $e->getMessage();
+        }
+        $return = array(
+                'statusCode' => $statusCode,
+                'statusMessage' => $statusMessage,
+                'data' => $data
+                );
+
+        echo Zend_Json::encode($return);
+    }
+
 
 }
+
+
 
 
 

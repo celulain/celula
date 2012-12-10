@@ -9,6 +9,7 @@ class Application_Model_Cell
 		$this->saveUserAddress($data,$userId);
 		$this->saveUserInformation($data,$userId);
 		$this->saveCellUser($data,$userId);
+		return $userId;
 	}
 	
 	public function returnSurname($completeName)
@@ -24,7 +25,7 @@ class Application_Model_Cell
 	
 	public function saveUserDetailed($data,$userId=0)
 	{
-		$userDetailed = new Application_Model_DbTable_CoreUserDetailed();
+		$userDetailed = new Application_Model_DbTable_CoreUser();
 		if($userId)
 		{
 			$newUserDetailed = $userDetailed->fetchRow($userDetailed->select()->where("user_id = ?",$userId));

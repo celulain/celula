@@ -83,6 +83,7 @@
           <actionMethod actionName="presence"/>
           <actionMethod actionName="getmember"/>
           <actionMethod actionName="getparticipants"/>
+          <actionMethod actionName="saveparticipant"/>
         </controllerFile>
         <controllerFile controllerName="Password">
           <actionMethod actionName="index"/>
@@ -316,6 +317,9 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Api">
             <viewScriptFile forActionName="getparticipants"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Api">
+            <viewScriptFile forActionName="saveparticipant"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
