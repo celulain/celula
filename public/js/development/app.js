@@ -105,6 +105,20 @@ App.Participant = DS.Model.extend({
 //         return this.participants;
 //     }
 // });
+App.SubgoalMultiplicationDate = DS.Model.extend({
+    multiplication_date: DS.attr('date'),
+    days_remaining: function() {
+        var date = this.get('multiplication_date'),
+            format = d3.time.format("%d/%m/%Y"),
+            toDate = format.parse(date),
+            today = new Date();
+
+        var days =  Math.floor(( toDate - today ) / 86400000);
+        var beautyPrint = d3.time.format("%d/%m/%Y");
+
+        return days;
+    }.property('multiplication_date')
+});
 App.Subgoals = Em.Object.extend({
     multiplicationDate: null,
     goalParticipants: null,
@@ -179,6 +193,12 @@ App.User.FIXTURE = [
 App.AdminMembersView = Em.View.extend({
     tamplateName: 'admin-members'
 });
+App.FrequencyView = Em.View.extend({
+    templateName: 'cell-frequency',
+    didInsertElement: function() {
+        // Adicionar date picker
+    }
+});
 App.CellParticipantNewView = Em.View.extend({
     templateName: 'cell-participant-new'
 });
@@ -193,12 +213,6 @@ App.CellProfileView = Em.View.extend({
 });
 App.CellRegisterView = Em.View.extend({
     templateName: 'cell-register'
-});
-App.FrequencyView = Em.View.extend({
-    templateName: 'frequency',
-    didInsertElement: function() {
-        // Adicionar date picker
-    }
 });
 App.GodPresenceView = Em.View.extend({
     templateName: 'god-presence',
@@ -347,8 +361,23 @@ App.SettingsProfileView = Em.View.extend({
 App.SettingsView = Em.View.extend({
     templateName: 'settings'
 });
-App.SubgoalsView = Em.View.extend({
-    templateName: 'subgoals'
+App.SubgoalFutureLeaderView = Em.View.extend({
+    templateName: 'subgoal-future-leader'
+});
+App.SubgoalGodPresenceView = Em.View.extend({
+    templateName: 'subgoal-god-presence'
+});
+App.SubgoalMultiplicationDateView = Em.View.extend({
+    templateName: 'subgoal-multiplication-date'
+});
+App.SubgoalNewHostView = Em.View.extend({
+    templateName: 'subgoal-new-host'
+});
+App.SubgoalNewParticipantsView = Em.View.extend({
+    templateName: 'subgoal-new-participants'
+});
+App.SuggestionNewView = Em.View.extend({
+    templateName: 'suggestion-new'
 });
 App.SuggestionsView = Em.View.extend({
     templateName: 'suggestions'
@@ -356,6 +385,75 @@ App.SuggestionsView = Em.View.extend({
 App.AdminMembersController = Em.ArrayController.extend();
 App.ApplicationController = Em.Controller.extend({
     content: null
+});
+App.FrequencyController = Em.ArrayController.extend({
+    content: [],
+    bola: function() {
+        var content = this.get('content');
+        content.forEach(function(e) {
+            console.log(e);
+        });
+    },
+    // Frequencia salva
+    salvo: true,
+
+    allMeetings: [
+        {date: '14-12-2012'},
+        {date: '07-12-2012'},
+        {date: '30-11-2012'},
+        {date: '23-11-2012'},
+        {date: '16-11-2012'},
+        {date: '09-11-2012'}
+    ],
+
+    lastSelectedMeeting: '23-11-2012',
+
+    dateMeetings: function() {
+        var allMeetings = this.get('allMeetings'),
+            lastSelectedMeeting = this.get('lastSelectedMeeting'),
+            selectedMeetings = [];
+
+
+        allMeetings.forEach(function(element, index) {
+            if (element.date === lastSelectedMeeting) {
+
+                for (var i = 0; i < 4; i++) {
+                    selectedMeetings[i] = allMeetings[index + i];
+                    console.log("i = ", i, "index = ", index);
+                }
+            }
+        });
+        return selectedMeetings;
+    }.property('allMeetings', 'lastSelectedMeeting'),
+
+    members: function() {
+        // Categoria == 1
+        var content = this.get('content');
+        var members = [];
+        console.log(content);
+
+        content.forEach(function(element, index){
+            if (element.categoria === '1') {
+                members.addObject(element);
+            }
+        });
+
+        return members;
+    }.property('content'),
+
+    visitors: function() {
+        // Categoria 2
+        var content = this.get('content'),
+            visitors = [];
+
+        content.forEach(function(element, index) {
+            if (element.categoria === '2') {
+                visitors.addObject(element);
+            }
+        });
+
+        return visitors;
+    }.property('content')
 });
 App.CellParticipantNewController = Em.ObjectController.extend({
     clear: function() {
@@ -477,78 +575,17 @@ App.CellParticipantNewController = Em.ObjectController.extend({
 });
 App.CellParticipantController = Em.ObjectController.extend();
 App.CellParticipantsController = Em.ArrayController.extend();
-App.FrequencyController = Em.ArrayController.extend({
-    content: [],
-
-    // Frequencia salva
-    salvo: true,
-
-    bola: 'bolinha',
-
-    allMeetings: [
-        {date: '14-12-2012'},
-        {date: '07-12-2012'},
-        {date: '30-11-2012'},
-        {date: '23-11-2012'},
-        {date: '16-11-2012'},
-        {date: '09-11-2012'}
-    ],
-
-    lastSelectedMeeting: '23-11-2012',
-
-    dateMeetings: function() {
-        var allMeetings = this.get('allMeetings'),
-            lastSelectedMeeting = this.get('lastSelectedMeeting'),
-            selectedMeetings = [];
-
-
-        allMeetings.forEach(function(element, index) {
-            if (element.date === lastSelectedMeeting) {
-
-                for (var i = 0; i < 4; i++) {
-                    selectedMeetings[i] = allMeetings[index + i];
-                    console.log("i = ", i, "index = ", index);
-                }
-            }
-        });
-        return selectedMeetings;
-    }.property('allMeetings', 'lastSelectedMeeting'),
-
-    members: function() {
-        // Categoria == 1
-        var content = this.get('content');
-        var members = [];
-        console.log(content);
-
-        content.forEach(function(element, index){
-            if (element.categoria === '1') {
-                members.addObject(element);
-            }
-        });
-
-        return members;
-    }.property('content'),
-
-    visitors: function() {
-        // Categoria 2
-        var content = this.get('content'),
-            visitors = [];
-
-        content.forEach(function(element, index) {
-            if (element.categoria === '2') {
-                visitors.addObject(element);
-            }
-        });
-
-        return visitors;
-    }.property('content')
-});
 App.ResourcesLessonsController = Em.ObjectController.extend();
 App.SettingsAddressController = Em.Controller.extend();
 App.SettingsContactController = Em.Controller.extend();
 App.SettingsPasswordController = Em.Controller.extend();
 App.SettingsProfileController = Em.Controller.extend();
 App.SettingsController = Em.Controller.extend();
+App.SubgoalFutureLeaderController = Em.ObjectController.extend();
+App.SubgoalGodPresenceController = Em.ObjectController.extend();
+App.SubgoalMultiplicationDateController = Em.ObjectController.extend();
+App.SubgoalNewHostController = Em.ObjectController.extend();
+App.SubgoalNewParticipantsController = Em.ObjectController.extend();
 App.SubgoalsController = Em.ArrayController.extend({
     content: [],
     getMultiplicationDate: function(){
@@ -633,6 +670,9 @@ App.SubgoalsController = Em.ArrayController.extend({
     ]
 
 });
+App.SuggestionNewController = Em.ObjectController.extend({
+    suggestion: null
+});
 App.SuggestionsController = Em.Controller.extend({
     suggestion: null
 });
@@ -657,22 +697,6 @@ App.Router = Em.Router.extend({
         gotoSettingsPassword: Em.Route.transitionTo('settings.password'),
 
         gotoAdminMembers: Em.Route.transitionTo('admin.members'),
-
-        // Suggestions
-        openSuggestionsWindow: function(router, event) {
-            router.get('applicationController')
-                .connectOutlet('window', 'suggestions')
-        },
-        sendSuggestion: function(router, event) {
-            var suggestion = router.get('suggestionsController').get('suggestion');
-
-            // TODO: ENVIA SUGESTÃO
-
-            // Apaga atual
-            router.get('suggestionsController').set('suggestion', null);
-
-            router.get('applicationController').disconnectOutlet('window');
-        },
 
         // ------
 
@@ -709,31 +733,6 @@ App.Router = Em.Router.extend({
             $('.edit-subgoal-5').hide();  
         },
 
-
-        // Adicionar visitante
-        addNewVisitor: function(router, event) {
-            router.get('applicationController')
-                .connectOutlet('window', 'newParticipant');
-
-
-            console.log( "YEYE!");
-            // $('.add-new-visitor-box').show();
-            // $('.add-visitor').hide();
-        },
-        // Salvar visitante
-        saveNewVisitor: function(router, event) {
-            $('.add-new-visitor-box').hide();
-            $('.add-visitor').show();
-
-            var name = router.get('newParticipantController').get('name');
-
-            var participant = App.Participant.create({
-                name: name
-            });
-
-            router.get('participantsController').get('content').addObject(participant);
-
-        },
         // Desconectar WINDOW outlet
         closeWindow: function(router, event) {
             router.get('applicationController').disconnectOutlet('window');
@@ -827,6 +826,37 @@ App.Router = Em.Router.extend({
             redirectsTo: 'cell.frequency'
         }),
 
+
+        gotoSuggestions: Em.Route.transitionTo('suggestions.index'),
+        gotoNewSuggestion: Em.Route.transitionTo('suggestions.newSuggestion'),
+        suggestions: Em.Route.extend({
+            route: '/sugestoes',
+            index: Em.Route.extend({
+                route: '/',
+                enter: function(router) {
+                    router.get('applicationController').disconnectOutlet('window');
+                },
+                connectOutlets: function(router) {
+                    router.get('applicationController')
+                        .connectOutlet('container', 'suggestions');
+                }
+            }),
+            newSuggestion: Em.Route.extend({
+                route: '/nova',
+                createSuggestion: function(router, event) {
+                    var suggestion = router.get('suggestionsController').get('suggestion');
+                    // TODO: ENVIA SUGESTÃO
+                    // Apaga atual
+                    router.get('suggestionsController').set('suggestion', null);
+                    router.get('applicationController').disconnectOutlet('window');
+                },
+                connectOutlets: function(router) {
+                    router.get('applicationController')
+                        .connectOutlet('window', 'suggestionNew');
+                }
+            })
+        }),
+
         // Cell state
         cell: Em.Route.extend({
             route: '/celula',
@@ -836,27 +866,29 @@ App.Router = Em.Router.extend({
                 redirectsTo: 'frequency'
             }),
 
+            gotoParticipant: Em.Route.transitionTo('participants.participant'),
+
             frequency: Em.Route.extend({
                 route: '/frequencia',
                 connectOutlets: function(router) {
                     router.get('applicationController')
-                        .connectOutlet('container','frequency', App.Participant.find());
+                        .connectOutlet('container','frequency', router.get('store').findAll(App.Participant));
 
-                    router.get('frequencyController')
-                        .connectOutlet('subgoals','subgoals', App.Subgoals.find());
-
-                    router.get('frequencyController')
-                        .connectOutlet('newParticipant','newParticipant');
+                    // Submetas
+                    router.get('frequencyController').connectOutlet('subgoalMultiplicationDate','subgoalMultiplicationDate');
+                    router.get('frequencyController').connectOutlet('subgoalGodPresence','subgoalGodPresence');
+                    router.get('frequencyController').connectOutlet('subgoalFutureLeader','subgoalFutureLeader');
+                    router.get('frequencyController').connectOutlet('subgoalNewParticipants','subgoalNewParticipants');
+                    router.get('frequencyController').connectOutlet('subgoalNewHost','subgoalNewHost');
 
                     // Outlet gráfico de presença de Deus
-                    router.get('subgoalsController')
-                        .connectOutlet('godPresence', 'godPresence');
+                    // router.get('subgoalsController')
+                        // .connectOutlet('godPresence', 'godPresence');
                 }
             }),
 
             participants: Em.Route.extend({
                 route: '/participantes',
-                gotoParticipant: Em.Route.transitionTo('participant'),
                 gotoNewParticipant: Em.Route.transitionTo('newParticipant'),
 
                 index: Em.Route.extend({
@@ -1208,6 +1240,221 @@ helpers = helpers || Ember.Handlebars.helpers;
   else if(stack3=== undef) { stack1 = helperMissing.call(depth0, "outlet", stack2, tmp1); }
   else { stack1 = stack3; }
   data.buffer.push(escapeExpression(stack1) + "\n");
+  return buffer;
+});Ember.TEMPLATES["cell-frequency"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+helpers = helpers || Ember.Handlebars.helpers;
+  var buffer = '', stack1, stack2, stack3, stack4, foundHelper, tmp1, self=this, escapeExpression=this.escapeExpression, functionType="function", helperMissing=helpers.helperMissing, undef=void 0;
+
+function program1(depth0,data) {
+  
+  
+  data.buffer.push("\n            <a style=\"float: right;\" class=\"btn btn-success disabled\">Salvo</a>\n          ");}
+
+function program3(depth0,data) {
+  
+  var buffer = '', stack1, stack2, stack3;
+  data.buffer.push("\n            <a style=\"float: right;\" ");
+  stack1 = depth0;
+  stack2 = "salvarFrequencia";
+  stack3 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + " class=\"btn btn-success\">Salvar</a>\n          ");
+  return buffer;}
+
+function program5(depth0,data) {
+  
+  var buffer = '', stack1, stack2, stack3;
+  data.buffer.push("\n                  <th class=\"date-meeting\">");
+  stack1 = depth0;
+  stack2 = "date";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "</th>\n                ");
+  return buffer;}
+
+function program7(depth0,data) {
+  
+  var buffer = '', stack1, stack2, stack3, stack4, stack5;
+  data.buffer.push("\n                <tr>\n                  <td class=\"td-left\">");
+  stack1 = depth0;
+  stack2 = "position";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "</td>\n                  <td class=\"td-left\">\n                    <a ");
+  stack1 = depth0;
+  stack2 = "";
+  stack3 = depth0;
+  stack4 = "gotoParticipant";
+  stack5 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack3);
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack5.call(depth0, stack4, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + ">");
+  stack1 = depth0;
+  stack2 = "name";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "</a>\n                  </td>\n                  \n                    <td>\n                      <span class=\"frequency-checkbox\"><i class=\"icon-check-empty\"></i></span>\n                    </td>\n                  \n                </tr>\n              ");
+  return buffer;}
+
+  data.buffer.push("<div class=\"container-fluid\">\n  <div class=\"row-fluid\">\n    <div class=\"span7\">\n           \n      <div class=\"row-fluid\">\n        <div class=\"span12\">\n          \n              <a class=\"btn pull-left\"><i class=\"icon-arrow-left\"></i></a>\n              <a class=\"btn pull-right\"><i class=\"icon-arrow-right\"></i></a>\n\n              <br><br>\n          <!-- Selecionar reunião:\n          ");
+  stack1 = depth0;
+  stack2 = "Ember.Select";
+  stack3 = {};
+  stack4 = "allMeetings";
+  stack3['contentBinding'] = stack4;
+  stack4 = "content.date";
+  stack3['optionLabelPath'] = stack4;
+  stack4 = "content.date";
+  stack3['optionValuePath'] = stack4;
+  stack4 = "lastSelectedMeeting";
+  stack3['valueBinding'] = stack4;
+  stack4 = helpers.view;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + " -->\n          \n          <!-- ");
+  stack1 = depth0;
+  stack2 = "salvo";
+  stack3 = helpers['if'];
+  tmp1 = self.program(1, program1, data);
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.fn = tmp1;
+  tmp1.inverse = self.program(3, program3, data);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push(" -->\n          \n\n\n          <table class=\"table table-bordered\">\n            <thead>\n              <tr>\n                <th></th>\n                <th class=\"th-left\">Nome</th>\n                ");
+  stack1 = depth0;
+  stack2 = "dateMeetings";
+  stack3 = helpers.each;
+  tmp1 = self.program(5, program5, data);
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.fn = tmp1;
+  tmp1.inverse = self.noop;
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n              </tr>\n            </thead>\n            \n            <tbody>\n              <tr>\n                <td colspan=\"8\">Participantes</td>\n              </tr>\n              ");
+  stack1 = depth0;
+  stack2 = "content";
+  stack3 = helpers.each;
+  tmp1 = self.program(7, program7, data);
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.fn = tmp1;
+  tmp1.inverse = self.noop;
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n            </tbody>\n          </table>\n\n\n      <p class=\"add-visitor\">\n        <a class=\"btn btn-block btn-large\">Adicionar Visitante</a>\n      </p>\n\n      </div><!--/.span12 -->\n    </div><!--/.row-fluid -->\n  </div><!--/span8 -->\n\n  <div class=\"span4 offset1\">\n  <div class=\"\" id=\"submetas\">\n    <div class=\"submeta-1\">\n      ");
+  stack1 = depth0;
+  stack2 = "subgoalMultiplicationDate";
+  foundHelper = helpers.outlet;
+  stack3 = foundHelper || depth0.outlet;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  if(typeof stack3 === functionType) { stack1 = stack3.call(depth0, stack2, tmp1); }
+  else if(stack3=== undef) { stack1 = helperMissing.call(depth0, "outlet", stack2, tmp1); }
+  else { stack1 = stack3; }
+  data.buffer.push(escapeExpression(stack1) + "\n    </div>\n\n    <div class=\"submeta-2\">\n      ");
+  stack1 = depth0;
+  stack2 = "subgoalGodPresence";
+  foundHelper = helpers.outlet;
+  stack3 = foundHelper || depth0.outlet;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  if(typeof stack3 === functionType) { stack1 = stack3.call(depth0, stack2, tmp1); }
+  else if(stack3=== undef) { stack1 = helperMissing.call(depth0, "outlet", stack2, tmp1); }
+  else { stack1 = stack3; }
+  data.buffer.push(escapeExpression(stack1) + "\n    </div>\n\n    <!-- SUBGOAL 3: Novo líder -->\n    <div class=\"submeta-3\">\n      ");
+  stack1 = depth0;
+  stack2 = "subgoalFutureLeader";
+  foundHelper = helpers.outlet;
+  stack3 = foundHelper || depth0.outlet;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  if(typeof stack3 === functionType) { stack1 = stack3.call(depth0, stack2, tmp1); }
+  else if(stack3=== undef) { stack1 = helperMissing.call(depth0, "outlet", stack2, tmp1); }
+  else { stack1 = stack3; }
+  data.buffer.push(escapeExpression(stack1) + "\n    </div>\n\n    <div class=\"submeta-4\">\n      ");
+  stack1 = depth0;
+  stack2 = "subgoalNewParticipants";
+  foundHelper = helpers.outlet;
+  stack3 = foundHelper || depth0.outlet;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  if(typeof stack3 === functionType) { stack1 = stack3.call(depth0, stack2, tmp1); }
+  else if(stack3=== undef) { stack1 = helperMissing.call(depth0, "outlet", stack2, tmp1); }
+  else { stack1 = stack3; }
+  data.buffer.push(escapeExpression(stack1) + "\n    </div>\n\n    <div class=\"submeta-5\">\n      ");
+  stack1 = depth0;
+  stack2 = "subgoalNewHost";
+  foundHelper = helpers.outlet;
+  stack3 = foundHelper || depth0.outlet;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  if(typeof stack3 === functionType) { stack1 = stack3.call(depth0, stack2, tmp1); }
+  else if(stack3=== undef) { stack1 = helperMissing.call(depth0, "outlet", stack2, tmp1); }
+  else { stack1 = stack3; }
+  data.buffer.push(escapeExpression(stack1) + "\n    </div>\n  </div>\n\n  <hr class=\"hr-subgoal\">\n\n  <div class=\"suggestions\" ");
+  stack1 = depth0;
+  stack2 = "gotoNewSuggestion";
+  stack3 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + ">\n    <div class=\"icone\">\n      <i class=\"icon-comment\"></i>\n    </div>\n\n    <div class=\"texto\">\n       Sugestões?\n    </div>\n  </div>\n</div>\n  </div><!--/.row-fluid -->\n\n</div><!--/.container-fluid -->");
   return buffer;
 });Ember.TEMPLATES["cell-participant-new"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 helpers = helpers || Ember.Handlebars.helpers;
@@ -1602,249 +1849,6 @@ helpers = helpers || Ember.Handlebars.helpers;
 
 
   data.buffer.push("cadastro");
-});Ember.TEMPLATES["frequency"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-helpers = helpers || Ember.Handlebars.helpers;
-  var buffer = '', stack1, stack2, stack3, stack4, foundHelper, tmp1, self=this, escapeExpression=this.escapeExpression, functionType="function", helperMissing=helpers.helperMissing, undef=void 0;
-
-function program1(depth0,data) {
-  
-  
-  data.buffer.push("\n            <a style=\"float: right;\" class=\"btn btn-success disabled\">Salvo</a>\n          ");}
-
-function program3(depth0,data) {
-  
-  var buffer = '', stack1, stack2, stack3;
-  data.buffer.push("\n            <a style=\"float: right;\" ");
-  stack1 = depth0;
-  stack2 = "salvarFrequencia";
-  stack3 = helpers.action;
-  tmp1 = {};
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.data = data;
-  stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + " class=\"btn btn-success\">Salvar</a>\n          ");
-  return buffer;}
-
-function program5(depth0,data) {
-  
-  var buffer = '', stack1, stack2, stack3;
-  data.buffer.push("\n                  <th class=\"date-meeting\">");
-  stack1 = depth0;
-  stack2 = "date";
-  stack3 = helpers._triageMustache;
-  tmp1 = {};
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.data = data;
-  stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "</th>\n                ");
-  return buffer;}
-
-function program7(depth0,data) {
-  
-  var buffer = '', stack1, stack2, stack3;
-  data.buffer.push("\n                <tr>\n                  <td class=\"td-left\">");
-  stack1 = depth0;
-  stack2 = "funcao";
-  stack3 = helpers._triageMustache;
-  tmp1 = {};
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.data = data;
-  stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "</td>\n                  <td class=\"td-left\">\n                    <a ");
-  stack1 = depth0;
-  stack2 = "editParticipant";
-  stack3 = helpers.action;
-  tmp1 = {};
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.data = data;
-  stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + ">");
-  stack1 = depth0;
-  stack2 = "name";
-  stack3 = helpers._triageMustache;
-  tmp1 = {};
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.data = data;
-  stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "</a>\n                  </td>\n                  ");
-  stack1 = depth0;
-  stack2 = "dateMeetings";
-  stack3 = helpers.each;
-  tmp1 = self.program(8, program8, data);
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.fn = tmp1;
-  tmp1.inverse = self.noop;
-  tmp1.data = data;
-  stack1 = stack3.call(depth0, stack2, tmp1);
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n                </tr>\n              ");
-  return buffer;}
-function program8(depth0,data) {
-  
-  
-  data.buffer.push("\n                    <td>\n                      <span class=\"frequency-checkbox\"><i class=\"icon-check-empty\"></i></span>\n                    </td>\n                  ");}
-
-function program10(depth0,data) {
-  
-  var buffer = '', stack1, stack2, stack3;
-  data.buffer.push("\n                <tr>\n                  <td class=\"td-left\">");
-  stack1 = depth0;
-  stack2 = "funcao";
-  stack3 = helpers._triageMustache;
-  tmp1 = {};
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.data = data;
-  stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "</td>\n                  <td class=\"td-left\">\n                    <a ");
-  stack1 = depth0;
-  stack2 = "editParticipant";
-  stack3 = helpers.action;
-  tmp1 = {};
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.data = data;
-  stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + ">");
-  stack1 = depth0;
-  stack2 = "name";
-  stack3 = helpers._triageMustache;
-  tmp1 = {};
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.data = data;
-  stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "</a>\n                  </td>\n                  ");
-  stack1 = depth0;
-  stack2 = "dateMeetings";
-  stack3 = helpers.each;
-  tmp1 = self.program(11, program11, data);
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.fn = tmp1;
-  tmp1.inverse = self.noop;
-  tmp1.data = data;
-  stack1 = stack3.call(depth0, stack2, tmp1);
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n                </tr>\n              ");
-  return buffer;}
-function program11(depth0,data) {
-  
-  
-  data.buffer.push("\n                    <td>\n                      <span class=\"frequency-checkbox\"><i class=\"icon-check\"></i></span>\n                    </td>\n                  ");}
-
-  data.buffer.push("<div class=\"container-fluid\">\n  <div class=\"row-fluid\">\n    <div class=\"span7\">\n           \n      <div class=\"row-fluid\">\n        <div class=\"span12\">\n          \n              <a class=\"btn pull-left\"><i class=\"icon-arrow-left\"></i></a>\n              <a class=\"btn pull-right\"><i class=\"icon-arrow-right\"></i></a>\n\n              <br><br>\n          <!-- Selecionar reunião:\n          ");
-  stack1 = depth0;
-  stack2 = "Ember.Select";
-  stack3 = {};
-  stack4 = "allMeetings";
-  stack3['contentBinding'] = stack4;
-  stack4 = "content.date";
-  stack3['optionLabelPath'] = stack4;
-  stack4 = "content.date";
-  stack3['optionValuePath'] = stack4;
-  stack4 = "lastSelectedMeeting";
-  stack3['valueBinding'] = stack4;
-  stack4 = helpers.view;
-  tmp1 = {};
-  tmp1.hash = stack3;
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.data = data;
-  stack1 = stack4.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + " -->\n          \n          <!-- ");
-  stack1 = depth0;
-  stack2 = "salvo";
-  stack3 = helpers['if'];
-  tmp1 = self.program(1, program1, data);
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.fn = tmp1;
-  tmp1.inverse = self.program(3, program3, data);
-  tmp1.data = data;
-  stack1 = stack3.call(depth0, stack2, tmp1);
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push(" -->\n          \n\n\n          <table class=\"table table-bordered\">\n            <thead>\n              <tr>\n                <th></th>\n                <th class=\"th-left\">Nome</th>\n                ");
-  stack1 = depth0;
-  stack2 = "dateMeetings";
-  stack3 = helpers.each;
-  tmp1 = self.program(5, program5, data);
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.fn = tmp1;
-  tmp1.inverse = self.noop;
-  tmp1.data = data;
-  stack1 = stack3.call(depth0, stack2, tmp1);
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n              </tr>\n            </thead>\n            \n            <tbody>\n              <tr>\n                <td colspan=\"8\">Membros IBC</td>\n              </tr>\n              ");
-  stack1 = depth0;
-  stack2 = "members";
-  stack3 = helpers.each;
-  tmp1 = self.program(7, program7, data);
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.fn = tmp1;
-  tmp1.inverse = self.noop;
-  tmp1.data = data;
-  stack1 = stack3.call(depth0, stack2, tmp1);
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n          \n              <tr>\n                <td colspan=\"8\">Visitantes</td>\n              </tr>\n              ");
-  stack1 = depth0;
-  stack2 = "visitors";
-  stack3 = helpers.each;
-  tmp1 = self.program(10, program10, data);
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.fn = tmp1;
-  tmp1.inverse = self.noop;
-  tmp1.data = data;
-  stack1 = stack3.call(depth0, stack2, tmp1);
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n            </tbody>\n          </table>\n\n\n      <p class=\"add-visitor\">\n        <a ");
-  stack1 = depth0;
-  stack2 = "addNewVisitor";
-  stack3 = helpers.action;
-  tmp1 = {};
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.data = data;
-  stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + " class=\"btn btn-block btn-large\">Adicionar Visitante</a>\n      </p>\n\n      </div><!--/.span12 -->\n    </div><!--/.row-fluid -->\n  </div><!--/span8 -->\n\n  ");
-  stack1 = depth0;
-  stack2 = "subgoals";
-  foundHelper = helpers.outlet;
-  stack3 = foundHelper || depth0.outlet;
-  tmp1 = {};
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.data = data;
-  if(typeof stack3 === functionType) { stack1 = stack3.call(depth0, stack2, tmp1); }
-  else if(stack3=== undef) { stack1 = helperMissing.call(depth0, "outlet", stack2, tmp1); }
-  else { stack1 = stack3; }
-  data.buffer.push(escapeExpression(stack1) + "\n  </div><!--/.row-fluid -->\n\n</div><!--/.container-fluid -->");
-  return buffer;
 });Ember.TEMPLATES["god-presence"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 helpers = helpers || Ember.Handlebars.helpers;
   var buffer = '', foundHelper, self=this;
@@ -2024,37 +2028,11 @@ helpers = helpers || Ember.Handlebars.helpers;
   else { stack1 = stack3; }
   data.buffer.push(escapeExpression(stack1) + "\n                </div>\n            </div>\n        </div>\n    </div>\n</div>");
   return buffer;
-});Ember.TEMPLATES["subgoals"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+});Ember.TEMPLATES["subgoal-future-leader"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 helpers = helpers || Ember.Handlebars.helpers;
-  var buffer = '', stack1, stack2, stack3, stack4, foundHelper, tmp1, self=this, escapeExpression=this.escapeExpression, functionType="function", helperMissing=helpers.helperMissing, undef=void 0;
+  var buffer = '', stack1, stack2, stack3, foundHelper, tmp1, self=this, escapeExpression=this.escapeExpression;
 
 function program1(depth0,data) {
-  
-  var buffer = '', stack1, stack2, stack3;
-  data.buffer.push("\n        Faltam <strong>");
-  stack1 = depth0;
-  stack2 = "remainingDays";
-  stack3 = helpers._triageMustache;
-  tmp1 = {};
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.data = data;
-  stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "</strong> dias ou <strong>");
-  stack1 = depth0;
-  stack2 = "remainingWeeks";
-  stack3 = helpers._triageMustache;
-  tmp1 = {};
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.data = data;
-  stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "</strong> semanas\n      ");
-  return buffer;}
-
-function program3(depth0,data) {
   
   var buffer = '', stack1, stack2, stack3, stack4, stack5;
   data.buffer.push("\n        <div class=\"edit-field\">\n          <span class=\"text-medium\">");
@@ -2084,12 +2062,12 @@ function program3(depth0,data) {
   stack1 = depth0;
   stack2 = "requirements.requirement1";
   stack3 = helpers['if'];
-  tmp1 = self.program(4, program4, data);
+  tmp1 = self.program(2, program2, data);
   tmp1.hash = {};
   tmp1.contexts = [];
   tmp1.contexts.push(stack1);
   tmp1.fn = tmp1;
-  tmp1.inverse = self.program(6, program6, data);
+  tmp1.inverse = self.program(4, program4, data);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
@@ -2110,12 +2088,12 @@ function program3(depth0,data) {
   stack1 = depth0;
   stack2 = "requirements.requirement2";
   stack3 = helpers['if'];
-  tmp1 = self.program(8, program8, data);
+  tmp1 = self.program(6, program6, data);
   tmp1.hash = {};
   tmp1.contexts = [];
   tmp1.contexts.push(stack1);
   tmp1.fn = tmp1;
-  tmp1.inverse = self.program(10, program10, data);
+  tmp1.inverse = self.program(8, program8, data);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
@@ -2136,12 +2114,12 @@ function program3(depth0,data) {
   stack1 = depth0;
   stack2 = "requirements.requirement3";
   stack3 = helpers['if'];
-  tmp1 = self.program(12, program12, data);
+  tmp1 = self.program(10, program10, data);
   tmp1.hash = {};
   tmp1.contexts = [];
   tmp1.contexts.push(stack1);
   tmp1.fn = tmp1;
-  tmp1.inverse = self.program(14, program14, data);
+  tmp1.inverse = self.program(12, program12, data);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
@@ -2162,12 +2140,12 @@ function program3(depth0,data) {
   stack1 = depth0;
   stack2 = "requirements.requirement4";
   stack3 = helpers['if'];
-  tmp1 = self.program(16, program16, data);
+  tmp1 = self.program(14, program14, data);
   tmp1.hash = {};
   tmp1.contexts = [];
   tmp1.contexts.push(stack1);
   tmp1.fn = tmp1;
-  tmp1.inverse = self.program(18, program18, data);
+  tmp1.inverse = self.program(16, program16, data);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
@@ -2188,12 +2166,12 @@ function program3(depth0,data) {
   stack1 = depth0;
   stack2 = "requirements.requirement5";
   stack3 = helpers['if'];
-  tmp1 = self.program(20, program20, data);
+  tmp1 = self.program(18, program18, data);
   tmp1.hash = {};
   tmp1.contexts = [];
   tmp1.contexts.push(stack1);
   tmp1.fn = tmp1;
-  tmp1.inverse = self.program(22, program22, data);
+  tmp1.inverse = self.program(20, program20, data);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
@@ -2214,12 +2192,12 @@ function program3(depth0,data) {
   stack1 = depth0;
   stack2 = "requirements.requirement6";
   stack3 = helpers['if'];
-  tmp1 = self.program(24, program24, data);
+  tmp1 = self.program(22, program22, data);
   tmp1.hash = {};
   tmp1.contexts = [];
   tmp1.contexts.push(stack1);
   tmp1.fn = tmp1;
-  tmp1.inverse = self.program(26, program26, data);
+  tmp1.inverse = self.program(24, program24, data);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
@@ -2240,88 +2218,152 @@ function program3(depth0,data) {
   stack1 = depth0;
   stack2 = "requirements.requirement7";
   stack3 = helpers['if'];
-  tmp1 = self.program(28, program28, data);
+  tmp1 = self.program(26, program26, data);
   tmp1.hash = {};
   tmp1.contexts = [];
   tmp1.contexts.push(stack1);
   tmp1.fn = tmp1;
-  tmp1.inverse = self.program(30, program30, data);
+  tmp1.inverse = self.program(28, program28, data);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("\n          </span>\n        </div>\n      ");
   return buffer;}
-function program4(depth0,data) {
+function program2(depth0,data) {
   
   
   data.buffer.push("\n              <i class=\"icon-star\"></i>\n            ");}
+
+function program4(depth0,data) {
+  
+  
+  data.buffer.push("\n              <i class=\"icon-star-empty\"></i>\n            ");}
 
 function program6(depth0,data) {
   
   
-  data.buffer.push("\n              <i class=\"icon-star-empty\"></i>\n            ");}
+  data.buffer.push("\n              <i class=\"icon-star\"></i>\n            ");}
 
 function program8(depth0,data) {
   
   
-  data.buffer.push("\n              <i class=\"icon-star\"></i>\n            ");}
+  data.buffer.push("\n              <i class=\"icon-star-empty\"></i>\n            ");}
 
 function program10(depth0,data) {
   
   
-  data.buffer.push("\n              <i class=\"icon-star-empty\"></i>\n            ");}
+  data.buffer.push("\n              <i class=\"icon-star\"></i>\n            ");}
 
 function program12(depth0,data) {
   
   
-  data.buffer.push("\n              <i class=\"icon-star\"></i>\n            ");}
+  data.buffer.push("\n              <i class=\"icon-star-empty\"></i>\n            ");}
 
 function program14(depth0,data) {
   
   
-  data.buffer.push("\n              <i class=\"icon-star-empty\"></i>\n            ");}
+  data.buffer.push("\n              <i class=\"icon-star\"></i>\n            ");}
 
 function program16(depth0,data) {
   
   
-  data.buffer.push("\n              <i class=\"icon-star\"></i>\n            ");}
+  data.buffer.push("\n              <i class=\"icon-star-empty\"></i>\n            ");}
 
 function program18(depth0,data) {
   
   
-  data.buffer.push("\n              <i class=\"icon-star-empty\"></i>\n            ");}
+  data.buffer.push("\n              <i class=\"icon-star\"></i>\n            ");}
 
 function program20(depth0,data) {
   
   
-  data.buffer.push("\n              <i class=\"icon-star\"></i>\n            ");}
+  data.buffer.push("\n              <i class=\"icon-star-empty\"></i>\n            ");}
 
 function program22(depth0,data) {
   
   
-  data.buffer.push("\n              <i class=\"icon-star-empty\"></i>\n            ");}
+  data.buffer.push("\n              <i class=\"icon-star\"></i>\n            ");}
 
 function program24(depth0,data) {
   
   
-  data.buffer.push("\n              <i class=\"icon-star\"></i>\n            ");}
+  data.buffer.push("\n              <i class=\"icon-star-empty\"></i>\n            ");}
 
 function program26(depth0,data) {
   
   
-  data.buffer.push("\n              <i class=\"icon-star-empty\"></i>\n            ");}
+  data.buffer.push("\n              <i class=\"icon-star\"></i>\n            ");}
 
 function program28(depth0,data) {
   
   
-  data.buffer.push("\n              <i class=\"icon-star\"></i>\n            ");}
-
-function program30(depth0,data) {
-  
-  
   data.buffer.push("\n              <i class=\"icon-star-empty\"></i>\n            ");}
 
-  data.buffer.push("<div class=\"span4 offset1\">\n\n  <div class=\"\" id=\"submetas\">\n    <div class=\"submeta-1\">\n      <h3 class=\"subgoal-title\">Data de Multiplicação</h3>\n\n      <p ");
+  data.buffer.push("      <h3 class=\"subgoal-title\">Novo Líder</h3>\n\n      ");
+  stack1 = depth0;
+  stack2 = "futureLeader";
+  stack3 = helpers.each;
+  tmp1 = self.program(1, program1, data);
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.fn = tmp1;
+  tmp1.inverse = self.noop;
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  return buffer;
+});Ember.TEMPLATES["subgoal-god-presence"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+helpers = helpers || Ember.Handlebars.helpers;
+  var buffer = '', stack1, stack2, stack3, foundHelper, tmp1, self=this, functionType="function", helperMissing=helpers.helperMissing, undef=void 0, escapeExpression=this.escapeExpression;
+
+
+  data.buffer.push("<h3 class=\"subgoal-title\">Presença de Deus</h3>\n\n      ");
+  stack1 = depth0;
+  stack2 = "godPresence";
+  foundHelper = helpers.outlet;
+  stack3 = foundHelper || depth0.outlet;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  if(typeof stack3 === functionType) { stack1 = stack3.call(depth0, stack2, tmp1); }
+  else if(stack3=== undef) { stack1 = helperMissing.call(depth0, "outlet", stack2, tmp1); }
+  else { stack1 = stack3; }
+  data.buffer.push(escapeExpression(stack1));
+  return buffer;
+});Ember.TEMPLATES["subgoal-multiplication-date"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+helpers = helpers || Ember.Handlebars.helpers;
+  var buffer = '', stack1, stack2, stack3, stack4, foundHelper, tmp1, self=this, escapeExpression=this.escapeExpression;
+
+function program1(depth0,data) {
+  
+  var buffer = '', stack1, stack2, stack3;
+  data.buffer.push("\n        Faltam <strong>");
+  stack1 = depth0;
+  stack2 = "remainingDays";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "</strong> dias ou <strong>");
+  stack1 = depth0;
+  stack2 = "remainingWeeks";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "</strong> semanas\n      ");
+  return buffer;}
+
+  data.buffer.push("<h3 class=\"subgoal-title\">Data de Multiplicação</h3>\n\n      <p ");
   stack1 = depth0;
   stack2 = "editSubgoal1";
   stack3 = helpers.action;
@@ -2389,33 +2431,13 @@ function program30(depth0,data) {
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n    </div><!-- /.submeta-1 -->\n\n\n    <div class=\"submeta-2\">\n      <h3 class=\"subgoal-title\">Presença de Deus</h3>\n\n      ");
-  stack1 = depth0;
-  stack2 = "godPresence";
-  foundHelper = helpers.outlet;
-  stack3 = foundHelper || depth0.outlet;
-  tmp1 = {};
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.data = data;
-  if(typeof stack3 === functionType) { stack1 = stack3.call(depth0, stack2, tmp1); }
-  else if(stack3=== undef) { stack1 = helperMissing.call(depth0, "outlet", stack2, tmp1); }
-  else { stack1 = stack3; }
-  data.buffer.push(escapeExpression(stack1) + "\n    </div>\n\n    <!-- SUBGOAL 3: Novo líder -->\n    <div class=\"submeta-3\">\n      <h3 class=\"subgoal-title\">Novo Líder</h3>\n\n      ");
-  stack1 = depth0;
-  stack2 = "futureLeader";
-  stack3 = helpers.each;
-  tmp1 = self.program(3, program3, data);
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.fn = tmp1;
-  tmp1.inverse = self.noop;
-  tmp1.data = data;
-  stack1 = stack3.call(depth0, stack2, tmp1);
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n\n    </div>\n    <div class=\"submeta-4\">\n      <h3 class=\"subgoal-title\">Novos Participantes</h3>\n\n      <div class=\"edit-field\">\n        <span class=\"\"><i class=\"icon-sign-blank\"></i></span>\n        <span class=\"\"><i class=\"icon-sign-blank\"></i></span>\n        <span class=\"\"><i class=\"icon-sign-blank\"></i></span>\n        <span class=\"\"><i class=\"icon-sign-blank\"></i></span>\n        <span class=\"\"><i class=\"icon-sign-blank\"></i></span>\n        <span class=\"\"><i class=\"icon-sign-blank\"></i></span>\n        <span class=\"\"><i class=\"icon-sign-blank\"></i></span>\n        <span class=\"\"><i class=\"icon-sign-blank\"></i></span>\n        <span class=\"\"><i class=\"icon-sign-blank\"></i></span>\n        <span class=\"\"><i class=\"icon-sign-blank\"></i></span>\n        <span class=\"\"><i class=\"icon-sign-blank\"></i></span>\n        <span class=\"\"><i class=\"icon-sign-blank\"></i></span>\n      </div>\n\n    </div>\n    <div class=\"submeta-5\">\n      <h3 class=\"subgoal-title\">Novo Anfitrião</h3>\n\n      <p ");
+  return buffer;
+});Ember.TEMPLATES["subgoal-new-host"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+helpers = helpers || Ember.Handlebars.helpers;
+  var buffer = '', stack1, stack2, stack3, stack4, foundHelper, tmp1, self=this, escapeExpression=this.escapeExpression;
+
+
+  data.buffer.push("      <h3 class=\"subgoal-title\">Novo Anfitrião</h3>\n\n      <p ");
   stack1 = depth0;
   stack2 = "editSubgoal5";
   stack3 = helpers.action;
@@ -2470,26 +2492,22 @@ function program30(depth0,data) {
   tmp1.contexts.push(stack1);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + ">\n                <i class=\"icon-remove style-icon-remove\"></i>\n              </a>\n            </div><!-- /.edit-subgoal-5 -->\n    </div>\n  </div>\n\n  <hr class=\"hr-subgoal\">\n\n  <div class=\"suggestions\" ");
-  stack1 = depth0;
-  stack2 = "openSuggestionsWindow";
-  stack3 = helpers.action;
-  tmp1 = {};
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.data = data;
-  stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + ">\n    <div class=\"icone\">\n      <i class=\"icon-comment\"></i>\n    </div>\n\n    <div class=\"texto\">\n       Sugestões?\n    </div>\n    \n  </div>\n\n\n</div><!--/span4 -->");
+  data.buffer.push(escapeExpression(stack1) + ">\n                <i class=\"icon-remove style-icon-remove\"></i>\n              </a>\n            </div><!-- /.edit-subgoal-5 -->");
   return buffer;
-});Ember.TEMPLATES["suggestions"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+});Ember.TEMPLATES["subgoal-new-participants"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+helpers = helpers || Ember.Handlebars.helpers;
+  var foundHelper, self=this;
+
+
+  data.buffer.push("      <h3 class=\"subgoal-title\">Novos Participantes</h3>\n\n      <div class=\"edit-field\">\n        <span class=\"\"><i class=\"icon-sign-blank\"></i></span>\n        <span class=\"\"><i class=\"icon-sign-blank\"></i></span>\n        <span class=\"\"><i class=\"icon-sign-blank\"></i></span>\n        <span class=\"\"><i class=\"icon-sign-blank\"></i></span>\n        <span class=\"\"><i class=\"icon-sign-blank\"></i></span>\n        <span class=\"\"><i class=\"icon-sign-blank\"></i></span>\n        <span class=\"\"><i class=\"icon-sign-blank\"></i></span>\n        <span class=\"\"><i class=\"icon-sign-blank\"></i></span>\n        <span class=\"\"><i class=\"icon-sign-blank\"></i></span>\n        <span class=\"\"><i class=\"icon-sign-blank\"></i></span>\n        <span class=\"\"><i class=\"icon-sign-blank\"></i></span>\n        <span class=\"\"><i class=\"icon-sign-blank\"></i></span>\n      </div>");
+});Ember.TEMPLATES["suggestion-new"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 helpers = helpers || Ember.Handlebars.helpers;
   var buffer = '', stack1, stack2, stack3, stack4, foundHelper, tmp1, self=this, escapeExpression=this.escapeExpression;
 
 
   data.buffer.push("<div class=\"window-overlay\">\n    <div class=\"window-suggestion\">\n        <div class=\"window-wrapper\">\n            <div class=\"clearfix\">\n                <div class=\"window-header\">\n                    <div class=\"window-utils\">\n                        <a ");
   stack1 = depth0;
-  stack2 = "closeWindow";
+  stack2 = "gotoSuggestions";
   stack3 = helpers.action;
   tmp1 = {};
   tmp1.hash = {};
@@ -2524,4 +2542,10 @@ helpers = helpers || Ember.Handlebars.helpers;
   stack1 = stack3.call(depth0, stack2, tmp1);
   data.buffer.push(escapeExpression(stack1) + " class=\"btn suggestion-btn\">Enviar</a>\n                  </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>");
   return buffer;
+});Ember.TEMPLATES["suggestions"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+helpers = helpers || Ember.Handlebars.helpers;
+  var foundHelper, self=this;
+
+
+  data.buffer.push("<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"span8 offset2\">\n            <h3>Sugestões enviadas</h3>\n            <ul>\n                <li>Data • Princípio do texto</li>\n            </ul>\n        </div>\n    </div>\n</div>");
 });

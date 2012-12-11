@@ -1,10 +1,13 @@
 App.FrequencyController = Em.ArrayController.extend({
     content: [],
-
+    bola: function() {
+        var content = this.get('content');
+        content.forEach(function(e) {
+            console.log(e);
+        });
+    },
     // Frequencia salva
     salvo: true,
-
-    bola: 'bolinha',
 
     allMeetings: [
         {date: '14-12-2012'},

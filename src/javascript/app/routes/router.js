@@ -20,22 +20,6 @@ App.Router = Em.Router.extend({
 
         gotoAdminMembers: Em.Route.transitionTo('admin.members'),
 
-        // Suggestions
-        openSuggestionsWindow: function(router, event) {
-            router.get('applicationController')
-                .connectOutlet('window', 'suggestions')
-        },
-        sendSuggestion: function(router, event) {
-            var suggestion = router.get('suggestionsController').get('suggestion');
-
-            // TODO: ENVIA SUGESTÃO
-
-            // Apaga atual
-            router.get('suggestionsController').set('suggestion', null);
-
-            router.get('applicationController').disconnectOutlet('window');
-        },
-
         // ------
 
 
@@ -71,31 +55,6 @@ App.Router = Em.Router.extend({
             $('.edit-subgoal-5').hide();  
         },
 
-
-        // Adicionar visitante
-        addNewVisitor: function(router, event) {
-            router.get('applicationController')
-                .connectOutlet('window', 'newParticipant');
-
-
-            console.log( "YEYE!");
-            // $('.add-new-visitor-box').show();
-            // $('.add-visitor').hide();
-        },
-        // Salvar visitante
-        saveNewVisitor: function(router, event) {
-            $('.add-new-visitor-box').hide();
-            $('.add-visitor').show();
-
-            var name = router.get('newParticipantController').get('name');
-
-            var participant = App.Participant.create({
-                name: name
-            });
-
-            router.get('participantsController').get('content').addObject(participant);
-
-        },
         // Desconectar WINDOW outlet
         closeWindow: function(router, event) {
             router.get('applicationController').disconnectOutlet('window');
@@ -189,6 +148,37 @@ App.Router = Em.Router.extend({
             redirectsTo: 'cell.frequency'
         }),
 
+
+        gotoSuggestions: Em.Route.transitionTo('suggestions.index'),
+        gotoNewSuggestion: Em.Route.transitionTo('suggestions.newSuggestion'),
+        suggestions: Em.Route.extend({
+            route: '/sugestoes',
+            index: Em.Route.extend({
+                route: '/',
+                enter: function(router) {
+                    router.get('applicationController').disconnectOutlet('window');
+                },
+                connectOutlets: function(router) {
+                    router.get('applicationController')
+                        .connectOutlet('container', 'suggestions');
+                }
+            }),
+            newSuggestion: Em.Route.extend({
+                route: '/nova',
+                createSuggestion: function(router, event) {
+                    var suggestion = router.get('suggestionsController').get('suggestion');
+                    // TODO: ENVIA SUGESTÃO
+                    // Apaga atual
+                    router.get('suggestionsController').set('suggestion', null);
+                    router.get('applicationController').disconnectOutlet('window');
+                },
+                connectOutlets: function(router) {
+                    router.get('applicationController')
+                        .connectOutlet('window', 'suggestionNew');
+                }
+            })
+        }),
+
         // Cell state
         cell: Em.Route.extend({
             route: '/celula',
@@ -198,27 +188,29 @@ App.Router = Em.Router.extend({
                 redirectsTo: 'frequency'
             }),
 
+            gotoParticipant: Em.Route.transitionTo('participants.participant'),
+
             frequency: Em.Route.extend({
                 route: '/frequencia',
                 connectOutlets: function(router) {
                     router.get('applicationController')
-                        .connectOutlet('container','frequency', App.Participant.find());
+                        .connectOutlet('container','frequency', router.get('store').findAll(App.Participant));
 
-                    router.get('frequencyController')
-                        .connectOutlet('subgoals','subgoals', App.Subgoals.find());
-
-                    router.get('frequencyController')
-                        .connectOutlet('newParticipant','newParticipant');
+                    // Submetas
+                    router.get('frequencyController').connectOutlet('subgoalMultiplicationDate','subgoalMultiplicationDate');
+                    router.get('frequencyController').connectOutlet('subgoalGodPresence','subgoalGodPresence');
+                    router.get('frequencyController').connectOutlet('subgoalFutureLeader','subgoalFutureLeader');
+                    router.get('frequencyController').connectOutlet('subgoalNewParticipants','subgoalNewParticipants');
+                    router.get('frequencyController').connectOutlet('subgoalNewHost','subgoalNewHost');
 
                     // Outlet gráfico de presença de Deus
-                    router.get('subgoalsController')
-                        .connectOutlet('godPresence', 'godPresence');
+                    // router.get('subgoalsController')
+                        // .connectOutlet('godPresence', 'godPresence');
                 }
             }),
 
             participants: Em.Route.extend({
                 route: '/participantes',
-                gotoParticipant: Em.Route.transitionTo('participant'),
                 gotoNewParticipant: Em.Route.transitionTo('newParticipant'),
 
                 index: Em.Route.extend({

@@ -1,26 +1,10 @@
-<div class="window-overlay">
-    <div class="window-suggestion">
-        <div class="window-wrapper">
-            <div class="clearfix">
-                <div class="window-header">
-                    <div class="window-utils">
-                        <a {{action "closeWindow"}}>
-                            <i class="icon-remove"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="window-main-col">
-                    
-                  <div>
-                    {{view Ember.TextArea valueBinding="suggestion" class="suggestion-textarea"}}
-                  </div>
-
-                  <div>
-                    <a {{action "sendSuggestion"}} class="btn suggestion-btn">Enviar</a>
-                  </div>
-                </div>
-            </div>
+<div class="container">
+    <div class="row">
+        <div class="span8 offset2">
+            <h3>Sugestões enviadas</h3>
+            <ul>
+                <li>Data • Princípio do texto</li>
+            </ul>
         </div>
     </div>
 </div>

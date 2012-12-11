@@ -37,36 +37,19 @@
             
             <tbody>
               <tr>
-                <td colspan="8">Membros IBC</td>
+                <td colspan="8">Participantes</td>
               </tr>
-              {{#each members}}
+              {{#each content}}
                 <tr>
-                  <td class="td-left">{{funcao}}</td>
+                  <td class="td-left">{{position}}</td>
                   <td class="td-left">
-                    <a {{action "editParticipant"}}>{{name}}</a>
+                    <a {{action "gotoParticipant" this}}>{{name}}</a>
                   </td>
-                  {{#each dateMeetings}}
+                  
                     <td>
                       <span class="frequency-checkbox"><i class="icon-check-empty"></i></span>
                     </td>
-                  {{/each}}
-                </tr>
-              {{/each}}
-          
-              <tr>
-                <td colspan="8">Visitantes</td>
-              </tr>
-              {{#each visitors}}
-                <tr>
-                  <td class="td-left">{{funcao}}</td>
-                  <td class="td-left">
-                    <a {{action "editParticipant"}}>{{name}}</a>
-                  </td>
-                  {{#each dateMeetings}}
-                    <td>
-                      <span class="frequency-checkbox"><i class="icon-check"></i></span>
-                    </td>
-                  {{/each}}
+                  
                 </tr>
               {{/each}}
             </tbody>
@@ -74,14 +57,49 @@
 
 
       <p class="add-visitor">
-        <a {{action "addNewVisitor"}} class="btn btn-block btn-large">Adicionar Visitante</a>
+        <a class="btn btn-block btn-large">Adicionar Visitante</a>
       </p>
 
       </div><!--/.span12 -->
     </div><!--/.row-fluid -->
   </div><!--/span8 -->
 
-  {{outlet subgoals}}
+  <div class="span4 offset1">
+  <div class="" id="submetas">
+    <div class="submeta-1">
+      {{outlet subgoalMultiplicationDate}}
+    </div>
+
+    <div class="submeta-2">
+      {{outlet subgoalGodPresence}}
+    </div>
+
+    <!-- SUBGOAL 3: Novo líder -->
+    <div class="submeta-3">
+      {{outlet subgoalFutureLeader}}
+    </div>
+
+    <div class="submeta-4">
+      {{outlet subgoalNewParticipants}}
+    </div>
+
+    <div class="submeta-5">
+      {{outlet subgoalNewHost}}
+    </div>
+  </div>
+
+  <hr class="hr-subgoal">
+
+  <div class="suggestions" {{action "gotoNewSuggestion"}}>
+    <div class="icone">
+      <i class="icon-comment"></i>
+    </div>
+
+    <div class="texto">
+       Sugestões?
+    </div>
+  </div>
+</div>
   </div><!--/.row-fluid -->
 
 </div><!--/.container-fluid -->
