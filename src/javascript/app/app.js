@@ -4,10 +4,4 @@ var brush = function() {
     focus.select(".x.axis").call(xAxis);
 }
 
-var App = Em.Application.create();
-
-// BEGIN Participants Controller
-App.ParticipantsController = Em.ArrayController.extend({
-    content: []
-});
-// END Participants Controller
+window.App = Em.Application.create();

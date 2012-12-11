@@ -28,10 +28,12 @@ handlebars.precompile:
 
 app.development: public/js/development/app.js
 	cat src/javascript/app/app.js \
+	src/javascript/app/store.js \
 	src/javascript/app/models/*.js \
-	src/javascript/app/controllers/*.js \
 	src/javascript/app/views/*.js \
-	src/javascript/app/router.js \
+	src/javascript/app/controllers/*.js \
+	src/javascript/app/routes/router.js \
+	src/javascript/app/end.js \
 	src/javascript/app/templates/*.js \
 	> public/js/development/app.js
 
