@@ -102,7 +102,7 @@ class Application_Acl_Setup
                     ->allow( 'guest', 'api', array('subgoals','presence','getmember') )
                     ->allow( 'guest', 'celula', array('index', 'frequencia','membros','cadastro','perfil') )
                     ->allow( 'guest', 'recursos', array('licoes-de-celula','louvor','dinamicas') )
-                    ->allow( 'guest', 'fixtures', array('participants', 'cells', 'churches', 'meetings', 'members', 'lessons', 'suggestions', 'praises', 'dynamics') )
+                    ->allow( 'guest', 'fixtures', array('participants', 'cells', 'churches', 'meetings', 'members', 'lessons', 'suggestions', 'praises', 'dynamics', 'cell-profiles') )
                     ->allow( 'guest', 'configuracoes', array('perfil','contato','endereco','senha') );
         $this->_acl	->allow( 'user', 'index', 'index' )
                     ->allow( 'user', 'search', 'index')

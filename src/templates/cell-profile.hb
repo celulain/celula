@@ -1,78 +1,49 @@
 <div class="container">
     <div class="row">
         <div class="span8 offset2">
-            <img src="" class="img-polaroid">
-        </div>
-    </div>
+            <h3>Perfil da Célula</h3>
 
-    <div class="row">
-        <div class="span8 offset2">
-            <table class="table table-bordered">
-                <tr>
-                    <td>
-                        <strong>Líder</strong>
-                    </td>
-                    <td>
-                        Fabrício
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <strong>Gênero</strong>
-                    </td>
-                    <td>
-                        Masculina Par
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <strong>Faixa etária</strong>
-                    </td>
-                    <td>
-                        Masculina Par
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <strong>Bairro</strong>
-                    </td>
-                    <td>
-                        Masculina Par
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <strong>Discipulador</strong>
-                    </td>
-                    <td>
-                        Masculina Par
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <strong>Coordenador</strong>
-                    </td>
-                    <td>
-                        Masculina Par
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <strong>Rede</strong>
-                    </td>
-                    <td>
-                        Masculina Par
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <strong>Congregação</strong>
-                    </td>
-                    <td>
-                        Igreja Batista Central
-                    </td>
-                </tr>
-            </table>
+            {{#each content}}
+                <div class="row">
+                    <div class="span8 offset2">
+                        <img src="" class="img-polaroid">
+                    </div>
+                </div>
+            <div class="profile">
+                <div class="profile-item">
+                    <span class="profile-key"><strong>Líder</strong></span>
+                    <span class="profile-value">{{leader}}</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-key"><strong>Gênero</strong></span>
+                    <span class="profile-value">{{gender}}</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-key"><strong>Faixa etária</strong></span>
+                    <span class="profile-value">De {{min_age}} e {{max_age}}</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-key"><strong>Bairro</strong></span>
+                    <span class="profile-value">{{address}}</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-key"><strong>Discipulador</strong></span>
+                    <span class="profile-value"></span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-key"><strong>Coordenador</strong></span>
+                    <span class="profile-value"></span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-key"><strong>Rede</strong></span>
+                    <span class="profile-value"></span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-key"><strong>Congregação</strong></span>
+                    <span class="profile-value">{{church}}</span>
+                </div>
+            </div>
+            {{/each}}
         </div>
     </div>
 </div>

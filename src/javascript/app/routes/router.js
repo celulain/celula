@@ -282,7 +282,7 @@ App.Router = Em.Router.extend({
                 route: '/perfil',
                 connectOutlets: function(router) {
                     router.get('applicationController')
-                        .connectOutlet('container', 'cellProfile');
+                        .connectOutlet('container', 'cellProfile', router.get('store').findAll(App.CellProfile));
                 }
             })
         }),

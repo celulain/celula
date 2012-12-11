@@ -303,6 +303,26 @@ Iluminação Bíblica: Is 40,8 ; Mt 7,24 ; 2Tm 3,16'
         echo Zend_Json::encode($json);
     }
 
+    public function cellProfilesAction() {
+        $this->_helper->layout()->setLayout('json');
+        
+        $json = array(
+            'cellProfiles' => array(
+                array(
+                    'id' => '1',
+                    'cell_id' => '1',
+                    'leader' => 'Fabrício Tavares de Oliveira',
+                    'gender' => 'Masculina',
+                    'min_age' => 22,
+                    'max_age' => 29,
+                    'address' => 'Cidade Nova',
+                    'church' => 'Igraja Batista Central'
+                )
+            )
+        );
+        echo Zend_Json::encode($json);
+    }
+
 }
 
 

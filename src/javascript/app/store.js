@@ -9,7 +9,8 @@ App.Store = DS.Store.extend({
             lessons: 'App.Lesson',
             dynamics: 'App.Dynamic',
             praises: 'App.Praise',
-            suggestions: 'App.Suggestion'
+            suggestions: 'App.Suggestion',
+            cellProfiles: 'App.CellProfile'
         }
     })
 });
