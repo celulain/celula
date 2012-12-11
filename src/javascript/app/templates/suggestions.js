@@ -5,7 +5,7 @@ helpers = helpers || Ember.Handlebars.helpers;
 function program1(depth0,data) {
   
   var buffer = '', stack1, stack2, stack3;
-  data.buffer.push("\n                <li>");
+  data.buffer.push("\n            <div class=\"suggestion-item\">\n                \n            <p class=\"suggestion-date\">Enviada em ");
   stack1 = depth0;
   stack2 = "date";
   stack3 = helpers._triageMustache;
@@ -15,7 +15,7 @@ function program1(depth0,data) {
   tmp1.contexts.push(stack1);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + " • ");
+  data.buffer.push(escapeExpression(stack1) + "</p>\n            <p class=\"\">");
   stack1 = depth0;
   stack2 = "suggestion";
   stack3 = helpers._triageMustache;
@@ -25,10 +25,10 @@ function program1(depth0,data) {
   tmp1.contexts.push(stack1);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "</li>\n                ");
+  data.buffer.push(escapeExpression(stack1) + "</p>\n                \n            </div>\n            ");
   return buffer;}
 
-  data.buffer.push("<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"span8 offset2\">\n            <h3>Sugestões enviadas</h3>\n            <ul>\n                ");
+  data.buffer.push("<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"span8 offset2\">\n            <h3>Sugestões enviadas</h3>\n            \n            ");
   stack1 = depth0;
   stack2 = "content";
   stack3 = helpers.each;
@@ -41,6 +41,6 @@ function program1(depth0,data) {
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n            </ul>\n        </div>\n    </div>\n</div>");
+  data.buffer.push("\n        </div>\n    </div>\n</div>");
   return buffer;
 });

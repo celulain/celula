@@ -167,11 +167,13 @@ App.Router = Em.Router.extend({
                 route: '/nova',
                 createSuggestion: function(router, event) {
                     var suggestion = router.get('suggestionNewController').get('suggestion');
-                    console.log(suggestion);
-                    // TODO: ENVIA SUGESTÃO
-                    // Apaga atual
-                    // router.get('suggestionsController').set('suggestion', null);
-                    // router.get('applicationController').disconnectOutlet('window');
+                    App.Suggestion.createRecord({
+                        user_id: '',
+                        date: new Date(),
+                        suggestion: suggestion
+                    });
+
+                    router.send('gotoSuggestions');
                 },
                 connectOutlets: function(router) {
                     router.get('applicationController')

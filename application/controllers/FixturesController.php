@@ -240,7 +240,7 @@ class FixturesController extends Zend_Controller_Action
                     'id' => '12',
                     'user_id' => '12321312',
                     'date' => '12-08-2012',
-                    'suggestion' => 'Lalalla',
+                    'suggestion' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in condimentum nulla. Nullam nunc lacus, congue nec adipiscing vitae, tincidunt non leo. Sed sodales nisl a arcu sodales ac accumsan purus ullamcorper. Donec ultrices leo in lorem hendrerit fermentum. Vestibulum quis tempor ligula. Duis purus neque, suscipit eget dignissim sed, congue a orci. Aliquam eget rhoncus risus. Etiam at dui lectus, quis scelerisque mi. Nullam pretium accumsan pharetra. Morbi ut massa quis lacus luctus tristique id quis nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas ut metus non nunc dapibus facilisis. Aliquam vitae diam eget turpis tristique lobortis ultrices quis nisl. Ut nisi neque, vulputate id faucibus sit amet, porttitor ut neque. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean sodales commodo tellus ut malesuada.',
                 )
             )
         );
