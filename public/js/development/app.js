@@ -13,7 +13,8 @@ App.Store = DS.Store.extend({
         url: '/fixtures',
         mappings: {
             participants: 'App.Participant',
-            lessons: 'App.Lesson'
+            lessons: 'App.Lesson',
+            suggestions: 'App.Suggestion'
         }
     })
 });
@@ -162,6 +163,11 @@ App.Subgoals.reopenClass({
 
         return this.subgoals;   
     }
+});
+App.Suggestion = DS.Model.extend({
+    user_id: DS.attr('string'),
+    date: DS.attr('date'),
+    suggestion: DS.attr('string')
 });
 // Usuário que tem cadastro no sistema de célula
 App.User = DS.Model.extend({
@@ -673,9 +679,7 @@ App.SubgoalsController = Em.ArrayController.extend({
 App.SuggestionNewController = Em.ObjectController.extend({
     suggestion: null
 });
-App.SuggestionsController = Em.Controller.extend({
-    suggestion: null
-});
+App.SuggestionsController = Em.ArrayController.extend();
 // Router
 App.Router = Em.Router.extend({
     enableLogging: true,
@@ -838,17 +842,18 @@ App.Router = Em.Router.extend({
                 },
                 connectOutlets: function(router) {
                     router.get('applicationController')
-                        .connectOutlet('container', 'suggestions');
+                        .connectOutlet('container', 'suggestions', router.get('store').findAll(App.Suggestion));
                 }
             }),
             newSuggestion: Em.Route.extend({
                 route: '/nova',
                 createSuggestion: function(router, event) {
-                    var suggestion = router.get('suggestionsController').get('suggestion');
+                    var suggestion = router.get('suggestionNewController').get('suggestion');
+                    console.log(suggestion);
                     // TODO: ENVIA SUGESTÃO
                     // Apaga atual
-                    router.get('suggestionsController').set('suggestion', null);
-                    router.get('applicationController').disconnectOutlet('window');
+                    // router.get('suggestionsController').set('suggestion', null);
+                    // router.get('applicationController').disconnectOutlet('window');
                 },
                 connectOutlets: function(router) {
                     router.get('applicationController')
@@ -2532,7 +2537,7 @@ helpers = helpers || Ember.Handlebars.helpers;
   stack1 = stack4.call(depth0, stack2, tmp1);
   data.buffer.push(escapeExpression(stack1) + "\n                  </div>\n\n                  <div>\n                    <a ");
   stack1 = depth0;
-  stack2 = "sendSuggestion";
+  stack2 = "createSuggestion";
   stack3 = helpers.action;
   tmp1 = {};
   tmp1.hash = {};
@@ -2544,8 +2549,47 @@ helpers = helpers || Ember.Handlebars.helpers;
   return buffer;
 });Ember.TEMPLATES["suggestions"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 helpers = helpers || Ember.Handlebars.helpers;
-  var foundHelper, self=this;
+  var buffer = '', stack1, stack2, stack3, foundHelper, tmp1, self=this, escapeExpression=this.escapeExpression;
 
+function program1(depth0,data) {
+  
+  var buffer = '', stack1, stack2, stack3;
+  data.buffer.push("\n                <li>");
+  stack1 = depth0;
+  stack2 = "date";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + " • ");
+  stack1 = depth0;
+  stack2 = "suggestion";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "</li>\n                ");
+  return buffer;}
 
-  data.buffer.push("<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"span8 offset2\">\n            <h3>Sugestões enviadas</h3>\n            <ul>\n                <li>Data • Princípio do texto</li>\n            </ul>\n        </div>\n    </div>\n</div>");
+  data.buffer.push("<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"span8 offset2\">\n            <h3>Sugestões enviadas</h3>\n            <ul>\n                ");
+  stack1 = depth0;
+  stack2 = "content";
+  stack3 = helpers.each;
+  tmp1 = self.program(1, program1, data);
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.fn = tmp1;
+  tmp1.inverse = self.noop;
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n            </ul>\n        </div>\n    </div>\n</div>");
+  return buffer;
 });

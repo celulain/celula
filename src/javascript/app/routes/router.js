@@ -160,17 +160,18 @@ App.Router = Em.Router.extend({
                 },
                 connectOutlets: function(router) {
                     router.get('applicationController')
-                        .connectOutlet('container', 'suggestions');
+                        .connectOutlet('container', 'suggestions', router.get('store').findAll(App.Suggestion));
                 }
             }),
             newSuggestion: Em.Route.extend({
                 route: '/nova',
                 createSuggestion: function(router, event) {
-                    var suggestion = router.get('suggestionsController').get('suggestion');
+                    var suggestion = router.get('suggestionNewController').get('suggestion');
+                    console.log(suggestion);
                     // TODO: ENVIA SUGESTÃO
                     // Apaga atual
-                    router.get('suggestionsController').set('suggestion', null);
-                    router.get('applicationController').disconnectOutlet('window');
+                    // router.get('suggestionsController').set('suggestion', null);
+                    // router.get('applicationController').disconnectOutlet('window');
                 },
                 connectOutlets: function(router) {
                     router.get('applicationController')

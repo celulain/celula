@@ -30,7 +30,7 @@ helpers = helpers || Ember.Handlebars.helpers;
   stack1 = stack4.call(depth0, stack2, tmp1);
   data.buffer.push(escapeExpression(stack1) + "\n                  </div>\n\n                  <div>\n                    <a ");
   stack1 = depth0;
-  stack2 = "sendSuggestion";
+  stack2 = "createSuggestion";
   stack3 = helpers.action;
   tmp1 = {};
   tmp1.hash = {};

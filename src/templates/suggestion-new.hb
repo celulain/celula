@@ -17,7 +17,7 @@
                   </div>
 
                   <div>
-                    <a {{action "sendSuggestion"}} class="btn suggestion-btn">Enviar</a>
+                    <a {{action "createSuggestion"}} class="btn suggestion-btn">Enviar</a>
                   </div>
                 </div>
             </div>

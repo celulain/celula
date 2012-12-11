@@ -6,7 +6,8 @@ App.Store = DS.Store.extend({
         url: '/fixtures',
         mappings: {
             participants: 'App.Participant',
-            lessons: 'App.Lesson'
+            lessons: 'App.Lesson',
+            suggestions: 'App.Suggestion'
         }
     })
 });

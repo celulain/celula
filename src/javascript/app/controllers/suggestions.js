@@ -1,3 +1,1 @@
-App.SuggestionsController = Em.Controller.extend({
-    suggestion: null
-});
+App.SuggestionsController = Em.ArrayController.extend();

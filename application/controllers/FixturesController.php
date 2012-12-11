@@ -225,6 +225,29 @@ class FixturesController extends Zend_Controller_Action
         echo Zend_Json::encode($json);
     }
 
+    public function suggestionsAction() {
+        $this->_helper->layout()->setLayout('json');
+        
+        $json = array(
+            'suggestions' => array(
+                array(
+                    'id' => '32',
+                    'user_id' => '12321312',
+                    'date' => '12-05-2012',
+                    'suggestion' => 'Bolota',
+                ),
+                array(
+                    'id' => '12',
+                    'user_id' => '12321312',
+                    'date' => '12-08-2012',
+                    'suggestion' => 'Lalalla',
+                )
+            )
+        );
+        echo Zend_Json::encode($json);
+
+    }
+
 
 }
 
