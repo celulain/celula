@@ -9,7 +9,7 @@ App.Router = Em.Router.extend({
         gotoRegister: Em.Route.transitionTo('cell.register'),
         gotoProfile: Em.Route.transitionTo('cell.profile'),
         gotoLessons: Em.Route.transitionTo('resources.lessons'),
-        gotoPraise: Em.Route.transitionTo('resources.praise'),
+        gotoPraise: Em.Route.transitionTo('resources.praises'),
         gotoDynamics: Em.Route.transitionTo('resources.dynamics'),
 
         gotoSettings: Em.Route.transitionTo('settings.index'),
@@ -302,19 +302,19 @@ App.Router = Em.Router.extend({
                 }
             }),
 
-            praise: Em.Route.extend({
+            praises: Em.Route.extend({
                 route: '/louvor',
                 connectOutlets: function(router) {
                 router.get('applicationController')
-                        .connectOutlet('container', 'resourcesDynamics');
+                        .connectOutlet('container', 'resourcesPraises', router.get('store').findAll(App.Praise));
                 }
             }),
 
             dynamics: Em.Route.extend({
-                route: '/dinamica',
+                route: '/dinamicas',
                 connectOutlets: function(router) {
                 router.get('applicationController')
-                        .connectOutlet('container', 'resourcesPraise');
+                        .connectOutlet('container', 'resourcesDynamics', router.get('store').findAll(App.Dynamic));
                 }
             })
         }),

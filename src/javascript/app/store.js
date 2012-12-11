@@ -7,6 +7,8 @@ App.Store = DS.Store.extend({
         mappings: {
             participants: 'App.Participant',
             lessons: 'App.Lesson',
+            dynamics: 'App.Dynamic',
+            praises: 'App.Praise',
             suggestions: 'App.Suggestion'
         }
     })

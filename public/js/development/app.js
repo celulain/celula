@@ -14,6 +14,8 @@ App.Store = DS.Store.extend({
         mappings: {
             participants: 'App.Participant',
             lessons: 'App.Lesson',
+            dynamics: 'App.Dynamic',
+            praises: 'App.Praise',
             suggestions: 'App.Suggestion'
         }
     })
@@ -33,6 +35,14 @@ App.Cell.FIXTURES = [
         
     }
 ];
+App.Dynamic = DS.Model.extend({
+    name: DS.attr('string'),
+    min_participants: DS.attr('number'),
+    max_participants: DS.attr('number'),
+    goal: DS.attr('string'),
+    stuff: DS.attr('string'),
+    text: DS.attr('string')
+});
 // Lição de célula
 App.Lesson = DS.Model.extend({
     name: DS.attr('string'),
@@ -106,6 +116,10 @@ App.Participant = DS.Model.extend({
 //         return this.participants;
 //     }
 // });
+App.Praise = DS.Model.extend({
+    name: DS.attr('string'),
+    path: DS.attr('string')
+});
 App.SubgoalMultiplicationDate = DS.Model.extend({
     multiplication_date: DS.attr('date'),
     days_remaining: function() {
@@ -349,8 +363,8 @@ App.ResourcesDynamicsView = Em.View.extend({
 App.ResourcesLessonsView = Em.View.extend({
     templateName: 'resources-lessons'
 });
-App.ResourcesPraiseView = Em.View.extend({
-    templateName: 'resources-praise'
+App.ResourcesPraisesView = Em.View.extend({
+    templateName: 'resources-praises'
 });
 App.SettingsAddressView = Em.View.extend({
     templateName: 'settings-address'
@@ -581,7 +595,9 @@ App.CellParticipantNewController = Em.ObjectController.extend({
 });
 App.CellParticipantController = Em.ObjectController.extend();
 App.CellParticipantsController = Em.ArrayController.extend();
+App.ResourcesDynamicsController = Em.ArrayController.extend();
 App.ResourcesLessonsController = Em.ObjectController.extend();
+App.ResourcesPraisesController = Em.ArrayController.extend();
 App.SettingsAddressController = Em.Controller.extend();
 App.SettingsContactController = Em.Controller.extend();
 App.SettingsPasswordController = Em.Controller.extend();
@@ -691,7 +707,7 @@ App.Router = Em.Router.extend({
         gotoRegister: Em.Route.transitionTo('cell.register'),
         gotoProfile: Em.Route.transitionTo('cell.profile'),
         gotoLessons: Em.Route.transitionTo('resources.lessons'),
-        gotoPraise: Em.Route.transitionTo('resources.praise'),
+        gotoPraise: Em.Route.transitionTo('resources.praises'),
         gotoDynamics: Em.Route.transitionTo('resources.dynamics'),
 
         gotoSettings: Em.Route.transitionTo('settings.index'),
@@ -984,19 +1000,19 @@ App.Router = Em.Router.extend({
                 }
             }),
 
-            praise: Em.Route.extend({
+            praises: Em.Route.extend({
                 route: '/louvor',
                 connectOutlets: function(router) {
                 router.get('applicationController')
-                        .connectOutlet('container', 'resourcesDynamics');
+                        .connectOutlet('container', 'resourcesPraises', router.get('store').findAll(App.Praise));
                 }
             }),
 
             dynamics: Em.Route.extend({
-                route: '/dinamica',
+                route: '/dinamicas',
                 connectOutlets: function(router) {
                 router.get('applicationController')
-                        .connectOutlet('container', 'resourcesPraise');
+                        .connectOutlet('container', 'resourcesDynamics', router.get('store').findAll(App.Dynamic));
                 }
             })
         }),
@@ -1194,7 +1210,7 @@ helpers = helpers || Ember.Handlebars.helpers;
   tmp1.contexts.push(stack1);
   tmp1.data = data;
   stack1 = stack4.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + ">Lições de Célula</a></li>\n                            <!-- <li><a ");
+  data.buffer.push(escapeExpression(stack1) + ">Lições de Célula</a></li>\n                            <li><a ");
   stack1 = depth0;
   stack2 = "gotoPraise";
   stack3 = {};
@@ -1220,7 +1236,7 @@ helpers = helpers || Ember.Handlebars.helpers;
   tmp1.contexts.push(stack1);
   tmp1.data = data;
   stack1 = stack4.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + ">Dinâmicas</a></li> -->\n                            <li><a href=\"/recursos/louvor\">Louvor</a></li>\n                            <li><a href=\"/recursos/dinamicas\">Dinâmicas</a></li>\n                        </ul>\n                    </li>\n\n\n                    <li class=\"dropdown\">\n                        <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"> Admin\n                            <b class=\"caret\"></b>\n                        </a>\n                        <ul class=\"dropdown-menu\">\n                            <li><a ");
+  data.buffer.push(escapeExpression(stack1) + ">Dinâmicas</a></li>\n                        </ul>\n                    </li>\n\n\n                    <li class=\"dropdown\">\n                        <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"> Admin\n                            <b class=\"caret\"></b>\n                        </a>\n                        <ul class=\"dropdown-menu\">\n                            <li><a ");
   stack1 = depth0;
   stack2 = "gotoAdminMembers";
   stack3 = {};
@@ -1864,10 +1880,99 @@ helpers = helpers || Ember.Handlebars.helpers;
   return buffer;
 });Ember.TEMPLATES["resources-dynamics"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 helpers = helpers || Ember.Handlebars.helpers;
-  var foundHelper, self=this;
+  var buffer = '', stack1, stack2, stack3, foundHelper, tmp1, self=this, escapeExpression=this.escapeExpression;
 
+function program1(depth0,data) {
+  
+  var buffer = '', stack1, stack2, stack3;
+  data.buffer.push("\n            <div class=\"dynamic\">\n                <div class=\"dynamic-name\">");
+  stack1 = depth0;
+  stack2 = "name";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "</div>\n                <div class=\"dynamic-participants\">De ");
+  stack1 = depth0;
+  stack2 = "min_participants";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + " a ");
+  stack1 = depth0;
+  stack2 = "max_participants";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + " pessoas</div>\n                <div class=\"dynamic-stuff\"><strong>Material:</strong> ");
+  stack1 = depth0;
+  stack2 = "stuff";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "</div>\n                <div class=\"dynamic-goal\"><strong>Objetivo:</strong> ");
+  stack1 = depth0;
+  stack2 = "goal";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "</div>\n                <div class=\"dynamic-description\">Dinâmica</div>\n                <div class=\"dynamic-text\">");
+  stack1 = depth0;
+  stack2 = "text";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "</div>\n            </div>\n            ");
+  return buffer;}
 
-  data.buffer.push("<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"span8 offset2\">\n            Dinamicas\n        </div>\n    </div>\n</div>");
+  data.buffer.push("<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"span8 offset2\">\n            <h3>Dinâmicas</h3>\n\n            <!-- <div>\n                Dinâmica para ");
+  stack1 = depth0;
+  stack2 = "Ember.TextField";
+  stack3 = helpers.view;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + " pessoas <a class=\"btn\">Procurar</a>\n            </div> -->\n            \n            ");
+  stack1 = depth0;
+  stack2 = "content";
+  stack3 = helpers.each;
+  tmp1 = self.program(1, program1, data);
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.fn = tmp1;
+  tmp1.inverse = self.noop;
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n            \n        </div>\n    </div>\n</div>");
+  return buffer;
 });Ember.TEMPLATES["resources-lessons"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 helpers = helpers || Ember.Handlebars.helpers;
   var buffer = '', stack1, stack2, stack3, foundHelper, tmp1, self=this, escapeExpression=this.escapeExpression;
@@ -1935,10 +2040,74 @@ function program1(depth0,data) {
   return buffer;
 });Ember.TEMPLATES["resources-praise"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 helpers = helpers || Ember.Handlebars.helpers;
-  var foundHelper, self=this;
+  var buffer = '', stack1, stack2, stack3, foundHelper, tmp1, self=this, escapeExpression=this.escapeExpression;
 
+function program1(depth0,data) {
+  
+  var buffer = '', stack1, stack2, stack3;
+  data.buffer.push("\n                ");
+  stack1 = depth0;
+  stack2 = "name";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "\n            ");
+  return buffer;}
 
-  data.buffer.push("<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"span8 offset2\">\n            louvor\n        </div>\n    </div>\n</div>");
+  data.buffer.push("<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"span8 offset2\">\n            ");
+  stack1 = depth0;
+  stack2 = "content";
+  stack3 = helpers.each;
+  tmp1 = self.program(1, program1, data);
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.fn = tmp1;
+  tmp1.inverse = self.noop;
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n        </div>\n    </div>\n</div>");
+  return buffer;
+});Ember.TEMPLATES["resources-praises"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+helpers = helpers || Ember.Handlebars.helpers;
+  var buffer = '', stack1, stack2, stack3, foundHelper, tmp1, self=this, escapeExpression=this.escapeExpression;
+
+function program1(depth0,data) {
+  
+  var buffer = '', stack1, stack2, stack3;
+  data.buffer.push("\n                ");
+  stack1 = depth0;
+  stack2 = "name";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "\n            ");
+  return buffer;}
+
+  data.buffer.push("<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"span8 offset2\">\n            <h3>Louvor</h3>\n\n            <a href=\"http://www.cifraclub.com.br/\">Cifra Club</a>\n            \n            <!-- ");
+  stack1 = depth0;
+  stack2 = "content";
+  stack3 = helpers.each;
+  tmp1 = self.program(1, program1, data);
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.fn = tmp1;
+  tmp1.inverse = self.noop;
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push(" -->\n        </div>\n    </div>\n</div>");
+  return buffer;
 });Ember.TEMPLATES["settings-address"] = Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 helpers = helpers || Ember.Handlebars.helpers;
   var foundHelper, self=this;

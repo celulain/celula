@@ -248,6 +248,60 @@ class FixturesController extends Zend_Controller_Action
 
     }
 
+    public function praisesAction() {
+        $this->_helper->layout()->setLayout('json');
+        
+        $json = array(
+            'praises' => array(
+                array(
+                    'id' => '1',
+                    'name' => 'louvor 1',
+                    'path' => '12321312'
+                ),
+                array(
+                    'id' => '2',
+                    'name' => 'louvor 2',
+                    'path' => '12321312'
+                )
+            )
+        );
+        echo Zend_Json::encode($json);
+    }
+
+    public function dynamicsAction() {
+        $this->_helper->layout()->setLayout('json');
+        
+        $json = array(
+            'dynamics' => array(
+                array(
+                    'id' => '1',
+                    'name' => 'Apanhar o bastão',
+                    'min_participants' => 2,
+                    'max_participants' => 6,
+                    'goal' => 'apresentação de grupos ou propiciar maior integração.',
+                    'stuff' => 'bastão ou vassoura',
+                    'text' => 'formar um círculo o mais aberto possível. cada participante deve inicialmente falar seu nome para que os demais o recordam ou aprendam.
+Escolhe-se um jogador que se coloca no centro do círculo segurando uma das extremidades do bastão que está apoiado no chão. Este deve iniciar o jogo falando o nome de um dos componentes do círculo. ao mesmo tempo em que o chama deve soltar o bastão. Aquele que foi chamado deve  correr para o centro e tentar apanhar o bastão antes que este toque o chão. Se conseguir apanhá-lo substituirá o jogador do centro e continua o jogo chamando outro participante. Caso contrário, ou seja, se não pegar o bastão antes que este chegue ao chão, retornará ao seu lugar e o jogador do centro permanece onde está reiniciando a atividade.
+O jogo termina quando todos tiverem sido chamados.'
+                ),
+                array(
+                    'id' => '2',
+                    'name' => 'A Palavra de Deus que transforma',
+                    'min_participants' => 4,
+                    'max_participants' => 10,
+                    'goal' => 'Fazer o grupo refletir de que forma assimilamos a PALAVRA DE DEUS em nossas vidas.',
+                    'stuff' => 'uma bolinha de isopor, um giz, um vidrinho de remédio vazio, uma esponja e uma vasilha com água.',
+                    'text' => 'Primeiro se explica que a água é a palavra de Deus e que o objeto somos nós, depois se coloca a água na vasilha, e alguém mergulha o isopor, após ver o que ocorre com o isopor, mergulhar o giz, depois a vidro de remédio e por último a esponja. Explicar que a água é a Palavra de Deus e os objetos somos nós. Dê um objeto para cada pessoa.
+Colocar 1º a bolinha de isopor na água. Refletir: o isopor não afunda e nem absorve a água. Como nós absorvemos a Palavra de Deus? Somos também impermeáveis?
+Mergulhar o giz na água. Refletir: o giz retém a água só para si, sem repartir. E nós?
+Encher de água o vidrinho de remédio. Despejar toda a água que ele se encheu. Refletir: o vidrinho tinha água só para passar para os outros, mas sem guardar nada para si mesmo. E nós ?
+Mergulhar a esponja e espremer a água. Refletir: a esponja absorve bem a água e mesmo espremendo ela continua molhada.
+Iluminação Bíblica: Is 40,8 ; Mt 7,24 ; 2Tm 3,16'
+                )
+            )
+        );
+        echo Zend_Json::encode($json);
+    }
 
 }
 

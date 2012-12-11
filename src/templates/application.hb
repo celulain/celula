@@ -82,10 +82,8 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a {{action "gotoLessons" href="true"}}>Lições de Célula</a></li>
-                            <!-- <li><a {{action "gotoPraise" href="true"}}>Louvor</a></li>
-                            <li><a {{action "gotoDynamics" href="true"}}>Dinâmicas</a></li> -->
-                            <li><a href="/recursos/louvor">Louvor</a></li>
-                            <li><a href="/recursos/dinamicas">Dinâmicas</a></li>
+                            <li><a {{action "gotoPraise" href="true"}}>Louvor</a></li>
+                            <li><a {{action "gotoDynamics" href="true"}}>Dinâmicas</a></li>
                         </ul>
                     </li>
 
