@@ -1,12 +1,12 @@
 App.CellParticipantNewController = Em.ObjectController.extend({
     clear: function() {
-        this.set('firstName', null);
-        this.set('lastName', null);
-        this.set('nickname', null);
-        this.set('email', null);
-        this.set('phone', null);
-        this.set('sex', null);
-        this.set('baptism', null);
+        this.set('firstName', '');
+        this.set('lastName', '');
+        this.set('nickname', '');
+        this.set('email', '');
+        this.set('phone', '');
+        this.set('sex', '');
+        this.set('baptism', '');
         this.set('trainingLeader', false);
         this.set('host', false);
 
@@ -40,13 +40,13 @@ App.CellParticipantNewController = Em.ObjectController.extend({
     }.property('firstName', 'lastName', 'nickname', 'email', 'phone', 'sex', 'baptism', 'trainingLeader', 'host'),
 
     // Properties do novo participante
-    firstName: null,
-    lastName: null,
-    nickname: null,
-    email: null,
-    phone: null,
-    sex: null,
-    baptism: null,
+    firstName: '',
+    lastName: '',
+    nickname: '',
+    email: '',
+    phone: '',
+    sex: '',
+    baptism: '',
     trainingLeader: false,
     host: false,
 
