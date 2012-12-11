@@ -8,3 +8,15 @@ extras/documentation
 public/js/libs/handlebars/.DS_Store
 
 public/js/libs/jquery/.DS_Store
+
+src/javascript/finder/.DS_Store
+
+src/javascript/finder/models/.DS_Store
+
+src/javascript/finder/templates/.DS_Store
+
+src/javascript/finder/routes/.DS_Store
+
+src/javascript/finder/views/.DS_Store
+
+src/javascript/finder/controllers/.DS_Store
