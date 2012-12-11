@@ -81,6 +81,7 @@ class Application_Acl_Setup
         $this->_acl->addResource( new Zend_Acl_Resource('search') );
         $this->_acl->addResource( new Zend_Acl_Resource('password') );
         $this->_acl->addResource( new Zend_Acl_Resource('register') );
+        $this->_acl->addResource( new Zend_Acl_Resource('fixtures') );
     }
 
     /**
@@ -101,6 +102,7 @@ class Application_Acl_Setup
                     ->allow( 'guest', 'api', array('subgoals','presence','getmember') )
                     ->allow( 'guest', 'celula', array('index', 'frequencia','membros','cadastro','perfil') )
                     ->allow( 'guest', 'recursos', array('licoes-de-celula','louvor','dinamicas') )
+                    ->allow( 'guest', 'fixtures', array('participants', 'cells', 'churches', 'meetings', 'members', 'lessons') )
                     ->allow( 'guest', 'configuracoes', array('perfil','contato','endereco','senha') );
         $this->_acl	->allow( 'user', 'index', 'index' )
                     ->allow( 'user', 'search', 'index')

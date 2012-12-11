@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
     <div class="span8 offset2">
-      <a class="btn btn-block btn-large" {{action "addNewVisitor"}}>
+      <a class="btn btn-block btn-large" {{action "gotoNewParticipant"}}>
         Adicionar Participante
       </a>
     </div>
@@ -19,16 +19,15 @@
         </thead>
 
         <tbody>
+
+          {{#each content}}
           <tr>
-            <td class="td-left"><a {{action "editParticipant"}}>Fabrício</a></td>
-            <td>Lider</td>
-            <td>IBCBH</td>
+              <td class="td-left"><a {{action "gotoParticipant" this}}>{{name}}</a></td>
+              <td>{{position}}</td>
+              <td>{{baptism}}</td>
           </tr>
-          <tr>
-            <td class="td-left"><a {{action "editParticipant"}}>Fabrício</a></td>
-            <td>Anfitrião</td>
-            <td>Getsêmani</td>
-          </tr>
+          {{/each}}
+
         </tbody>
       </table>
     </div>
