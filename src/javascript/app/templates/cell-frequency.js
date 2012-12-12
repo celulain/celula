@@ -26,6 +26,22 @@ function program3(depth0,data) {
 function program5(depth0,data) {
   
   var buffer = '', stack1, stack2, stack3;
+  data.buffer.push("\n            <li>");
+  stack1 = depth0;
+  stack2 = "date";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "</li>\n          ");
+  return buffer;}
+
+function program7(depth0,data) {
+  
+  var buffer = '', stack1, stack2, stack3;
   data.buffer.push("\n\n          ");
   stack1 = depth0;
   stack2 = "position";
@@ -50,7 +66,7 @@ function program5(depth0,data) {
   stack1 = depth0;
   stack2 = "meetings";
   stack3 = helpers.each;
-  tmp1 = self.program(6, program6, data);
+  tmp1 = self.program(8, program8, data);
   tmp1.hash = {};
   tmp1.contexts = [];
   tmp1.contexts.push(stack1);
@@ -61,7 +77,7 @@ function program5(depth0,data) {
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push(" <br>\n          ");
   return buffer;}
-function program6(depth0,data) {
+function program8(depth0,data) {
   
   var buffer = '', stack1, stack2, stack3;
   data.buffer.push(" ");
@@ -77,7 +93,7 @@ function program6(depth0,data) {
   data.buffer.push(escapeExpression(stack1));
   return buffer;}
 
-function program8(depth0,data) {
+function program10(depth0,data) {
   
   var buffer = '', stack1, stack2, stack3;
   data.buffer.push("\n              <div class=\"row-fluid\">\n                <div class=\"span12\">\n                  ");
@@ -93,7 +109,7 @@ function program8(depth0,data) {
   data.buffer.push(escapeExpression(stack1) + "\n                </div>\n              </div>\n              ");
   return buffer;}
 
-function program10(depth0,data) {
+function program12(depth0,data) {
   
   var buffer = '', stack1, stack2, stack3;
   data.buffer.push("\n              <div class=\"row-fluid\">\n                <div class=\"span12\">\n                  ");
@@ -109,7 +125,7 @@ function program10(depth0,data) {
   data.buffer.push(escapeExpression(stack1) + "\n                </div>\n              </div>\n              ");
   return buffer;}
 
-function program12(depth0,data) {
+function program14(depth0,data) {
   
   var buffer = '', stack1, stack2, stack3, stack4;
   data.buffer.push("\n              <div class=\"row-fluid\">\n                <div class=\"span12 frequency-check\">\n                  <a ");
@@ -142,7 +158,7 @@ function program12(depth0,data) {
   data.buffer.push(escapeExpression(stack1) + "  data-position=\"1\">\n                    <i class=\"icon-ok\"></i>\n                  </a>\n                  \n                </div>\n              </div>\n              ");
   return buffer;}
 
-function program14(depth0,data) {
+function program16(depth0,data) {
   
   var buffer = '', stack1, stack2, stack3, stack4;
   data.buffer.push("\n              <div class=\"row-fluid\">\n                <div class=\"span12 frequency-check\">\n                  <a ");
@@ -175,7 +191,7 @@ function program14(depth0,data) {
   data.buffer.push(escapeExpression(stack1) + "  data-position=\"2\">\n                    <i class=\"icon-ok\"></i>\n                  </a>\n                  \n                </div>\n              </div>\n              ");
   return buffer;}
 
-function program16(depth0,data) {
+function program18(depth0,data) {
   
   var buffer = '', stack1, stack2, stack3, stack4;
   data.buffer.push("\n              <div class=\"row-fluid\">\n                <div class=\"span12 frequency-check\">\n                  <a ");
@@ -208,7 +224,7 @@ function program16(depth0,data) {
   data.buffer.push(escapeExpression(stack1) + "  data-position=\"3\">\n                    <i class=\"icon-ok\"></i>\n                  </a>\n                  \n                </div>\n              </div>\n              ");
   return buffer;}
 
-function program18(depth0,data) {
+function program20(depth0,data) {
   
   var buffer = '', stack1, stack2, stack3, stack4;
   data.buffer.push("\n              <div class=\"row-fluid\">\n                <div class=\"span12 frequency-check\">\n                  <a ");
@@ -319,11 +335,24 @@ function program18(depth0,data) {
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push(" -->\n\n          ");
+  data.buffer.push(" -->\n\n\n          Todas meetings:<br>\n          <ul>\n          ");
+  stack1 = depth0;
+  stack2 = "App.meetings";
+  stack3 = helpers.each;
+  tmp1 = self.program(5, program5, data);
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.fn = tmp1;
+  tmp1.inverse = self.noop;
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n          </ul>\n\n\n          ");
   stack1 = depth0;
   stack2 = "content";
   stack3 = helpers.each;
-  tmp1 = self.program(5, program5, data);
+  tmp1 = self.program(7, program7, data);
   tmp1.hash = {};
   tmp1.contexts = [];
   tmp1.contexts.push(stack1);
@@ -336,7 +365,7 @@ function program18(depth0,data) {
   stack1 = depth0;
   stack2 = "processedDummy";
   stack3 = helpers.each;
-  tmp1 = self.program(8, program8, data);
+  tmp1 = self.program(10, program10, data);
   tmp1.hash = {};
   tmp1.contexts = [];
   tmp1.contexts.push(stack1);
@@ -349,7 +378,7 @@ function program18(depth0,data) {
   stack1 = depth0;
   stack2 = "processedDummy";
   stack3 = helpers.each;
-  tmp1 = self.program(10, program10, data);
+  tmp1 = self.program(12, program12, data);
   tmp1.hash = {};
   tmp1.contexts = [];
   tmp1.contexts.push(stack1);
@@ -372,7 +401,7 @@ function program18(depth0,data) {
   stack1 = depth0;
   stack2 = "processedDummy";
   stack3 = helpers.each;
-  tmp1 = self.program(12, program12, data);
+  tmp1 = self.program(14, program14, data);
   tmp1.hash = {};
   tmp1.contexts = [];
   tmp1.contexts.push(stack1);
@@ -405,7 +434,7 @@ function program18(depth0,data) {
   stack1 = depth0;
   stack2 = "processedDummy";
   stack3 = helpers.each;
-  tmp1 = self.program(14, program14, data);
+  tmp1 = self.program(16, program16, data);
   tmp1.hash = {};
   tmp1.contexts = [];
   tmp1.contexts.push(stack1);
@@ -438,7 +467,7 @@ function program18(depth0,data) {
   stack1 = depth0;
   stack2 = "processedDummy";
   stack3 = helpers.each;
-  tmp1 = self.program(16, program16, data);
+  tmp1 = self.program(18, program18, data);
   tmp1.hash = {};
   tmp1.contexts = [];
   tmp1.contexts.push(stack1);
@@ -471,7 +500,7 @@ function program18(depth0,data) {
   stack1 = depth0;
   stack2 = "processedDummy";
   stack3 = helpers.each;
-  tmp1 = self.program(18, program18, data);
+  tmp1 = self.program(20, program20, data);
   tmp1.hash = {};
   tmp1.contexts = [];
   tmp1.contexts.push(stack1);

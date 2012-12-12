@@ -4,4 +4,17 @@ var brush = function() {
     focus.select(".x.axis").call(xAxis);
 }
 
-window.App = Em.Application.create();
+window.App = Em.Application.create({
+    ready: function() {
+
+        // FIXTURE Data for local storage
+        App.CellProfile.createRecord({
+            leader: "Fabricio",
+            gender: "",
+            min_age: "",
+            max_age: "",
+            address: "",
+            church: ""
+        });
+    }
+});

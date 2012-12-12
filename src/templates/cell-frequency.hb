@@ -22,6 +22,15 @@
             <a style="float: right;" {{action "salvarFrequencia"}} class="btn btn-success">Salvar</a>
           {{/if}} -->
 
+
+          Todas meetings:<br>
+          <ul>
+          {{#each App.meetings}}
+            <li>{{date}}</li>
+          {{/each}}
+          </ul>
+
+
           {{#each content}}
 
           {{position}}, {{name}}, {{#each meetings}} {{date}}{{/each}} <br>
