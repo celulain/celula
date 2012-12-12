@@ -26,23 +26,7 @@ function program3(depth0,data) {
 function program5(depth0,data) {
   
   var buffer = '', stack1, stack2, stack3;
-  data.buffer.push("\n                  <th class=\"date-meeting\">");
-  stack1 = depth0;
-  stack2 = "date";
-  stack3 = helpers._triageMustache;
-  tmp1 = {};
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.data = data;
-  stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "</th>\n                ");
-  return buffer;}
-
-function program7(depth0,data) {
-  
-  var buffer = '', stack1, stack2, stack3, stack4, stack5;
-  data.buffer.push("\n                <tr>\n                  <td class=\"td-left\">");
+  data.buffer.push("\n\n          ");
   stack1 = depth0;
   stack2 = "position";
   stack3 = helpers._triageMustache;
@@ -52,20 +36,7 @@ function program7(depth0,data) {
   tmp1.contexts.push(stack1);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "</td>\n                  <td class=\"td-left\">\n                    <a ");
-  stack1 = depth0;
-  stack2 = "";
-  stack3 = depth0;
-  stack4 = "gotoParticipant";
-  stack5 = helpers.action;
-  tmp1 = {};
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack3);
-  tmp1.contexts.push(stack1);
-  tmp1.data = data;
-  stack1 = stack5.call(depth0, stack4, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + ">");
+  data.buffer.push(escapeExpression(stack1) + ", ");
   stack1 = depth0;
   stack2 = "name";
   stack3 = helpers._triageMustache;
@@ -75,10 +46,248 @@ function program7(depth0,data) {
   tmp1.contexts.push(stack1);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "</a>\n                  </td>\n                  \n                    <td>\n                      <span class=\"frequency-checkbox\"><i class=\"icon-check-empty\"></i></span>\n                    </td>\n                  \n                </tr>\n              ");
+  data.buffer.push(escapeExpression(stack1) + ", ");
+  stack1 = depth0;
+  stack2 = "meetings";
+  stack3 = helpers.each;
+  tmp1 = self.program(6, program6, data);
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.fn = tmp1;
+  tmp1.inverse = self.noop;
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push(" <br>\n          ");
+  return buffer;}
+function program6(depth0,data) {
+  
+  var buffer = '', stack1, stack2, stack3;
+  data.buffer.push(" ");
+  stack1 = depth0;
+  stack2 = "date";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1));
   return buffer;}
 
-  data.buffer.push("<div class=\"container-fluid\">\n  <div class=\"row-fluid\">\n    <div class=\"span7\">\n           \n      <div class=\"row-fluid\">\n        <div class=\"span12\">\n          \n              <a class=\"btn pull-left\"><i class=\"icon-arrow-left\"></i></a>\n              <a class=\"btn pull-right\"><i class=\"icon-arrow-right\"></i></a>\n\n              <br><br>\n          <!-- Selecionar reunião:\n          ");
+function program8(depth0,data) {
+  
+  var buffer = '', stack1, stack2, stack3;
+  data.buffer.push("\n              <div class=\"row-fluid\">\n                <div class=\"span12\">\n                  ");
+  stack1 = depth0;
+  stack2 = "position";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "\n                </div>\n              </div>\n              ");
+  return buffer;}
+
+function program10(depth0,data) {
+  
+  var buffer = '', stack1, stack2, stack3;
+  data.buffer.push("\n              <div class=\"row-fluid\">\n                <div class=\"span12\">\n                  ");
+  stack1 = depth0;
+  stack2 = "name";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "\n                </div>\n              </div>\n              ");
+  return buffer;}
+
+function program12(depth0,data) {
+  
+  var buffer = '', stack1, stack2, stack3, stack4;
+  data.buffer.push("\n              <div class=\"row-fluid\">\n                <div class=\"span12 frequency-check\">\n                  <a ");
+  stack1 = depth0;
+  stack2 = "checkPresence";
+  stack3 = {};
+  stack4 = "controller";
+  stack3['target'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + " ");
+  stack1 = {};
+  stack2 = "date1:check";
+  stack1['class'] = stack2;
+  stack2 = "id";
+  stack1['data-user-id'] = stack2;
+  stack2 = "meeting_id1";
+  stack1['data-meeting-id'] = stack2;
+  stack2 = helpers.bindAttr;
+  tmp1 = {};
+  tmp1.hash = stack1;
+  tmp1.contexts = [];
+  tmp1.data = data;
+  stack1 = stack2.call(depth0, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "  data-position=\"1\">\n                    <i class=\"icon-ok\"></i>\n                  </a>\n                  \n                </div>\n              </div>\n              ");
+  return buffer;}
+
+function program14(depth0,data) {
+  
+  var buffer = '', stack1, stack2, stack3, stack4;
+  data.buffer.push("\n              <div class=\"row-fluid\">\n                <div class=\"span12 frequency-check\">\n                  <a ");
+  stack1 = depth0;
+  stack2 = "checkPresence";
+  stack3 = {};
+  stack4 = "controller";
+  stack3['target'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + " ");
+  stack1 = {};
+  stack2 = "date2:check";
+  stack1['class'] = stack2;
+  stack2 = "id";
+  stack1['data-user-id'] = stack2;
+  stack2 = "meeting_id2";
+  stack1['data-meeting-id'] = stack2;
+  stack2 = helpers.bindAttr;
+  tmp1 = {};
+  tmp1.hash = stack1;
+  tmp1.contexts = [];
+  tmp1.data = data;
+  stack1 = stack2.call(depth0, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "  data-position=\"2\">\n                    <i class=\"icon-ok\"></i>\n                  </a>\n                  \n                </div>\n              </div>\n              ");
+  return buffer;}
+
+function program16(depth0,data) {
+  
+  var buffer = '', stack1, stack2, stack3, stack4;
+  data.buffer.push("\n              <div class=\"row-fluid\">\n                <div class=\"span12 frequency-check\">\n                  <a ");
+  stack1 = depth0;
+  stack2 = "checkPresence";
+  stack3 = {};
+  stack4 = "controller";
+  stack3['target'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + " ");
+  stack1 = {};
+  stack2 = "date3:check";
+  stack1['class'] = stack2;
+  stack2 = "id";
+  stack1['data-user-id'] = stack2;
+  stack2 = "meeting_id3";
+  stack1['data-meeting-id'] = stack2;
+  stack2 = helpers.bindAttr;
+  tmp1 = {};
+  tmp1.hash = stack1;
+  tmp1.contexts = [];
+  tmp1.data = data;
+  stack1 = stack2.call(depth0, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "  data-position=\"3\">\n                    <i class=\"icon-ok\"></i>\n                  </a>\n                  \n                </div>\n              </div>\n              ");
+  return buffer;}
+
+function program18(depth0,data) {
+  
+  var buffer = '', stack1, stack2, stack3, stack4;
+  data.buffer.push("\n              <div class=\"row-fluid\">\n                <div class=\"span12 frequency-check\">\n                  <a ");
+  stack1 = depth0;
+  stack2 = "checkPresence";
+  stack3 = {};
+  stack4 = "controller";
+  stack3['target'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + " ");
+  stack1 = {};
+  stack2 = "date4:check";
+  stack1['class'] = stack2;
+  stack2 = "id";
+  stack1['data-user-id'] = stack2;
+  stack2 = "meeting_id4";
+  stack1['data-meeting-id'] = stack2;
+  stack2 = helpers.bindAttr;
+  tmp1 = {};
+  tmp1.hash = stack1;
+  tmp1.contexts = [];
+  tmp1.data = data;
+  stack1 = stack2.call(depth0, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "  data-position=\"4\">\n                    <i class=\"icon-ok\"></i>\n                  </a>\n                  \n                </div>\n              </div>\n              ");
+  return buffer;}
+
+  data.buffer.push("<div class=\"container-fluid\">\n  <div class=\"row-fluid\">\n    <div class=\"span7\">\n           \n      <div class=\"row-fluid\">\n        <div class=\"span12\">\n          \n              <a ");
+  stack1 = depth0;
+  stack2 = "previousMeeting";
+  stack3 = {};
+  stack4 = "controller";
+  stack3['target'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + " ");
+  stack1 = {};
+  stack2 = "noPrevious:disabled :btn :pull-left";
+  stack1['class'] = stack2;
+  stack2 = helpers.bindAttr;
+  tmp1 = {};
+  tmp1.hash = stack1;
+  tmp1.contexts = [];
+  tmp1.data = data;
+  stack1 = stack2.call(depth0, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "><i class=\"icon-arrow-left\"></i></a>\n              <a ");
+  stack1 = depth0;
+  stack2 = "nextMeeting";
+  stack3 = {};
+  stack4 = "controller";
+  stack3['target'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + " ");
+  stack1 = {};
+  stack2 = "noNext:disabled :btn :pull-right";
+  stack1['class'] = stack2;
+  stack2 = helpers.bindAttr;
+  tmp1 = {};
+  tmp1.hash = stack1;
+  tmp1.contexts = [];
+  tmp1.data = data;
+  stack1 = stack2.call(depth0, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "><i class=\"icon-arrow-right\"></i></a>\n\n              <br><br>\n          <!-- Selecionar reunião:\n          ");
   stack1 = depth0;
   stack2 = "Ember.Select";
   stack3 = {};
@@ -110,9 +319,9 @@ function program7(depth0,data) {
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push(" -->\n          \n\n\n          <table class=\"table table-bordered\">\n            <thead>\n              <tr>\n                <th></th>\n                <th class=\"th-left\">Nome</th>\n                ");
+  data.buffer.push(" -->\n\n          ");
   stack1 = depth0;
-  stack2 = "dateMeetings";
+  stack2 = "content";
   stack3 = helpers.each;
   tmp1 = self.program(5, program5, data);
   tmp1.hash = {};
@@ -123,11 +332,11 @@ function program7(depth0,data) {
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n              </tr>\n            </thead>\n            \n            <tbody>\n              <tr>\n                <td colspan=\"8\">Participantes</td>\n              </tr>\n              ");
+  data.buffer.push("\n          \n          <div class=\"row-fluid frequency-table\">\n            <div class=\"span2 frequency-name\">\n              <div class=\"row-fluid\">\n                <div class=\"span12\">\n                  <strong>Função</strong>\n                </div>\n              </div>\n\n              ");
   stack1 = depth0;
-  stack2 = "content";
+  stack2 = "processedDummy";
   stack3 = helpers.each;
-  tmp1 = self.program(7, program7, data);
+  tmp1 = self.program(8, program8, data);
   tmp1.hash = {};
   tmp1.contexts = [];
   tmp1.contexts.push(stack1);
@@ -136,7 +345,152 @@ function program7(depth0,data) {
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n            </tbody>\n          </table>\n\n\n      <p class=\"add-visitor\">\n        <a class=\"btn btn-block btn-large\">Adicionar Visitante</a>\n      </p>\n\n      </div><!--/.span12 -->\n    </div><!--/.row-fluid -->\n  </div><!--/span8 -->\n\n  <div class=\"span4 offset1\">\n  <div class=\"\" id=\"submetas\">\n    <div class=\"submeta-1\">\n      ");
+  data.buffer.push("\n            </div>\n            \n            <div class=\"span2 frequency-name\">\n              <div class=\"row-fluid\">\n                <div class=\"span12\">\n                  <strong>Nome</strong>\n                </div>\n              </div>\n\n              ");
+  stack1 = depth0;
+  stack2 = "processedDummy";
+  stack3 = helpers.each;
+  tmp1 = self.program(10, program10, data);
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.fn = tmp1;
+  tmp1.inverse = self.noop;
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n            </div>\n\n            <div class=\"span2 frequency-col-date\">\n              <div class=\"row-fluid\">\n                <div class=\"span12\">\n                  <strong>");
+  stack1 = depth0;
+  stack2 = "date1.date";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "</strong>\n                </div>\n              </div>\n\n              ");
+  stack1 = depth0;
+  stack2 = "processedDummy";
+  stack3 = helpers.each;
+  tmp1 = self.program(12, program12, data);
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.fn = tmp1;
+  tmp1.inverse = self.noop;
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n\n              <hr>\n              <div class=\"row-fluid\">\n                <div class=\"span12 frequency-presents\">\n                  ");
+  stack1 = depth0;
+  stack2 = "date1.presents";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "\n                </div>\n              </div>\n            </div>\n\n            <div class=\"span2 frequency-col-date\">\n\n              <div class=\"row-fluid\">\n                <div class=\"span12\">\n                  <strong>");
+  stack1 = depth0;
+  stack2 = "date2.date";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "</strong>\n                </div>\n              </div>\n\n              ");
+  stack1 = depth0;
+  stack2 = "processedDummy";
+  stack3 = helpers.each;
+  tmp1 = self.program(14, program14, data);
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.fn = tmp1;
+  tmp1.inverse = self.noop;
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n\n              <hr>\n              <div class=\"row-fluid\">\n                <div class=\"span12 frequency-presents\">\n                  ");
+  stack1 = depth0;
+  stack2 = "date2.presents";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "\n                </div>\n              </div>\n            </div>\n\n            <div class=\"span2 frequency-col-date\">\n              <div class=\"row-fluid\">\n                <div class=\"span12\">\n                  <strong>");
+  stack1 = depth0;
+  stack2 = "date3.date";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "</strong>\n                </div>\n              </div>\n              \n              ");
+  stack1 = depth0;
+  stack2 = "processedDummy";
+  stack3 = helpers.each;
+  tmp1 = self.program(16, program16, data);
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.fn = tmp1;
+  tmp1.inverse = self.noop;
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n\n              <hr>\n              <div class=\"row-fluid\">\n                <div class=\"span12 frequency-presents\">\n                  ");
+  stack1 = depth0;
+  stack2 = "date3.presents";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "\n                </div>\n              </div>\n            </div>\n\n            <div class=\"span2 frequency-col-date\">\n              <div class=\"row-fluid\">\n                <div class=\"span12\">\n                  <strong>");
+  stack1 = depth0;
+  stack2 = "date4.date";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "</strong>\n                </div>\n              </div>\n\n              ");
+  stack1 = depth0;
+  stack2 = "processedDummy";
+  stack3 = helpers.each;
+  tmp1 = self.program(18, program18, data);
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.fn = tmp1;
+  tmp1.inverse = self.noop;
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n\n              <hr>\n              <div class=\"row-fluid\">\n                <div class=\"span12 frequency-presents\">\n                  ");
+  stack1 = depth0;
+  stack2 = "date4.presents";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "\n                </div>\n              </div>\n            </div>\n          </div>          \n\n          \n\n\n      <p class=\"add-visitor\">\n        <a class=\"btn btn-block btn-large\">Adicionar Visitante</a>\n      </p>\n\n      </div><!--/.span12 -->\n    </div><!--/.row-fluid -->\n  </div><!--/span8 -->\n\n  <div class=\"span4 offset1\">\n  <div class=\"\" id=\"submetas\">\n    <div class=\"submeta-1\">\n      ");
   stack1 = depth0;
   stack2 = "subgoalMultiplicationDate";
   foundHelper = helpers.outlet;

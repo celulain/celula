@@ -28,6 +28,7 @@ handlebars.precompile:
 
 app.development: public/js/development/app.js
 	cat src/javascript/app/app.js \
+	src/javascript/app/data/adapters/localstorage-adapter.js \
 	src/javascript/app/store.js \
 	src/javascript/app/models/*.js \
 	src/javascript/app/views/*.js \

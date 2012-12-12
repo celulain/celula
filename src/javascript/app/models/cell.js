@@ -4,12 +4,6 @@ App.Cell = DS.Model.extend({
     week_day: DS.attr('string'),
     gender: DS.attr('string'),
     age_group: DS.attr('string'),
-    hour_start: DS.attr('string')
+    hour_start: DS.attr('string'),
+    meetings: DS.hasMany('App.Meeting')
 });
-
-App.Cell.FIXTURES = [
-    {
-        id: "1",
-        
-    }
-];

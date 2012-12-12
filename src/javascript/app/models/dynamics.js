@@ -6,3 +6,7 @@ App.Dynamic = DS.Model.extend({
     stuff: DS.attr('string'),
     text: DS.attr('string')
 });
+
+App.Dynamic.reopenClass({
+    url: '/fixtures/dynamics'
+});

@@ -5,8 +5,8 @@
       <div class="row-fluid">
         <div class="span12">
           
-              <a class="btn pull-left"><i class="icon-arrow-left"></i></a>
-              <a class="btn pull-right"><i class="icon-arrow-right"></i></a>
+              <a {{action "previousMeeting" target="controller"}} {{bindAttr class="noPrevious:disabled :btn :pull-left"}}><i class="icon-arrow-left"></i></a>
+              <a {{action "nextMeeting" target="controller"}} {{bindAttr class="noNext:disabled :btn :pull-right"}}><i class="icon-arrow-right"></i></a>
 
               <br><br>
           <!-- Selecionar reunião:
@@ -21,39 +21,152 @@
           {{else}}
             <a style="float: right;" {{action "salvarFrequencia"}} class="btn btn-success">Salvar</a>
           {{/if}} -->
+
+          {{#each content}}
+
+          {{position}}, {{name}}, {{#each meetings}} {{date}}{{/each}} <br>
+          {{/each}}
           
+          <div class="row-fluid frequency-table">
+            <div class="span2 frequency-name">
+              <div class="row-fluid">
+                <div class="span12">
+                  <strong>Função</strong>
+                </div>
+              </div>
 
-
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th></th>
-                <th class="th-left">Nome</th>
-                {{#each dateMeetings}}
-                  <th class="date-meeting">{{date}}</th>
-                {{/each}}
-              </tr>
-            </thead>
-            
-            <tbody>
-              <tr>
-                <td colspan="8">Participantes</td>
-              </tr>
-              {{#each content}}
-                <tr>
-                  <td class="td-left">{{position}}</td>
-                  <td class="td-left">
-                    <a {{action "gotoParticipant" this}}>{{name}}</a>
-                  </td>
-                  
-                    <td>
-                      <span class="frequency-checkbox"><i class="icon-check-empty"></i></span>
-                    </td>
-                  
-                </tr>
+              {{#each processedDummy}}
+              <div class="row-fluid">
+                <div class="span12">
+                  {{position}}
+                </div>
+              </div>
               {{/each}}
-            </tbody>
-          </table>
+            </div>
+            
+            <div class="span2 frequency-name">
+              <div class="row-fluid">
+                <div class="span12">
+                  <strong>Nome</strong>
+                </div>
+              </div>
+
+              {{#each processedDummy}}
+              <div class="row-fluid">
+                <div class="span12">
+                  {{name}}
+                </div>
+              </div>
+              {{/each}}
+            </div>
+
+            <div class="span2 frequency-col-date">
+              <div class="row-fluid">
+                <div class="span12">
+                  <strong>{{date1.date}}</strong>
+                </div>
+              </div>
+
+              {{#each processedDummy}}
+              <div class="row-fluid">
+                <div class="span12 frequency-check">
+                  <a {{action "checkPresence" target="controller"}} {{bindAttr class="date1:check" data-user-id="id" data-meeting-id="meeting_id1"}}  data-position="1">
+                    <i class="icon-ok"></i>
+                  </a>
+                  
+                </div>
+              </div>
+              {{/each}}
+
+              <hr>
+              <div class="row-fluid">
+                <div class="span12 frequency-presents">
+                  {{date1.presents}}
+                </div>
+              </div>
+            </div>
+
+            <div class="span2 frequency-col-date">
+
+              <div class="row-fluid">
+                <div class="span12">
+                  <strong>{{date2.date}}</strong>
+                </div>
+              </div>
+
+              {{#each processedDummy}}
+              <div class="row-fluid">
+                <div class="span12 frequency-check">
+                  <a {{action "checkPresence" target="controller"}} {{bindAttr class="date2:check" data-user-id="id" data-meeting-id="meeting_id2"}}  data-position="2">
+                    <i class="icon-ok"></i>
+                  </a>
+                  
+                </div>
+              </div>
+              {{/each}}
+
+              <hr>
+              <div class="row-fluid">
+                <div class="span12 frequency-presents">
+                  {{date2.presents}}
+                </div>
+              </div>
+            </div>
+
+            <div class="span2 frequency-col-date">
+              <div class="row-fluid">
+                <div class="span12">
+                  <strong>{{date3.date}}</strong>
+                </div>
+              </div>
+              
+              {{#each processedDummy}}
+              <div class="row-fluid">
+                <div class="span12 frequency-check">
+                  <a {{action "checkPresence" target="controller"}} {{bindAttr class="date3:check" data-user-id="id" data-meeting-id="meeting_id3"}}  data-position="3">
+                    <i class="icon-ok"></i>
+                  </a>
+                  
+                </div>
+              </div>
+              {{/each}}
+
+              <hr>
+              <div class="row-fluid">
+                <div class="span12 frequency-presents">
+                  {{date3.presents}}
+                </div>
+              </div>
+            </div>
+
+            <div class="span2 frequency-col-date">
+              <div class="row-fluid">
+                <div class="span12">
+                  <strong>{{date4.date}}</strong>
+                </div>
+              </div>
+
+              {{#each processedDummy}}
+              <div class="row-fluid">
+                <div class="span12 frequency-check">
+                  <a {{action "checkPresence" target="controller"}} {{bindAttr class="date4:check" data-user-id="id" data-meeting-id="meeting_id4"}}  data-position="4">
+                    <i class="icon-ok"></i>
+                  </a>
+                  
+                </div>
+              </div>
+              {{/each}}
+
+              <hr>
+              <div class="row-fluid">
+                <div class="span12 frequency-presents">
+                  {{date4.presents}}
+                </div>
+              </div>
+            </div>
+          </div>          
+
+          
 
 
       <p class="add-visitor">

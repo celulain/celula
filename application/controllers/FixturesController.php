@@ -27,108 +27,88 @@ class FixturesController extends Zend_Controller_Action
         // Determina o método da requisição
         $method = $this->getRequest()->getMethod();
 
-        // Retorno
-        $statusCode = '200';
-        $statusMessage = 'Ok';
-        $data = array(
-                'multiplicationDate' => 'bola'
-            );
+        function methodPost($params) {
 
-        switch ($id) {
-            case '1':
-                $json = array(
-                'participants' => array(
-                    array(
-                        'id' => '1',
-                        'first_name' => 'Fabrício',
-                        'last_name' => 'Tavares de Oliveira',
-                        'nickname' => 'Fafá',
-                        'usual_name' => true,
-                        'email' => 'fabriciotavareso@gmail.com',
-                        'phone' => '3197413107',
-                        'sex' => '1',
-                        'baptism' => 'IBCBH',
-                        'position' => 'Líder'
-                        )
-                    )
-                );
-                break;
-            case '2':
-                $json = array('lessons' => array('id' => '2', 'name' => 'Andre'));
-                break;
-            case '3':
-                $json = array('lesson' => array(array('id' => '3', 'name' => 'Vini')));
-                break;
+            $return = array(
+                'id' => '5','first_name' => 'Raiane','last_name' => 'Brito','nickname' => '','usual_name' => false,'email' => '','phone' => '','sex' => '1','baptism' => 'IBCBH','position' => ''
+            );
+            return $return;
+        }
+
+        function methodGet($params) {
+            // Implement: find / findMany / findAll
+
+            $return = array(
+                array('id' => '1','first_name' => 'Fabrício','last_name' => 'Tavares de Oliveira','nickname' => 'Fafá','usual_name' => true,'email' => 'fabriciotavareso@gmail.com','phone' => '3197413107','sex' => '1','baptism' => 'IBCBH','position' => 'Líder'),
+                array('id' => '2','first_name' => 'André','last_name' => 'Lopes Gonzaga','nickname' => 'Andrézim','usual_name' => false,'email' => 'andrelopesgonzaga@gmail.com','phone' => '','sex' => '1','baptism' => 'Metodista','position' => 'Líder'),
+                array('id' => '3','first_name' => 'Vinícius','last_name' => 'Zanotelli','nickname' => 'Vini','usual_name' => true,'email' => '','phone' => '','sex' => '1','baptism' => 'IBCBH','position' => ''),
+                array('id' => '4','first_name' => 'Flávio','last_name' => 'Mancebo Machado','nickname' => '','usual_name' => false,'email' => '','phone' => '','sex' => '1','baptism' => 'IBCBH','position' => '')
+            );
+            return $return;
+        }
+
+        function methodPut($params) {
+
+            $return = array(
+                array('id' => '4','first_name' => 'Flávio','last_name' => 'Mancebo Machado','nickname' => '','usual_name' => false,'email' => '','phone' => '','sex' => '1','baptism' => 'IBCBH','position' => '')
+            );
+            return $return;
+        }
+
+        function methodDelete($params) {
+
+            if ($id) {
+                // Ação para um resource.
+            } else {
+                // Ação para todos resources.
+            }
             
+            $statusCode = '';
+            $statusMessage = '';
+            $data = array();
+
+            $return = array(
+                'status' => $statusCode,
+                'message' => $statusMessage,
+                'data' => $data
+            );
+            return $return;
+        }
+
+        // Chama a ação correta para o método
+        switch ($method) {
+            case 'POST':
+                $json = methodPost($params);
+                break;
+            case 'GET':
+                $json = methodGet($params);
+                break;
+            case 'PUT':
+                $json = methodPut($params);
+                break;
+            case 'DELETE':
+                $json = methodDelete($params);
+                break;
             default:
-                $json = array(
-                'participants' => array(
-                    array(
-                        'id' => 'dsg4v4',
-                        'first_name' => 'Fabrício',
-                        'last_name' => 'Tavares de Oliveira',
-                        'nickname' => 'Fafá',
-                        'usual_name' => true,
-                        'email' => 'fabriciotavareso@gmail.com',
-                        'phone' => '3197413107',
-                        'sex' => '1',
-                        'baptism' => 'IBCBH',
-                        'position' => 'Líder'
-                        ),
-                    array(
-                        'id' => 's4vs45',
-                        'first_name' => 'André',
-                        'last_name' => 'Lopes Gonzaga',
-                        'nickname' => 'Andrézim',
-                        'usual_name' => false,
-                        'email' => 'andrelopesgonzaga@gmail.com',
-                        'phone' => '',
-                        'sex' => '1',
-                        'baptism' => 'Metodista',
-                        'position' => 'Líder'
-                        ),
-                    array(
-                        'id' => 'hghjghj3g45',
-                        'first_name' => 'Vinícius',
-                        'last_name' => 'Zanotelli',
-                        'nickname' => 'Vini',
-                        'usual_name' => true,
-                        'email' => '',
-                        'phone' => '',
-                        'sex' => '1',
-                        'baptism' => 'IBCBH',
-                        'position' => ''
-                        ),
-                    array(
-                        'id' => '4kjh34jkh5',
-                        'first_name' => 'Flávio',
-                        'last_name' => 'Mancebo Machado',
-                        'nickname' => '',
-                        'usual_name' => false,
-                        'email' => '',
-                        'phone' => '',
-                        'sex' => '1',
-                        'baptism' => 'IBCBH',
-                        'position' => ''
-                        )
-                )
-                );
+                $json = methodGet($params);
                 break;
         }
+
         // Retorno JSON do request
         echo Zend_Json::encode($json);
-        // array(
-        //                 'id' => '1',
-        //                 'first_name' => 'Fabricio'
-        //                 'last_name' => 'Tavares de Oliveira',
-        //                 'nickname' => 'Fafá'
-        //                 ),
     }
 
     public function cellsAction()
     {
         $this->_helper->layout()->setLayout('json');
         
+        $json = array(
+            'meetings' => array(
+                array('id' => '1', 'cell_id' => 'a','date' => '12/10/2012'),
+                array('id' => '2', 'cell_id' => 'a','date' => '19/10/2012')
+            )
+        );
+        echo Zend_Json::encode($json);        
     }
 
     public function churchesAction()
@@ -140,7 +120,21 @@ class FixturesController extends Zend_Controller_Action
     public function meetingsAction()
     {
         $this->_helper->layout()->setLayout('json');
-        
+
+        $json = array(
+            'meetings' => array(
+                array('id' => '1', 'cell_id' => 'a','date' => '12/10/2012'),
+                array('id' => '2', 'cell_id' => 'a','date' => '19/10/2012'),
+                array('id' => '3', 'cell_id' => 'a','date' => '26/10/2012'),
+                array('id' => '4', 'cell_id' => 'a','date' => '02/11/2012'),
+                array('id' => '5', 'cell_id' => 'a','date' => '09/11/2012'),
+                array('id' => '6', 'cell_id' => 'a','date' => '16/11/2012'),
+                array('id' => '7', 'cell_id' => 'a','date' => '23/11/2012'),
+                array('id' => '8', 'cell_id' => 'a','date' => '30/11/2012'),
+                array('id' => '9', 'cell_id' => 'a','date' => '07/12/2012')
+            )
+        );
+        echo Zend_Json::encode($json);
     }
 
     public function membersAction()
@@ -213,11 +207,9 @@ class FixturesController extends Zend_Controller_Action
             
             default:
                 $json = array(
-                'lessons' => array(
                     array('id' => '1', 'name' => 'Fabricio'),
                     array('id' => '2', 'name' => 'André'),
                     array('id' => '3', 'name' => 'Vini')
-                )
                 );
                 break;
         }
@@ -272,7 +264,6 @@ class FixturesController extends Zend_Controller_Action
         $this->_helper->layout()->setLayout('json');
         
         $json = array(
-            'dynamics' => array(
                 array(
                     'id' => '1',
                     'name' => 'Apanhar o bastão',
@@ -298,7 +289,6 @@ Encher de água o vidrinho de remédio. Despejar toda a água que ele se encheu.
 Mergulhar a esponja e espremer a água. Refletir: a esponja absorve bem a água e mesmo espremendo ela continua molhada.
 Iluminação Bíblica: Is 40,8 ; Mt 7,24 ; 2Tm 3,16'
                 )
-            )
         );
         echo Zend_Json::encode($json);
     }

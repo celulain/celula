@@ -15,9 +15,13 @@ App.Participant = DS.Model.extend({
     phone: DS.attr('string'),
     sex: DS.attr('string'),
     baptism: DS.attr('string'),
-    position: DS.attr('string')
+    position: DS.attr('string'),
+    meetings: DS.hasMany('App.Meeting')
 });
 
+App.Participant.reopenClass({
+    url: '/fixtures/participants'
+});
 
 // App.Participant = Em.Object.extend({
 //     name: null

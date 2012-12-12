@@ -5,6 +5,9 @@ App.Lesson = DS.Model.extend({
     date: DS.attr('string')
 });
 
+App.Lesson.reopenClass({
+    url: '/fixtures/lessons'
+});
 
 // App.Lesson.FIXTURES = [
 //     {id: 1, name: "Agindo como Jesus nas Tentações", path: "", date: "04/08/2012 à 11/08/2012"},

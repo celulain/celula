@@ -195,6 +195,8 @@ App.Router = Em.Router.extend({
 
             frequency: Em.Route.extend({
                 route: '/frequencia',
+              
+
                 connectOutlets: function(router) {
                     router.get('applicationController')
                         .connectOutlet('container','frequency', router.get('store').findAll(App.Participant));

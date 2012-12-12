@@ -5,22 +5,216 @@ var brush = function() {
 }
 
 window.App = Em.Application.create();
+DS.LSSerializer = DS.Serializer.extend({
+
+  addBelongsTo: function(data, record, key, association) {
+    data[key] = parseInt(record.get(key + '.id'), 10);
+  },
+
+  addHasMany: function(data, record, key, association) {
+    data[key] = record.get(key).map(function(record) {
+      return parseInt(record.get('id'), 10);
+    });
+  }
+
+});
+
+DS.LSAdapter = DS.Adapter.extend(Ember.Evented, {
+
+  init: function() {
+    this._loadData();
+  },
+
+  serializer: DS.LSSerializer.create(),
+
+  find: function(store, type, id) {
+    var namespace = this._namespaceForType(type);
+    this._async(function(){
+      store.load(type, id, Ember.copy(namespace.records[id]));
+    });
+  },
+
+  findMany: function(store, type, ids) {
+    var namespace = this._namespaceForType(type);
+    this._async(function(){
+      var results = [];
+      for (var i = 0; i < ids.length; i++) {
+        results.push(Ember.copy(namespace.records[ids[i]]));
+      }
+      store.loadMany(type, results);
+    });
+  },
+
+  // Supports queries that look like this:
+  //
+  //   {
+  //     <property to query>: <value or regex (for strings) to match>,
+  //     ...
+  //   }
+  //
+  // Every property added to the query is an "AND" query, not "OR"
+  //
+  // Example:
+  //
+  //  match records with "complete: true" and the name "foo" or "bar"
+  //
+  //    { complete: true, name: /foo|bar/ }
+  findQuery: function(store, type, query, recordArray) {
+    var namespace = this._namespaceForType(type);
+    this._async(function() {
+      var results = [];
+      // grossness to follow, miss coffeescript ...
+      // (also realize this is my fault not JavaScript's)
+      var id, record, property, test, push;
+      for (id in namespace.records) {
+        record = namespace.records[id];
+        for (property in query) {
+          test = query[property];
+          push = false;
+          if (Object.prototype.toString.call(test) == '[object RegExp]') {
+            push = test.test(record[property]);
+          } else {
+            push = record[property] === test;
+          }
+        }
+        if (push) {
+          results.push(record);
+        }
+      }
+      recordArray.load(results);
+    });
+  },
+
+  findAll: function(store, type) {
+    var namespace = this._namespaceForType(type);
+    this._async(function() {
+      var results = [];
+      for (var id in namespace.records) {
+        results.push(Ember.copy(namespace.records[id]));
+      }
+      store.loadMany(type, results);
+    });
+  },
+
+  createRecords: function(store, type, records) {
+    var namespace = this._namespaceForType(type);
+    this._async(function() {
+      var data = [];
+      records.forEach(function(record) {
+        this._addRecordToNamespace(namespace, record);
+      }, this);
+      this._didSaveRecords(store, type, records);
+    });
+  },
+
+  updateRecords: function(store, type, records) {
+    var namespace = this._namespaceForType(type);
+    this._async(function() {
+      records.forEach(function(record) {
+        var id = record.get('id');
+        namespace.records[id] = record.toData({includeId:true});
+      }, this);
+      this._didSaveRecords(store, type, records);
+    });
+  },
+
+  deleteRecords: function(store, type, records) {
+    var namespace = this._namespaceForType(type);
+    this._async(function() {
+      records.forEach(function(record) {
+        var id = record.get('id');
+        delete namespace.records[id];
+      });
+      this._didSaveRecords(store, type, records);
+    });
+
+  },
+
+  dirtyRecordsForHasManyChange: function(dirtySet, parent, relationship) {
+    dirtySet.add(parent);
+  },
+
+  dirtyRecordsForBelongsToChange: function(dirtySet, child, relationship) {
+    dirtySet.add(child);
+  },
+
+  // private
+
+  _getNamespace: function() {
+    return this.namespace || 'DS.LSAdapter';
+  },
+
+  _loadData: function() {
+    var storage = localStorage.getItem(this._getNamespace());
+    this._data = storage ? JSON.parse(storage) : {};
+  },
+
+  _didSaveRecords: function(store, type, records) {
+    var success = this._saveData();
+    if (success) {
+      store.didSaveRecords(records);
+    } else {
+      records.forEach(function(record) {
+        store.recordWasError(record);
+      });
+      this.trigger('QUOTA_EXCEEDED_ERR', records);
+    }
+  },
+
+  _saveData: function() {
+    try {
+      localStorage.setItem(this._getNamespace(), JSON.stringify(this._data));
+      return true;
+    } catch(error) {
+      if (error.name == 'QUOTA_EXCEEDED_ERR') {
+        return false;
+      } else {
+        throw new Error(error);
+      }
+    }
+  },
+
+  _namespaceForType: function(type) {
+    var namespace = type.url || type.toString();
+    return this._data[namespace] || (
+      this._data[namespace] = { last_id: 0, records: {}}
+    );
+  },
+
+  _addRecordToNamespace: function(namespace, record) {
+    var id = namespace.last_id = namespace.last_id + 1;
+    record.set('id', id);
+    namespace.records[id] = record.toData({includeId:true});
+  },
+
+  _async: function(callback) {
+    var _this = this;
+    setTimeout(function(){ callback.call(_this);}, 1);
+  }
+
+});
+
 App.Store = DS.Store.extend({
     revision: 8,
     // adapter: 'DS.fixtureAdapter'
-    adapter: DS.RESTAdapter.create({
-        bulkCommit: false,
-        url: '/fixtures',
-        mappings: {
-            participants: 'App.Participant',
-            lessons: 'App.Lesson',
-            dynamics: 'App.Dynamic',
-            praises: 'App.Praise',
-            suggestions: 'App.Suggestion',
-            cellProfiles: 'App.CellProfile'
-        }
+    adapter: DS.LSAdapter.create({
+        namespace: 'cell'
     })
 });
+
+// adapter: DS.RESTAdapter.create({
+//         bulkCommit: false,
+//         url: '/fixtures',
+//         mappings: {
+//             participants: 'App.Participant',
+//             lessons: 'App.Lesson',
+//             dynamics: 'App.Dynamic',
+//             praises: 'App.Praise',
+//             suggestions: 'App.Suggestion',
+//             cellProfiles: 'App.CellProfile',
+//             meetings: 'App.Meeting'
+//         }
+//     })
 App.CellProfile = DS.Model.extend({
     leader: DS.attr('string'),
     gender: DS.attr('string'),
@@ -39,15 +233,9 @@ App.Cell = DS.Model.extend({
     week_day: DS.attr('string'),
     gender: DS.attr('string'),
     age_group: DS.attr('string'),
-    hour_start: DS.attr('string')
+    hour_start: DS.attr('string'),
+    meetings: DS.hasMany('App.Meeting')
 });
-
-App.Cell.FIXTURES = [
-    {
-        id: "1",
-        
-    }
-];
 App.Dynamic = DS.Model.extend({
     name: DS.attr('string'),
     min_participants: DS.attr('number'),
@@ -56,6 +244,10 @@ App.Dynamic = DS.Model.extend({
     stuff: DS.attr('string'),
     text: DS.attr('string')
 });
+
+App.Dynamic.reopenClass({
+    url: '/fixtures/dynamics'
+});
 // Lição de célula
 App.Lesson = DS.Model.extend({
     name: DS.attr('string'),
@@ -63,6 +255,9 @@ App.Lesson = DS.Model.extend({
     date: DS.attr('string')
 });
 
+App.Lesson.reopenClass({
+    url: '/fixtures/lessons'
+});
 
 // App.Lesson.FIXTURES = [
 //     {id: 1, name: "Agindo como Jesus nas Tentações", path: "", date: "04/08/2012 à 11/08/2012"},
@@ -79,6 +274,10 @@ App.Lesson = DS.Model.extend({
 // {id: 12, name: "Jesus é a Porta", path: "", date: "04/08/2012 à 11/08/2012"}
 // ];
  
+App.Meeting = DS.Model.extend({
+    cell: DS.belongsTo('App.Cell'),
+    date: DS.attr('date')
+});
 App.Member = DS.Model.extend({
     name: DS.attr('string')
 });
@@ -99,9 +298,13 @@ App.Participant = DS.Model.extend({
     phone: DS.attr('string'),
     sex: DS.attr('string'),
     baptism: DS.attr('string'),
-    position: DS.attr('string')
+    position: DS.attr('string'),
+    meetings: DS.hasMany('App.Meeting')
 });
 
+App.Participant.reopenClass({
+    url: '/fixtures/participants'
+});
 
 // App.Participant = Em.Object.extend({
 //     name: null
@@ -421,72 +624,136 @@ App.ApplicationController = Em.Controller.extend({
 });
 App.FrequencyController = Em.ArrayController.extend({
     content: [],
-    bola: function() {
-        var content = this.get('content');
-        content.forEach(function(e) {
-            console.log(e);
-        });
+    date1: Ember.Object.create({id: '7',  date: '23/11/2012', presents: 0}),
+    date2: Ember.Object.create({id: '8',  date: '30/11/2012', presents: 0}),
+    date3: Ember.Object.create({id: '9',  date: '07/12/2012', presents: 0}),
+    date4: Ember.Object.create({id: '10',  date: '14/12/2012', presents: 0}),
+    dummy: [
+        {id: "1", name: "Fulano",  position: "",         meetings: [{id: 8, date: '30/11/2012'} ]},
+        {id: "2", name: "Ciclano", position: "",         meetings: [{id: 8, date: '30/11/2012'}, {id: 9, date: '07/12/2012'}]},
+        {id: "3", name: "Beltrano",position: "",         meetings: [{id: 8, date: '30/11/2012'}, {id: 9, date: '07/12/2012'}]},
+        {id: "4", name: "Morgano", position: "Líder",    meetings: [{id: 8, date: '30/11/2012'}, {id: 9, date: '07/12/2012'}]},
+        {id: "5", name: "Borano",  position: "",         meetings: [{id: 8, date: '30/11/2012'} ]},
+        {id: "6", name: "Juliano", position: "Anfitrião",meetings: [{id: 8, date: '30/11/2012'} ]},
+        {id: "7", name: "Bolano",  position: "",         meetings: [{id: 8, date: '30/11/2012'} ]}
+    ],
+    processedDummy: [
+        Ember.Object.create({id: "1", name: "Fulano",  position: "",         date1: false, meeting_id1: '7', meeting_id2: '8', meeting_id3: '9', meeting_id4: '10', date2: false, date3: false, date4: true}),
+        Ember.Object.create({id: "2", name: "Ciclano", position: "",         date1: false, meeting_id1: '7', meeting_id2: '8', meeting_id3: '9', meeting_id4: '10', date2: false, date3: false, date4: true}),
+        Ember.Object.create({id: "3", name: "Beltrano",position: "",         date1: true, meeting_id1: '7', meeting_id2: '8', meeting_id3: '9', meeting_id4: '10', date2: false, date3: false, date4: true}),
+        Ember.Object.create({id: "4", name: "Morgano", position: "Líder",    date1: false, meeting_id1: '7', meeting_id2: '8', meeting_id3: '9', meeting_id4: '10', date2: false, date3: false, date4: true}),
+        Ember.Object.create({id: "5", name: "Borano",  position: "",         date1: false, meeting_id1: '7', meeting_id2: '8', meeting_id3: '9', meeting_id4: '10', date2: false, date3: false, date4: true}),
+        Ember.Object.create({id: "6", name: "Juliano", position: "Anfitrião",date1: true, meeting_id1: '7', meeting_id2: '8', meeting_id3: '9', meeting_id4: '10', date2: false, date3: false, date4: true}),
+        Ember.Object.create({id: "7", name: "Bolano",  position: "",         date1: false, meeting_id1: '7', meeting_id2: '8', meeting_id3: '9', meeting_id4: '10', date2: false, date3: false, date4: true})
+    ],
+    checkPresence: function(event) {
+        var user_id = $(event.currentTarget).data('user-id'),
+            meeting_id = $(event.currentTarget).data('meeting-id'),
+            position = $(event.currentTarget).data('position');
+
+        var date = 'date' + position;
+        console.log(date);
+        this.get('processedDummy').forEach(function(e, i) {
+            // console.log('processedDummy = ', e.id);
+            if (user_id == e.id) {
+                
+                if (this.get('processedDummy')[i].get(date)) {
+                    this.get('processedDummy').objectAt(i).set(date, false);
+                } else {
+                    this.get('processedDummy').objectAt(i).set(date, true);
+                }
+                
+                qtdeDate = this.get('processedDummy').filterProperty(date, true).get('length');
+                this.get(date).set('presents', qtdeDate);
+            }
+        }, this),
+
+        console.log("checar presença", user_id, meeting_id);
     },
-    // Frequencia salva
-    salvo: true,
+
+
+
+
+
+
+    isPresent1: true,
+    displayedMeetings: Ember.A([
+        {id: '7',  date: '23/11/2012'},
+        {id: '8',  date: '30/11/2012'},
+        {id: '9',  date: '07/12/2012'},
+        {id: '10',  date: '14/12/2012'}
+    ]),
+    previousMeeting: function(event) {
+        console.log("PREVIOUS");
+        // var array = this.get('displayedMeetings'); 
+        // var last = array[3];
+        // this.get('displayedMeetings').removeObject(last);
+        
+        // var all = this.get( 'allMeetings');
+        // var index = null;
+        // all.forEach(function(e, i) {
+        //     if (e === last) {
+        //         index = i + 4;
+        //     }
+        // })
+        var a = this.get('displayedMeetings')[0];
+        var all = this.get('allMeetings');
+        var index = null;
+        all.forEach(function(e, i) {
+            if (a.date === e.date) {
+                index = i;
+            }
+        });
+
+        if (index === 0) {
+            this.set('noPrevious', true);
+        } else {
+            (index === 1) ? this.set('noPrevious', true) : '';
+            this.set('noNext', false);
+            this.get('displayedMeetings').popObject();
+            this.get('displayedMeetings').unshiftObject(this.get('allMeetings')[index - 1]);
+        }
+    },
+    nextMeeting: function(event) {
+        console.log("NEXT");
+        var length = this.get('allMeetings').length;
+        var a = this.get('displayedMeetings')[3];
+
+        var all = this.get('allMeetings');
+        var index = null;
+        all.forEach(function(e, i) {
+            if (a.date === e.date) {
+                index = i;
+            }
+        });
+
+        if (index === length - 1) {
+            this.set('noNext', true);
+        } else {
+            (index === length - 2) ? this.set('noNext', true) : '';
+            this.set('noPrevious', false);
+            this.get('displayedMeetings').removeAt(0);
+            this.get('displayedMeetings').addObject(this.get('allMeetings')[index + 1]);
+        }
+        
+    },
+    noNext: false,
+    noPrevious: false,
 
     allMeetings: [
-        {date: '14-12-2012'},
-        {date: '07-12-2012'},
-        {date: '30-11-2012'},
-        {date: '23-11-2012'},
-        {date: '16-11-2012'},
-        {date: '09-11-2012'}
-    ],
-
-    lastSelectedMeeting: '23-11-2012',
-
-    dateMeetings: function() {
-        var allMeetings = this.get('allMeetings'),
-            lastSelectedMeeting = this.get('lastSelectedMeeting'),
-            selectedMeetings = [];
-
-
-        allMeetings.forEach(function(element, index) {
-            if (element.date === lastSelectedMeeting) {
-
-                for (var i = 0; i < 4; i++) {
-                    selectedMeetings[i] = allMeetings[index + i];
-                    console.log("i = ", i, "index = ", index);
-                }
-            }
-        });
-        return selectedMeetings;
-    }.property('allMeetings', 'lastSelectedMeeting'),
-
-    members: function() {
-        // Categoria == 1
-        var content = this.get('content');
-        var members = [];
-        console.log(content);
-
-        content.forEach(function(element, index){
-            if (element.categoria === '1') {
-                members.addObject(element);
-            }
-        });
-
-        return members;
-    }.property('content'),
-
-    visitors: function() {
-        // Categoria 2
-        var content = this.get('content'),
-            visitors = [];
-
-        content.forEach(function(element, index) {
-            if (element.categoria === '2') {
-                visitors.addObject(element);
-            }
-        });
-
-        return visitors;
-    }.property('content')
+        {id: '1', date: '12/10/2012'},
+        {id: '2', date: '19/10/2012'},
+        {id: '3', date: '26/10/2012'},
+        {id: '4', date: '02/11/2012'},
+        {id: '5', date: '09/11/2012'},
+        {id: '6', date: '16/11/2012'},
+        {id: '7', date: '23/11/2012'},
+        {id: '8', date: '30/11/2012'},
+        {id: '9', date: '07/12/2012'},
+        {id: '10', date: '14/12/2012'},
+        {id: '11', date: '21/12/2012'},
+        {id: '12', date: '28/12/2012'}
+    ]
 });
 App.CellParticipantNewController = Em.ObjectController.extend({
     clear: function() {
@@ -523,7 +790,8 @@ App.CellParticipantNewController = Em.ObjectController.extend({
             sex: this.get('sex'),
             baptism: this.get('baptism'),
             training_leader: this.get('trainingLeader'),
-            host: this.get('host')
+            host: this.get('host'),
+            meetings: []
         };
 
         return participant;
@@ -907,6 +1175,8 @@ App.Router = Em.Router.extend({
 
             frequency: Em.Route.extend({
                 route: '/frequencia',
+              
+
                 connectOutlets: function(router) {
                     router.get('applicationController')
                         .connectOutlet('container','frequency', router.get('store').findAll(App.Participant));
@@ -1306,23 +1576,7 @@ function program3(depth0,data) {
 function program5(depth0,data) {
   
   var buffer = '', stack1, stack2, stack3;
-  data.buffer.push("\n                  <th class=\"date-meeting\">");
-  stack1 = depth0;
-  stack2 = "date";
-  stack3 = helpers._triageMustache;
-  tmp1 = {};
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack1);
-  tmp1.data = data;
-  stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "</th>\n                ");
-  return buffer;}
-
-function program7(depth0,data) {
-  
-  var buffer = '', stack1, stack2, stack3, stack4, stack5;
-  data.buffer.push("\n                <tr>\n                  <td class=\"td-left\">");
+  data.buffer.push("\n\n          ");
   stack1 = depth0;
   stack2 = "position";
   stack3 = helpers._triageMustache;
@@ -1332,20 +1586,7 @@ function program7(depth0,data) {
   tmp1.contexts.push(stack1);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "</td>\n                  <td class=\"td-left\">\n                    <a ");
-  stack1 = depth0;
-  stack2 = "";
-  stack3 = depth0;
-  stack4 = "gotoParticipant";
-  stack5 = helpers.action;
-  tmp1 = {};
-  tmp1.hash = {};
-  tmp1.contexts = [];
-  tmp1.contexts.push(stack3);
-  tmp1.contexts.push(stack1);
-  tmp1.data = data;
-  stack1 = stack5.call(depth0, stack4, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + ">");
+  data.buffer.push(escapeExpression(stack1) + ", ");
   stack1 = depth0;
   stack2 = "name";
   stack3 = helpers._triageMustache;
@@ -1355,10 +1596,248 @@ function program7(depth0,data) {
   tmp1.contexts.push(stack1);
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
-  data.buffer.push(escapeExpression(stack1) + "</a>\n                  </td>\n                  \n                    <td>\n                      <span class=\"frequency-checkbox\"><i class=\"icon-check-empty\"></i></span>\n                    </td>\n                  \n                </tr>\n              ");
+  data.buffer.push(escapeExpression(stack1) + ", ");
+  stack1 = depth0;
+  stack2 = "meetings";
+  stack3 = helpers.each;
+  tmp1 = self.program(6, program6, data);
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.fn = tmp1;
+  tmp1.inverse = self.noop;
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push(" <br>\n          ");
+  return buffer;}
+function program6(depth0,data) {
+  
+  var buffer = '', stack1, stack2, stack3;
+  data.buffer.push(" ");
+  stack1 = depth0;
+  stack2 = "date";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1));
   return buffer;}
 
-  data.buffer.push("<div class=\"container-fluid\">\n  <div class=\"row-fluid\">\n    <div class=\"span7\">\n           \n      <div class=\"row-fluid\">\n        <div class=\"span12\">\n          \n              <a class=\"btn pull-left\"><i class=\"icon-arrow-left\"></i></a>\n              <a class=\"btn pull-right\"><i class=\"icon-arrow-right\"></i></a>\n\n              <br><br>\n          <!-- Selecionar reunião:\n          ");
+function program8(depth0,data) {
+  
+  var buffer = '', stack1, stack2, stack3;
+  data.buffer.push("\n              <div class=\"row-fluid\">\n                <div class=\"span12\">\n                  ");
+  stack1 = depth0;
+  stack2 = "position";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "\n                </div>\n              </div>\n              ");
+  return buffer;}
+
+function program10(depth0,data) {
+  
+  var buffer = '', stack1, stack2, stack3;
+  data.buffer.push("\n              <div class=\"row-fluid\">\n                <div class=\"span12\">\n                  ");
+  stack1 = depth0;
+  stack2 = "name";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "\n                </div>\n              </div>\n              ");
+  return buffer;}
+
+function program12(depth0,data) {
+  
+  var buffer = '', stack1, stack2, stack3, stack4;
+  data.buffer.push("\n              <div class=\"row-fluid\">\n                <div class=\"span12 frequency-check\">\n                  <a ");
+  stack1 = depth0;
+  stack2 = "checkPresence";
+  stack3 = {};
+  stack4 = "controller";
+  stack3['target'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + " ");
+  stack1 = {};
+  stack2 = "date1:check";
+  stack1['class'] = stack2;
+  stack2 = "id";
+  stack1['data-user-id'] = stack2;
+  stack2 = "meeting_id1";
+  stack1['data-meeting-id'] = stack2;
+  stack2 = helpers.bindAttr;
+  tmp1 = {};
+  tmp1.hash = stack1;
+  tmp1.contexts = [];
+  tmp1.data = data;
+  stack1 = stack2.call(depth0, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "  data-position=\"1\">\n                    <i class=\"icon-ok\"></i>\n                  </a>\n                  \n                </div>\n              </div>\n              ");
+  return buffer;}
+
+function program14(depth0,data) {
+  
+  var buffer = '', stack1, stack2, stack3, stack4;
+  data.buffer.push("\n              <div class=\"row-fluid\">\n                <div class=\"span12 frequency-check\">\n                  <a ");
+  stack1 = depth0;
+  stack2 = "checkPresence";
+  stack3 = {};
+  stack4 = "controller";
+  stack3['target'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + " ");
+  stack1 = {};
+  stack2 = "date2:check";
+  stack1['class'] = stack2;
+  stack2 = "id";
+  stack1['data-user-id'] = stack2;
+  stack2 = "meeting_id2";
+  stack1['data-meeting-id'] = stack2;
+  stack2 = helpers.bindAttr;
+  tmp1 = {};
+  tmp1.hash = stack1;
+  tmp1.contexts = [];
+  tmp1.data = data;
+  stack1 = stack2.call(depth0, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "  data-position=\"2\">\n                    <i class=\"icon-ok\"></i>\n                  </a>\n                  \n                </div>\n              </div>\n              ");
+  return buffer;}
+
+function program16(depth0,data) {
+  
+  var buffer = '', stack1, stack2, stack3, stack4;
+  data.buffer.push("\n              <div class=\"row-fluid\">\n                <div class=\"span12 frequency-check\">\n                  <a ");
+  stack1 = depth0;
+  stack2 = "checkPresence";
+  stack3 = {};
+  stack4 = "controller";
+  stack3['target'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + " ");
+  stack1 = {};
+  stack2 = "date3:check";
+  stack1['class'] = stack2;
+  stack2 = "id";
+  stack1['data-user-id'] = stack2;
+  stack2 = "meeting_id3";
+  stack1['data-meeting-id'] = stack2;
+  stack2 = helpers.bindAttr;
+  tmp1 = {};
+  tmp1.hash = stack1;
+  tmp1.contexts = [];
+  tmp1.data = data;
+  stack1 = stack2.call(depth0, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "  data-position=\"3\">\n                    <i class=\"icon-ok\"></i>\n                  </a>\n                  \n                </div>\n              </div>\n              ");
+  return buffer;}
+
+function program18(depth0,data) {
+  
+  var buffer = '', stack1, stack2, stack3, stack4;
+  data.buffer.push("\n              <div class=\"row-fluid\">\n                <div class=\"span12 frequency-check\">\n                  <a ");
+  stack1 = depth0;
+  stack2 = "checkPresence";
+  stack3 = {};
+  stack4 = "controller";
+  stack3['target'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + " ");
+  stack1 = {};
+  stack2 = "date4:check";
+  stack1['class'] = stack2;
+  stack2 = "id";
+  stack1['data-user-id'] = stack2;
+  stack2 = "meeting_id4";
+  stack1['data-meeting-id'] = stack2;
+  stack2 = helpers.bindAttr;
+  tmp1 = {};
+  tmp1.hash = stack1;
+  tmp1.contexts = [];
+  tmp1.data = data;
+  stack1 = stack2.call(depth0, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "  data-position=\"4\">\n                    <i class=\"icon-ok\"></i>\n                  </a>\n                  \n                </div>\n              </div>\n              ");
+  return buffer;}
+
+  data.buffer.push("<div class=\"container-fluid\">\n  <div class=\"row-fluid\">\n    <div class=\"span7\">\n           \n      <div class=\"row-fluid\">\n        <div class=\"span12\">\n          \n              <a ");
+  stack1 = depth0;
+  stack2 = "previousMeeting";
+  stack3 = {};
+  stack4 = "controller";
+  stack3['target'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + " ");
+  stack1 = {};
+  stack2 = "noPrevious:disabled :btn :pull-left";
+  stack1['class'] = stack2;
+  stack2 = helpers.bindAttr;
+  tmp1 = {};
+  tmp1.hash = stack1;
+  tmp1.contexts = [];
+  tmp1.data = data;
+  stack1 = stack2.call(depth0, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "><i class=\"icon-arrow-left\"></i></a>\n              <a ");
+  stack1 = depth0;
+  stack2 = "nextMeeting";
+  stack3 = {};
+  stack4 = "controller";
+  stack3['target'] = stack4;
+  stack4 = helpers.action;
+  tmp1 = {};
+  tmp1.hash = stack3;
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack4.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + " ");
+  stack1 = {};
+  stack2 = "noNext:disabled :btn :pull-right";
+  stack1['class'] = stack2;
+  stack2 = helpers.bindAttr;
+  tmp1 = {};
+  tmp1.hash = stack1;
+  tmp1.contexts = [];
+  tmp1.data = data;
+  stack1 = stack2.call(depth0, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "><i class=\"icon-arrow-right\"></i></a>\n\n              <br><br>\n          <!-- Selecionar reunião:\n          ");
   stack1 = depth0;
   stack2 = "Ember.Select";
   stack3 = {};
@@ -1390,9 +1869,9 @@ function program7(depth0,data) {
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push(" -->\n          \n\n\n          <table class=\"table table-bordered\">\n            <thead>\n              <tr>\n                <th></th>\n                <th class=\"th-left\">Nome</th>\n                ");
+  data.buffer.push(" -->\n\n          ");
   stack1 = depth0;
-  stack2 = "dateMeetings";
+  stack2 = "content";
   stack3 = helpers.each;
   tmp1 = self.program(5, program5, data);
   tmp1.hash = {};
@@ -1403,11 +1882,11 @@ function program7(depth0,data) {
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n              </tr>\n            </thead>\n            \n            <tbody>\n              <tr>\n                <td colspan=\"8\">Participantes</td>\n              </tr>\n              ");
+  data.buffer.push("\n          \n          <div class=\"row-fluid frequency-table\">\n            <div class=\"span2 frequency-name\">\n              <div class=\"row-fluid\">\n                <div class=\"span12\">\n                  <strong>Função</strong>\n                </div>\n              </div>\n\n              ");
   stack1 = depth0;
-  stack2 = "content";
+  stack2 = "processedDummy";
   stack3 = helpers.each;
-  tmp1 = self.program(7, program7, data);
+  tmp1 = self.program(8, program8, data);
   tmp1.hash = {};
   tmp1.contexts = [];
   tmp1.contexts.push(stack1);
@@ -1416,7 +1895,152 @@ function program7(depth0,data) {
   tmp1.data = data;
   stack1 = stack3.call(depth0, stack2, tmp1);
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n            </tbody>\n          </table>\n\n\n      <p class=\"add-visitor\">\n        <a class=\"btn btn-block btn-large\">Adicionar Visitante</a>\n      </p>\n\n      </div><!--/.span12 -->\n    </div><!--/.row-fluid -->\n  </div><!--/span8 -->\n\n  <div class=\"span4 offset1\">\n  <div class=\"\" id=\"submetas\">\n    <div class=\"submeta-1\">\n      ");
+  data.buffer.push("\n            </div>\n            \n            <div class=\"span2 frequency-name\">\n              <div class=\"row-fluid\">\n                <div class=\"span12\">\n                  <strong>Nome</strong>\n                </div>\n              </div>\n\n              ");
+  stack1 = depth0;
+  stack2 = "processedDummy";
+  stack3 = helpers.each;
+  tmp1 = self.program(10, program10, data);
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.fn = tmp1;
+  tmp1.inverse = self.noop;
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n            </div>\n\n            <div class=\"span2 frequency-col-date\">\n              <div class=\"row-fluid\">\n                <div class=\"span12\">\n                  <strong>");
+  stack1 = depth0;
+  stack2 = "date1.date";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "</strong>\n                </div>\n              </div>\n\n              ");
+  stack1 = depth0;
+  stack2 = "processedDummy";
+  stack3 = helpers.each;
+  tmp1 = self.program(12, program12, data);
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.fn = tmp1;
+  tmp1.inverse = self.noop;
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n\n              <hr>\n              <div class=\"row-fluid\">\n                <div class=\"span12 frequency-presents\">\n                  ");
+  stack1 = depth0;
+  stack2 = "date1.presents";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "\n                </div>\n              </div>\n            </div>\n\n            <div class=\"span2 frequency-col-date\">\n\n              <div class=\"row-fluid\">\n                <div class=\"span12\">\n                  <strong>");
+  stack1 = depth0;
+  stack2 = "date2.date";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "</strong>\n                </div>\n              </div>\n\n              ");
+  stack1 = depth0;
+  stack2 = "processedDummy";
+  stack3 = helpers.each;
+  tmp1 = self.program(14, program14, data);
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.fn = tmp1;
+  tmp1.inverse = self.noop;
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n\n              <hr>\n              <div class=\"row-fluid\">\n                <div class=\"span12 frequency-presents\">\n                  ");
+  stack1 = depth0;
+  stack2 = "date2.presents";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "\n                </div>\n              </div>\n            </div>\n\n            <div class=\"span2 frequency-col-date\">\n              <div class=\"row-fluid\">\n                <div class=\"span12\">\n                  <strong>");
+  stack1 = depth0;
+  stack2 = "date3.date";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "</strong>\n                </div>\n              </div>\n              \n              ");
+  stack1 = depth0;
+  stack2 = "processedDummy";
+  stack3 = helpers.each;
+  tmp1 = self.program(16, program16, data);
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.fn = tmp1;
+  tmp1.inverse = self.noop;
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n\n              <hr>\n              <div class=\"row-fluid\">\n                <div class=\"span12 frequency-presents\">\n                  ");
+  stack1 = depth0;
+  stack2 = "date3.presents";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "\n                </div>\n              </div>\n            </div>\n\n            <div class=\"span2 frequency-col-date\">\n              <div class=\"row-fluid\">\n                <div class=\"span12\">\n                  <strong>");
+  stack1 = depth0;
+  stack2 = "date4.date";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "</strong>\n                </div>\n              </div>\n\n              ");
+  stack1 = depth0;
+  stack2 = "processedDummy";
+  stack3 = helpers.each;
+  tmp1 = self.program(18, program18, data);
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.fn = tmp1;
+  tmp1.inverse = self.noop;
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n\n              <hr>\n              <div class=\"row-fluid\">\n                <div class=\"span12 frequency-presents\">\n                  ");
+  stack1 = depth0;
+  stack2 = "date4.presents";
+  stack3 = helpers._triageMustache;
+  tmp1 = {};
+  tmp1.hash = {};
+  tmp1.contexts = [];
+  tmp1.contexts.push(stack1);
+  tmp1.data = data;
+  stack1 = stack3.call(depth0, stack2, tmp1);
+  data.buffer.push(escapeExpression(stack1) + "\n                </div>\n              </div>\n            </div>\n          </div>          \n\n          \n\n\n      <p class=\"add-visitor\">\n        <a class=\"btn btn-block btn-large\">Adicionar Visitante</a>\n      </p>\n\n      </div><!--/.span12 -->\n    </div><!--/.row-fluid -->\n  </div><!--/span8 -->\n\n  <div class=\"span4 offset1\">\n  <div class=\"\" id=\"submetas\">\n    <div class=\"submeta-1\">\n      ");
   stack1 = depth0;
   stack2 = "subgoalMultiplicationDate";
   foundHelper = helpers.outlet;

@@ -33,7 +33,8 @@ App.CellParticipantNewController = Em.ObjectController.extend({
             sex: this.get('sex'),
             baptism: this.get('baptism'),
             training_leader: this.get('trainingLeader'),
-            host: this.get('host')
+            host: this.get('host'),
+            meetings: []
         };
 
         return participant;
