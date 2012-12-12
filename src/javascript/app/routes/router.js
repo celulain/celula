@@ -195,7 +195,7 @@ App.Router = Em.Router.extend({
 
             frequency: Em.Route.extend({
                 route: '/frequencia',
-              
+
 
                 connectOutlets: function(router) {
                     router.get('applicationController')
@@ -373,11 +373,27 @@ App.Router = Em.Router.extend({
                 redirectsTo: 'members'
             }),
 
+            church: Em.Route.extend({
+                route: '/igreja',
+                profile: Em.Route.extend({
+                    route: '/perfil'
+                }),
+                pastors: Em.Route.extend({
+                    route: '/pastores'
+                })
+            }),
+
             members: Em.Route.extend({
                 route: '/membros',
                 connectOutlets: function(router) {
                     router.get('applicationController').connectOutlet('container', 'adminMembers');
-                }
+                },
+                newMember: Em.Route.extend({
+                    route: '/membro/novo'
+                }),
+                member: Em.Route.extend({
+                    route: '/membro/:id'
+                })
             }),
         })
     })
