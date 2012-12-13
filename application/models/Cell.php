@@ -132,7 +132,7 @@ class Application_Model_Cell
 		$select	->from(array('c' => 'cell'), array('cell_id'))
 				->joinInner(array('m' => 'cell_user'),'c.cell_id = m.cell_id', array('user_id','position'=>'role_id') )
 				->joinInner(array('mr' => 'cell_role') , 'm.role_id = mr.role_id', array('role'=>'name'))
-				->joinInner(array('a' => 'core_user_detailed'),'m.user_id = a.user_id', array('name'=>'name','surname'=>'surname'))
+				->joinInner(array('a' => 'core_user'),'m.user_id = a.user_id', array('name'=>'name','surname'=>'surname'))
 				->joinInner(array('b' => 'core_user_information'),'m.user_id = b.user_id', array('type','baptized'))
 				->where('c.cell_id = ?', $cellId);
 		return $cell->fetchAll($select);

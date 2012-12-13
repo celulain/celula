@@ -117,6 +117,7 @@
         <formFile formName="Hierarquia"/>
         <formFile formName="AddPriest"/>
         <formFile formName="AddLeader"/>
+        <formFile formName="Addnotecell"/>
       </formsDirectory>
       <layoutsDirectory>
         <layoutScriptsDirectory>
@@ -343,6 +344,7 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Api">
             <viewScriptFile forActionName="suggestions"/>
+          </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Fixtures">
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
