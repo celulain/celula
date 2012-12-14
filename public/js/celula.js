@@ -46,6 +46,10 @@ $(function() {
     $( ".datepicker" ).datepicker();
 });
 
+$("#dateMultiplication").click(function(){
+    $("#buttonSaveDate").show();
+});
+
 $("#saveDateMultiplication").click(function(){
     $.ajax({
       url: '/api/date-multiplication',
@@ -53,6 +57,9 @@ $("#saveDateMultiplication").click(function(){
       data: 'cell_id='+ $("#cell_id").val() +'&dateMultiplication=' + $("#dateMultiplication").val(),
       success: function(data) {
         console.log(data);
+        if(data == 1){
+            document.location.reload(true);
+        }
       }
     });
 });
