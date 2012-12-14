@@ -87,6 +87,7 @@
           <actionMethod actionName="reunioes"/>
           <actionMethod actionName="cell"/>
           <actionMethod actionName="suggestions"/>
+          <actionMethod actionName="dateMultiplication"/>
         </controllerFile>
         <controllerFile controllerName="Password">
           <actionMethod actionName="index"/>
@@ -365,6 +366,9 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Fixtures">
             <viewScriptFile forActionName="lessons"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Api">
+            <viewScriptFile forActionName="dateMultiplication"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

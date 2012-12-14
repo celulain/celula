@@ -29,14 +29,10 @@ class CelulaController extends Zend_Controller_Action
      //    $this->view->membersRows = $cell->returnMembers($authNamespace->cell_id_leader);
      //    $this->view->dateMeetings = $cell->dateMeeting($authNamespace->cell_id_leader);
      //    $this->view->presenceMeeting = $cell->presenceMeeting($authNamespace->cell_id_leader);
-     //    $this->view->goalParticipants = $cell->returnGoalParticipants($authNamespace->cell_id_leader);
-     //    $this->view->actualParticipants = $cell->returnGoalActualParticipants($authNamespace->cell_id_leader);
-     //    $dateMultiplication = $cell->returnDateMultiplication($authNamespace->cell_id_leader);
-     //    $this->view->amountDays = $cell->calculateDayMultiplication($dateMultiplication);
-     //    $date = explode("-",$dateMultiplication);
-     //    $this->view->dateMultiplication = $date[2]."/".$date[1]."/".$date[0];
-     //    $this->view->amountWeeks = $cell->calculateWeeks($dateMultiplication);
-    	// $this->view->cell_id = $authNamespace->cell_id_leader;
+        // $this->view->goalParticipants = $cell->returnGoalParticipants($authNamespace->cell_id_leader);
+        // $this->view->actualParticipants = $cell->returnGoalActualParticipants($authNamespace->cell_id_leader);
+        $this->view->dateMultiplication = $cell->viewDateMultiplication($authNamespace->cell_id_leader);
+    	$this->view->cell_id = $authNamespace->cell_id_leader;
     }catch(Zend_Exception $e){
         echo $e->getMessage();
     }

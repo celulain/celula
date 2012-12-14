@@ -80,7 +80,7 @@ class AuthController extends Zend_Controller_Action
 					{
 						return $this->_helper->redirector->goToRoute( array('controller' => 'admin', 'action' => 'index'), null, true);
 					}
-    				return $this->_helper->redirector->goToRoute( array('controller' => 'celula', 'action' => 'index'), null, true);
+    				return $this->_helper->redirector->goToRoute( array('controller' => 'celula', 'action' => 'frequencia'), null, true);
 
     			} 
     			else 

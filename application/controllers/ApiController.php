@@ -210,6 +210,7 @@ class ApiController extends Zend_Controller_Action
 
     public function suggestionsAction()
     {
+        $this->_helper->layout()->setLayout('json');
         if($this->getRequest()->isPost())
         {
             $authNamespace = new Zend_Session_Namespace('userInformation');
@@ -236,8 +237,30 @@ class ApiController extends Zend_Controller_Action
         echo Zend_Json::encode($return);
     }
 
+    /**
+    *   Action responsable to save a multiplication date of cell on database.
+    *   
+    *   @param date
+    *   @access public
+    *   @return boolean
+    */
+    public function dateMultiplicationAction()
+    {
+        $this->_helper->layout()->setLayout('json');
+        if($this->getRequest()->isPost())
+        {
+            $data = $this->getRequest()->getPost();
+            $cell = new Application_Model_Cell();
+            $dataFormat = explode("/",$data['dateMultiplication']);
+            $data['dateMultiplication'] = $dataFormat[2]."-".$dataFormat[1]."-".$dataFormat[0];
+            echo $cell->saveDateMultiplication($data['cell_id'],$data['dateMultiplication']);
+        }
+    }
+
 
 }
+
+
 
 
 

@@ -108,26 +108,7 @@
                 </div>
                 <div id="submeta1" class="accordion-body in collapse">
                     <div class="accordion-inner">
-                        <div class="row-fluid">
-                            <div class="span12">
-                                Faltam <strong>140</strong> dias ou <strong>21</strong> semanas
-                            </div>
-                        </div>
-                        
-                        <div class="row-fluid">
-                            <div class="span12">
-                                <form action="">
-                                    <div class="input-append">
-                                        <span class="input-small uneditable-input">
-                                            26/04/2012
-                                        </span><button class="btn"><i class="icon-pencil"></i></button>
-                                    </div>
-                                    
-                                </form>
-                            </div>
-                        </div>
-
-                        
+                        <?=$this->dateMultiplication?>
                     </div>
                 </div>
             </div><!--/.accordion-group -->
@@ -261,6 +242,7 @@
     </div><!--/span-->
 </div><!--/.row-fluid -->
 
+<input type="hidden" value="<?=$this->cell_id?>" id="cell_id" />
 
 <div class="modal hide" id="add_participante">
     <div class="modal-header">

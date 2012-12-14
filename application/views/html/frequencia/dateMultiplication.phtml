@@ -1,0 +1,32 @@
+<? if (!$this->dateMultiplication) { ?>
+<div class="row-fluid">
+    <div class="span12">
+        <h4><a style="color: #666;" id="showDateMultiplication">Defina uma data de multiplicação</a></h4>
+        <div id="formDateMultiplication" style="display: none;">
+            <input type="text" id="dateMultiplication" class="input-small datepicker" /><br />
+            <a class="btn btn-primary" data-toggle="modal" id="saveDateMultiplication">
+                <i class="icon-plus"></i>
+                Salvar
+            </a>
+        </div>
+    </div>
+</div>
+<? }else{?>
+<div class="row-fluid">
+    <div class="span12">
+        Faltam <strong><?=$this->amountDays?></strong> dias ou <strong><?=$this->amountWeeks?></strong> semanas
+    </div>
+</div>
+
+<div class="row-fluid">
+    <div class="span12">
+        <input type="text" id="dateMultiplication" class="input-small datepicker" value="<?=$this->dateMultiplication?>" /><br />
+        <a class="btn btn-primary" data-toggle="modal" id="saveDateMultiplication">
+            <i class="icon-plus"></i>
+            Salvar
+        </a>
+    </div>
+</div>
+<?}?>
+
+

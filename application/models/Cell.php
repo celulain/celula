@@ -152,11 +152,48 @@ class Application_Model_Cell
 		return count($actualCell);
 	}
 	
-	public function returnDateMultiplication($cellId)
+	/**
+	*	Returns a specify multiplicate date of cell, when it exists.
+	*	
+	*	@param $cellId
+	*	@access private
+	*	@return mixed
+	*/
+	private function returnDateMultiplication($cellId)
 	{
 		$multiplicationDate = new Application_Model_DbTable_CellGoalDateMultiplication();
 		$multiplicationDate = $multiplicationDate->fetchRow($multiplicationDate->select()->where("cell_id = ?",$cellId));
-		return $multiplicationDate->multiplication;
+		if(count($multiplicationDate))
+			return $multiplicationDate->multiplication;
+		return false;
+	}
+
+	/**
+	*	Save a new multiplication date on database.
+	*
+	*	@param $cellId
+	*	@param $date
+	*	@access public
+	*	@return boolean
+	*/
+	public function saveDateMultiplication($cellId,$date)
+	{
+		$multiplicationDate = new Application_Model_DbTable_CellGoalDateMultiplication();
+		$multiplicationDateRow = $multiplicationDate->fetchRow($multiplicationDate->select()->where("cell_id = ?",$cellId));
+		if(count($multiplicationDateRow))
+		{
+			$multiplicationDateRow->cell_id = $cellId;
+			$multiplicationDateRow->multiplication = $date;
+			$multiplicationDateRow->save();
+		}
+		else
+		{
+			$newRow = $multiplicationDate->createRow();
+			$newRow->cell_id = $cellId;
+			$newRow->multiplication = $date;
+			$newRow->save();
+		}
+		return true;
 	}
 	
 	public function calculateDayMultiplication($multiplicationDate)
@@ -290,6 +327,33 @@ class Application_Model_Cell
                 "hour_start"		=> $data->hour_start
             );
         return $information;
+	}
+
+	/**
+	*
+	*	Render a view of date multiplication on the celula's controller.
+	*
+	*	@param $cellId
+	*	@access public
+	*	@return Zend_View
+	*/
+	public function viewDateMultiplication($cellId)
+	{
+		$registry = Zend_Registry::getInstance();
+		$view = $registry->get('view');
+		$dateMultiplication = $this->returnDateMultiplication($cellId);
+		if(!$dateMultiplication)
+		{
+			$view->dateMultiplication = false;
+		}
+		else
+		{
+	        $date = explode("-",$dateMultiplication);
+	        $view->dateMultiplication = $date[2]."/".$date[1]."/".$date[0];
+	        $view->amountDays = $this->calculateDayMultiplication($dateMultiplication);
+	        $view->amountWeeks = $this->calculateWeeks($dateMultiplication);
+		}
+		return $view->render('frequencia/dateMultiplication.phtml');
 	}
 }
 

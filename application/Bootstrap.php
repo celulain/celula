@@ -94,5 +94,21 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		                             $frontendOptions,
 		                             $backendOptions);
 	}
+
+	/**
+	 *
+	 * Load Zend View
+	 *
+	 * @access protected
+	 * @return null
+	 */
+	protected function _initView()
+	{
+		Zend_Loader::loadClass('Zend_View');
+		$view = new Zend_View();
+		$view->setScriptPath(APPLICATION_PATH.'/views/html/');
+		$registry = Zend_Registry::getInstance();
+		$registry->set('view',$view);
+	}
 }
 
