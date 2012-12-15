@@ -88,6 +88,7 @@
           <actionMethod actionName="cell"/>
           <actionMethod actionName="suggestions"/>
           <actionMethod actionName="dateMultiplication"/>
+          <actionMethod actionName="futureLeader"/>
         </controllerFile>
         <controllerFile controllerName="Password">
           <actionMethod actionName="index"/>
@@ -158,6 +159,7 @@
           <dbTableFile dbTableName="ChurchPriests"/>
           <dbTableFile dbTableName="CellLeadership"/>
           <dbTableFile dbTableName="CoreSuggestions"/>
+          <dbTableFile dbTableName="CellGoalFutureLeader"/>
         </dbTableDirectory>
         <modelFile modelName="Cell"/>
         <modelFile modelName="Participantes"/>
@@ -369,6 +371,9 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Api">
             <viewScriptFile forActionName="dateMultiplication"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Api">
+            <viewScriptFile forActionName="futureLeader"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

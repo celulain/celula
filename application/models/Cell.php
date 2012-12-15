@@ -107,8 +107,12 @@ class Application_Model_Cell
 			$newUserCell = $userCell->createRow();
 			$newUserCell->cell_id = $data['cell_id'];
 			$newUserCell->user_id = $userId;
-			if(isset($data['position']) || $data['position'] == '')
+			if(!isset($data['position']) || $data['position'] == '')
 				$data['position'] = 3;
+			elseif ($data['position'] == 5) 
+			{
+				$this->insertNewFutureLeader($userId);
+			}
 			$newUserCell->role_id = $data['position'];
 			$newUserCell->date_start = new Zend_Db_Expr('NOW()');
 			$newUserCell->save();
@@ -117,11 +121,42 @@ class Application_Model_Cell
 		{
 			$userCellRow->cell_id = $data['cell_id'];
 			$userCellRow->user_id = $userId;
-			if(isset($data['position']) || $data['position'] == '')
+			if(!isset($data['position']) || $data['position'] == '')
 				$data['position'] = 3;
+			elseif ($data['position'] == 5) 
+			{
+				$this->insertNewFutureLeader($userId);
+			}
 			$userCellRow->role_id = $data['position'];
 			$userCellRow->date_start = new Zend_Db_Expr('NOW()');
 			$userCellRow->save();
+		}
+	}
+
+	/**
+	*	Insert a new future leader on database.
+	*
+	*	@param $userId
+	*	@access private
+	*	@return boolean
+	*/
+	private function insertNewFutureLeader($userId)
+	{
+		$futureLeader = new Application_Model_DbTable_CellGoalFutureLeader();
+		$futureLeaderRow = $futureLeader->fetchRow($futureLeader->select()->where('user_id = ?',$userId));
+		if(!count($futureLeaderRow))
+		{
+			$newRow = $futureLeader->createRow();
+			$newRow->user_id = $userId;
+			$newRow->um = 0;
+			$newRow->dois = 0;
+			$newRow->tres = 0;
+			$newRow->quatro = 0;
+			$newRow->cinco = 0;
+			$newRow->seis = 0;
+			$newRow->sete = 0;
+			$newRow->save();
+			return true;
 		}
 	}
 	
@@ -192,6 +227,36 @@ class Application_Model_Cell
 			$newRow->cell_id = $cellId;
 			$newRow->multiplication = $date;
 			$newRow->save();
+		}
+		return true;
+	}
+
+	/**
+	*	Save a new future leader on database.
+	*
+	*	@param $cellId
+	*	@param $data
+	*	@access public
+	*	@return boolean
+	*/
+	public function saveFutureLeaders($cellId,$data)
+	{
+		$futureLeader = new Application_Model_DbTable_CellGoalFutureLeader();
+		$data = substr_replace($data ,"",-3);
+		$rowLeaders = explode('|||',$data);
+		foreach($rowLeaders as $rows)
+		{
+			$leader = explode('|*|',$rows);
+			$aux = explode('_',$leader[0]);
+			$leaderId = $aux[2];
+			$status = 0;
+			if($leader[1] == 'icon-star')
+			{
+				$status = 1;
+			}
+			$row = $futureLeader->fetchRow($futureLeader->select()->where('user_id = ?',$leaderId));
+			$row->$aux[0] = $status;
+			$row->save();
 		}
 		return true;
 	}
@@ -330,6 +395,46 @@ class Application_Model_Cell
 	}
 
 	/**
+	*	Return a future leaders of cell.
+	*
+	*	@param $cellId
+	*	@access private
+	*	@return mixed
+	*/
+	private function returnFutureLeaders($cellId)
+	{
+		$cellUser = new Application_Model_DbTable_CellUser();
+		$futureLeader = new Application_Model_DbTable_CellGoalFutureLeader();
+		$ftLeaders = $cellUser->fetchAll($cellUser->select()->where('role_id = 5 AND cell_id = ?',$cellId));
+		if(count($ftLeaders))
+		{
+			$result = array();
+			foreach($ftLeaders as $futureLeaders)
+			{
+				$select = $futureLeader->select()->setIntegrityCheck(false);
+				$select	->from(array('fl' => 'cell_goal_future_leader'))
+						->joinInner(array('cou' => 'core_user'),'fl.user_id=cou.user_id',array('name' => 'IF(cou.nickname="",CONCAT(cou.name," ",cou.surname),cou.nickname)'))
+						->where('fl.user_id = ?', $futureLeaders->user_id);
+				$data = $futureLeader->fetchRow($select);
+				$flag = array(
+								'user_id'	=>	$futureLeaders->user_id,
+								'name'		=> 	$data->name,
+								'um'		=> 	$data->um,
+								'dois'		=> 	$data->dois,
+								'tres'		=> 	$data->tres,
+								'quatro'	=> 	$data->quatro,
+								'cinco'		=> 	$data->cinco,
+								'seis'		=> 	$data->seis,
+								'sete'		=> 	$data->sete,
+							);
+				array_push($result,$flag);
+			}
+			return $result;
+		}	
+		return false;
+	}
+
+	/**
 	*
 	*	Render a view of date multiplication on the celula's controller.
 	*
@@ -354,6 +459,30 @@ class Application_Model_Cell
 	        $view->amountWeeks = $this->calculateWeeks($dateMultiplication);
 		}
 		return $view->render('frequencia/dateMultiplication.phtml');
+	}
+
+	/**
+	*
+	*	Render a view of future leader on the celula's controller.
+	*
+	*	@param $cellId
+	*	@access public
+	*	@return Zend_View
+	*/
+	public function viewFutureLeader($cellId)
+	{
+		$registry = Zend_Registry::getInstance();
+		$view = $registry->get('view');
+		$futureLeaders = $this->returnFutureLeaders($cellId);
+		if(!$futureLeaders)
+		{
+			$view->futureLeaders = false;
+		}
+		else
+		{
+			$view->futureLeaders = $futureLeaders;
+		}
+		return $view->render('frequencia/futureLeader.phtml');
 	}
 }
 

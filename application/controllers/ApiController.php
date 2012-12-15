@@ -238,12 +238,11 @@ class ApiController extends Zend_Controller_Action
     }
 
     /**
-    *   Action responsable to save a multiplication date of cell on database.
-    *   
-    *   @param date
-    *   @access public
-    *   @return boolean
-    */
+     *   Action responsable to save a multiplication date of cell on database.
+     *   
+     *   @access public
+     *   @return boolean
+     */
     public function dateMultiplicationAction()
     {
         $this->_helper->layout()->setLayout('json');
@@ -257,8 +256,27 @@ class ApiController extends Zend_Controller_Action
         }
     }
 
+    /**
+     *   Action responsable to save a future leader of cell on database.
+     *   
+     *   @access public
+     *   @return boolean
+     */
+    public function futureLeaderAction()
+    {
+        $this->_helper->layout()->setLayout('json');
+        if($this->getRequest()->isPost())
+        {
+            $data = $this->getRequest()->getPost();
+            $cell = new Application_Model_Cell();
+            echo $cell->saveFutureLeaders($data['cell_id'],$data['data']);
+        }
+    }
+
 
 }
+
+
 
 
 

@@ -64,3 +64,117 @@ $("#saveDateMultiplication").click(function(){
     });
 });
 /** End DatePicker Jquery UI **/
+
+
+/** Future Leader **/
+
+$('.um').tooltip();
+$('.dois').tooltip();
+$('.tres').tooltip();
+$('.quatro').tooltip();
+$('.cinco').tooltip();
+$('.seis').tooltip();
+$('.sete').tooltip();
+
+$('.um').click(function(){
+    var str = this.toString();
+    var n = str.split("#");
+    if($('#'+n[1]+'_star_'+n[2]).hasClass('icon-star')){
+        $('#'+n[1]+'_star_'+n[2]).removeClass('icon-star').addClass('icon-star-empty');
+    }
+    else{
+        $('#'+n[1]+'_star_'+n[2]).removeClass('icon-star-empty').addClass('icon-star');
+    }
+    $('#buttonSaveFutureLeader').show();
+});
+
+$('.dois').click(function(){
+    var str = this.toString();
+    var n = str.split("#");
+    if($('#'+n[1]+'_star_'+n[2]).hasClass('icon-star')){
+        $('#'+n[1]+'_star_'+n[2]).removeClass('icon-star').addClass('icon-star-empty');
+    }
+    else{
+        $('#'+n[1]+'_star_'+n[2]).removeClass('icon-star-empty').addClass('icon-star');
+    }
+    $('#buttonSaveFutureLeader').show();
+});
+
+$('.tres').click(function(){
+    var str = this.toString();
+    var n = str.split("#");
+    if($('#'+n[1]+'_star_'+n[2]).hasClass('icon-star')){
+        $('#'+n[1]+'_star_'+n[2]).removeClass('icon-star').addClass('icon-star-empty');
+    }
+    else{
+        $('#'+n[1]+'_star_'+n[2]).removeClass('icon-star-empty').addClass('icon-star');
+    }
+    $('#buttonSaveFutureLeader').show();
+});
+
+$('.quatro').click(function(){
+    var str = this.toString();
+    var n = str.split("#");
+    if($('#'+n[1]+'_star_'+n[2]).hasClass('icon-star')){
+        $('#'+n[1]+'_star_'+n[2]).removeClass('icon-star').addClass('icon-star-empty');
+    }
+    else{
+        $('#'+n[1]+'_star_'+n[2]).removeClass('icon-star-empty').addClass('icon-star');
+    }
+    $('#buttonSaveFutureLeader').show();
+});
+
+$('.cinco').click(function(){
+    var str = this.toString();
+    var n = str.split("#");
+    if($('#'+n[1]+'_star_'+n[2]).hasClass('icon-star')){
+        $('#'+n[1]+'_star_'+n[2]).removeClass('icon-star').addClass('icon-star-empty');
+    }
+    else{
+        $('#'+n[1]+'_star_'+n[2]).removeClass('icon-star-empty').addClass('icon-star');
+    }
+    $('#buttonSaveFutureLeader').show();
+});
+
+$('.seis').click(function(){
+    var str = this.toString();
+    var n = str.split("#");
+    if($('#'+n[1]+'_star_'+n[2]).hasClass('icon-star')){
+        $('#'+n[1]+'_star_'+n[2]).removeClass('icon-star').addClass('icon-star-empty');
+    }
+    else{
+        $('#'+n[1]+'_star_'+n[2]).removeClass('icon-star-empty').addClass('icon-star');
+    }
+    $('#buttonSaveFutureLeader').show();
+});
+
+$('.sete').click(function(){
+    var str = this.toString();
+    var n = str.split("#");
+    if($('#'+n[1]+'_star_'+n[2]).hasClass('icon-star')){
+        $('#'+n[1]+'_star_'+n[2]).removeClass('icon-star').addClass('icon-star-empty');
+    }
+    else{
+        $('#'+n[1]+'_star_'+n[2]).removeClass('icon-star-empty').addClass('icon-star');
+    }
+    $('#buttonSaveFutureLeader').show();
+});
+
+$('#savefutureLeader').click(function(){
+    var dataPost = '';
+    $("*[class^='icon-star']").each(function(index) {
+        dataPost += $(this).attr('id') + '|*|' + $(this).attr('class') + "|||";
+    });
+    $.ajax({
+      url: '/api/future-leader',
+      type: "post",
+      data: 'cell_id='+ $("#cell_id").val() +'&data='+dataPost,
+      success: function(data) {
+        console.log(data);
+        if(data == 1){
+            document.location.reload(true);
+        }
+      }
+    });
+}); 
+/** END Future Leader **/

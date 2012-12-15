@@ -32,6 +32,7 @@ class CelulaController extends Zend_Controller_Action
         // $this->view->goalParticipants = $cell->returnGoalParticipants($authNamespace->cell_id_leader);
         // $this->view->actualParticipants = $cell->returnGoalActualParticipants($authNamespace->cell_id_leader);
         $this->view->dateMultiplication = $cell->viewDateMultiplication($authNamespace->cell_id_leader);
+        $this->view->futureLeader = $cell->viewFutureLeader($authNamespace->cell_id_leader);
     	$this->view->cell_id = $authNamespace->cell_id_leader;
     }catch(Zend_Exception $e){
         echo $e->getMessage();
@@ -82,6 +83,8 @@ class CelulaController extends Zend_Controller_Action
     		$data = $this->getRequest()->getPost();
     		if($newParticipantForm->isValid($data))
     		{
+                $flag = explode('/',$data['birthday']);
+                $data['birthday'] = $flag[2].'-'.$flag[1].'-'.$flag[0];
     			$cellClass->saveMember($data,$data['user_id']);
     			$newParticipantForm->reset();
     		}

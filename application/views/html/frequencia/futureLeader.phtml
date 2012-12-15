@@ -1,0 +1,42 @@
+<?if (!$this->futureLeaders){ ?>
+Você ainda não possui lideres em treinamento.
+<?}else{ foreach($this->futureLeaders as $futureLeaders){?>
+<div class="row-fluid">
+    <div class="span8">
+        <p><?=$futureLeaders['name']?></p>
+        <input type="hidden" value="<?=$futureLeaders['user_id']?>" id="goal_future_leader_<?=$futureLeaders['user_id']?>" class='cell_goal_future_leader' />
+    </div>
+    <div class="span4">
+        <span class="avaliacao-star">
+            <a href="#um#<?=$futureLeaders['user_id']?>" rel="tooltip" title="Um" id="um" class='um'>
+                <i id='um_star_<?=$futureLeaders['user_id']?>' class="icon-star<?if(!$futureLeaders['um']) echo '-empty';?>"></i>
+            </a>
+            <a href="#dois#<?=$futureLeaders['user_id']?>" rel="tooltip" title="Dois" id="dois" class='dois'>
+                <i id='dois_star_<?=$futureLeaders['user_id']?>' class="icon-star<?if(!$futureLeaders['dois']) echo '-empty';?>"></i>
+            </a>
+            <a href="#tres#<?=$futureLeaders['user_id']?>" rel="tooltip" title="Tres" id="tres" class='tres'>
+                <i id='tres_star_<?=$futureLeaders['user_id']?>' class="icon-star<?if(!$futureLeaders['tres']) echo '-empty';?>"></i>
+            </a>
+            <a href="#quatro#<?=$futureLeaders['user_id']?>" rel="tooltip" title="Quatro" id="quatro" class='quatro'>
+                <i id='quatro_star_<?=$futureLeaders['user_id']?>' class="icon-star<?if(!$futureLeaders['quatro']) echo '-empty';?>"></i>
+            </a>
+            <a href="#cinco#<?=$futureLeaders['user_id']?>" rel="tooltip" title="Cinco" id="cinco" class='cinco'>
+                <i id='cinco_star_<?=$futureLeaders['user_id']?>' class="icon-star<?if(!$futureLeaders['cinco']) echo '-empty';?>"></i>
+            </a>
+            <a href="#seis#<?=$futureLeaders['user_id']?>" rel="tooltip" title="Seis" id="seis" class='seis'>
+                <i id='seis_star_<?=$futureLeaders['user_id']?>' class="icon-star<?if(!$futureLeaders['seis']) echo '-empty';?>"></i>
+            </a>
+            <a href="#sete#<?=$futureLeaders['user_id']?>" rel="tooltip" title="Um" id="sete" class='sete'>
+                <i id='sete_star_<?=$futureLeaders['user_id']?>' class="icon-star<?if(!$futureLeaders['sete']) echo '-empty';?>"></i>
+            </a>
+        </span>
+    </div>
+</div>
+<?} }?>
+
+<div id="buttonSaveFutureLeader" style="display: none;">
+    <a class="btn btn-primary" data-toggle="modal" id="savefutureLeader">
+        <i class="icon-plus"></i>
+        Salvar
+    </a>
+</div>

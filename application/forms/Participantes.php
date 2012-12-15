@@ -73,7 +73,6 @@ class Application_Form_Participantes extends Zend_Form
     	$position	->setLabel('Função:')
 			    	->setRequired(false)
 			    	->addMultiOptions(array(
-			    			'1' => 'Líder',
 			    			'2' => 'Participante',
 			    			'3'	=> 'Visitante',
 			    			'4'	=> 'Anfitrião',
