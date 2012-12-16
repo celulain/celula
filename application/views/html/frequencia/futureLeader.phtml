@@ -1,5 +1,19 @@
 <?if (!$this->futureLeaders){ ?>
-Você ainda não possui lideres em treinamento.
+<div class="row-fluid">
+    <div class="span12">
+        <h4><a style="color: #666;" id="showFutureLeader">Defina um líder em treinamento</a></h4>
+        <div id="formFutureLeader" style="display: none;">
+            <input type="text" id="futureLeader" class="input-block-level" /><br />
+            <input type="hidden" id="idFutureLeader" name="idFutureLeader" />
+            <div id="buttonFutureLeader" style="display: none;">
+                <a class="btn btn-primary" data-toggle="modal" id="saveAddFutureLeader">
+                    <i class="icon-plus"></i>
+                    Salvar
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 <?}else{ foreach($this->futureLeaders as $futureLeaders){?>
 <div class="row-fluid">
     <div class="span8">

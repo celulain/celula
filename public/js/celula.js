@@ -177,4 +177,35 @@ $('#savefutureLeader').click(function(){
       }
     });
 }); 
+
+$('#showFutureLeader').click(function(){
+    $('#formFutureLeader').show('slow');
+});
+
+$('#futureLeader').keyup(function(){
+    $('#buttonFutureLeader').show();
+    $('#futureLeader').autocomplete({
+        source: "/api/getmemberscell",
+        minLength: 3,
+        select: function (event, ui) {
+            $("#futureLeader").val(ui.item.label);
+            $("#idFutureLeader").val(ui.item.id);
+            return ui.item.label;
+        }
+    });
+})
+
+$('#saveAddFutureLeader').click(function(){
+    $.ajax({
+      url: '/api/save-future-leader',
+      type: "post",
+      data: 'cell_id='+ $("#cell_id").val() +'&idFutureLeader='+ $('#idFutureLeader').val(),
+      success: function(data) {
+        console.log(data);
+        if(data == 1){
+            document.location.reload(true);
+        }
+      }
+    });
+});
 /** END Future Leader **/

@@ -3,7 +3,7 @@
     <div class="span12">
         <h4><a style="color: #666;" id="showDateMultiplication">Defina uma data de multiplicação</a></h4>
         <div id="formDateMultiplication" style="display: none;">
-            <input type="text" id="dateMultiplication" class="input-small datepicker" /><br />
+            <input type="text" id="dateMultiplication" class="input-small datepicker" maxlength='10' /><br />
             <div id="buttonSaveDate" style="display: none;">
                 <a class="btn btn-primary" data-toggle="modal" id="saveDateMultiplication">
                     <i class="icon-plus"></i>
@@ -22,7 +22,7 @@
 
 <div class="row-fluid">
     <div class="span12">
-        <input type="text" id="dateMultiplication" class="input-small datepicker" value="<?=$this->dateMultiplication?>" /><br />
+        <input type="text" id="dateMultiplication" class="input-small datepicker" maxlength='10' value="<?=$this->dateMultiplication?>" /><br />
         <div id="buttonSaveDate" style="display: none;">
             <a class="btn btn-primary" data-toggle="modal" id="saveDateMultiplication">
                 <i class="icon-plus"></i>

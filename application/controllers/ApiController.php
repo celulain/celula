@@ -242,6 +242,8 @@ class ApiController extends Zend_Controller_Action
      *   
      *   @access public
      *   @return boolean
+     *
+     *
      */
     public function dateMultiplicationAction()
     {
@@ -261,6 +263,8 @@ class ApiController extends Zend_Controller_Action
      *   
      *   @access public
      *   @return boolean
+     *
+     *
      */
     public function futureLeaderAction()
     {
@@ -273,8 +277,41 @@ class ApiController extends Zend_Controller_Action
         }
     }
 
+    public function getmemberscellAction()
+    {
+        $this->_helper->layout()->setLayout('json');
+        $authNamespace = new Zend_Session_Namespace('userInformation');
+        $search = mysql_real_escape_string($_GET['term']);
+        $user = new Application_Model_DbTable_CoreUser();
+        $select = $user->select()->setIntegrityCheck(false);
+        $select ->from(array('u' => 'core_user'), array('id' => 'user_id','label' => 'CONCAT(name," ",surname)'))
+                ->joinInner(array('cu' => 'cell_user'), 'cu.user_id=u.user_id')
+                ->where('u.name LIKE ?', '%'.$search.'%')
+                ->where('cu.cell_id = ?', $authNamespace->cell_id_leader)
+                ->where('cu.role_id NOT IN (1,5)')
+                ->limit(8);
+        $rs = $user->fetchAll($select);   
+        $aux = $rs->toArray();  
+        echo Zend_Json::encode($aux);
+    }
+
+    public function saveFutureLeaderAction()
+    {
+        $this->_helper->layout()->setLayout('json');
+        if($this->getRequest()->isPost())
+        {
+            $data = $this->getRequest()->getPost();
+            $cell = new Application_Model_Cell();
+            echo $cell->insertNewFutureLeader($data['idFutureLeader']);
+        }
+    }
+
 
 }
+
+
+
+
 
 
 

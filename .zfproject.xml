@@ -89,6 +89,8 @@
           <actionMethod actionName="suggestions"/>
           <actionMethod actionName="dateMultiplication"/>
           <actionMethod actionName="futureLeader"/>
+          <actionMethod actionName="getmemberscell"/>
+          <actionMethod actionName="saveFutureLeader"/>
         </controllerFile>
         <controllerFile controllerName="Password">
           <actionMethod actionName="index"/>
@@ -374,6 +376,12 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Api">
             <viewScriptFile forActionName="futureLeader"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Api">
+            <viewScriptFile forActionName="getmemberscell"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Api">
+            <viewScriptFile forActionName="saveFutureLeader"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

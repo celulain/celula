@@ -137,10 +137,10 @@ class Application_Model_Cell
 	*	Insert a new future leader on database.
 	*
 	*	@param $userId
-	*	@access private
+	*	@access public
 	*	@return boolean
 	*/
-	private function insertNewFutureLeader($userId)
+	public function insertNewFutureLeader($userId)
 	{
 		$futureLeader = new Application_Model_DbTable_CellGoalFutureLeader();
 		$futureLeaderRow = $futureLeader->fetchRow($futureLeader->select()->where('user_id = ?',$userId));
@@ -156,6 +156,11 @@ class Application_Model_Cell
 			$newRow->seis = 0;
 			$newRow->sete = 0;
 			$newRow->save();
+
+			$userCell = new Application_Model_DbTable_CellUser();
+			$userCellRow = $userCell->fetchRow($userCell->select()->where("user_id = ?",$userId));
+			$userCellRow->role_id = 5;
+			$userCellRow->save();
 			return true;
 		}
 	}
