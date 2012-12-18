@@ -209,3 +209,132 @@ $('#saveAddFutureLeader').click(function(){
     });
 });
 /** END Future Leader **/
+
+
+/** Future Host **/
+
+$('.um_host').tooltip();
+$('.dois_host').tooltip();
+$('.tres_host').tooltip();
+$('.quatro_host').tooltip();
+$('.cinco_host').tooltip();
+
+$('.um_host').click(function(){
+    var str = this.toString();
+    var n = str.split("#");
+    if($('#'+n[1]+'_star_'+n[2]).hasClass('icon-star')){
+        $('#'+n[1]+'_star_'+n[2]).removeClass('icon-star').addClass('icon-star-empty');
+    }
+    else{
+        $('#'+n[1]+'_star_'+n[2]).removeClass('icon-star-empty').addClass('icon-star');
+    }
+    $('#buttonSaveFutureHost').show();
+});
+
+$('.dois_host').click(function(){
+    var str = this.toString();
+    var n = str.split("#");
+    if($('#'+n[1]+'_star_'+n[2]).hasClass('icon-star')){
+        $('#'+n[1]+'_star_'+n[2]).removeClass('icon-star').addClass('icon-star-empty');
+    }
+    else{
+        $('#'+n[1]+'_star_'+n[2]).removeClass('icon-star-empty').addClass('icon-star');
+    }
+    $('#buttonSaveFutureHost').show();
+});
+
+$('.tres_host').click(function(){
+    var str = this.toString();
+    var n = str.split("#");
+    if($('#'+n[1]+'_star_'+n[2]).hasClass('icon-star')){
+        $('#'+n[1]+'_star_'+n[2]).removeClass('icon-star').addClass('icon-star-empty');
+    }
+    else{
+        $('#'+n[1]+'_star_'+n[2]).removeClass('icon-star-empty').addClass('icon-star');
+    }
+    $('#buttonSaveFutureHost').show();
+});
+
+$('.quatro_host').click(function(){
+    var str = this.toString();
+    var n = str.split("#");
+    if($('#'+n[1]+'_star_'+n[2]).hasClass('icon-star')){
+        $('#'+n[1]+'_star_'+n[2]).removeClass('icon-star').addClass('icon-star-empty');
+    }
+    else{
+        $('#'+n[1]+'_star_'+n[2]).removeClass('icon-star-empty').addClass('icon-star');
+    }
+    $('#buttonSaveFutureHost').show();
+});
+
+$('.cinco_host').click(function(){
+    var str = this.toString();
+    var n = str.split("#");
+    if($('#'+n[1]+'_star_'+n[2]).hasClass('icon-star')){
+        $('#'+n[1]+'_star_'+n[2]).removeClass('icon-star').addClass('icon-star-empty');
+    }
+    else{
+        $('#'+n[1]+'_star_'+n[2]).removeClass('icon-star-empty').addClass('icon-star');
+    }
+    $('#buttonSaveFutureHost').show();
+});
+
+$('#savefutureHost').click(function(){
+    var dataPost = '';
+    $("*[class^='icon-star']").each(function(index) {
+        dataPost += $(this).attr('id') + '|*|' + $(this).attr('class') + "|||";
+    });
+    $.ajax({
+      url: '/api/future-host',
+      type: "post",
+      data: 'id='+ $("#goal_future_host").val() +'cell_id='+ $("#cell_id").val() +'&data='+dataPost,
+      success: function(data) {
+        console.log(data);
+        if(data == 1){
+            document.location.reload(true);
+        }
+      }
+    });
+}); 
+
+$('#showFutureHost').click(function(){
+    $('#formFutureHost').show('slow');
+});
+
+$('#futureHost').keyup(function(){
+    $('#buttonFutureHost').show();
+    $('#futureHost').autocomplete({
+        source: "/api/getmemberscell",
+        minLength: 3,
+        select: function (event, ui) {
+            $("#futureHost").val(ui.item.label);
+            return ui.item.label;
+        }
+    });
+})
+
+$('#saveAddFutureHost').click(function(){
+    $.ajax({
+      url: '/api/save-future-host',
+      type: "post",
+      data: 'cell_id='+ $("#cell_id").val() +'&futureHost='+ $('#futureHost').val(),
+      success: function(data) {
+        console.log(data);
+        if(data == 1){
+            document.location.reload(true);
+        }
+      }
+    });
+});
+/** END Future Host **/
+
+
+
+/*** Frequency ***/
+
+$('#addDateMeeting').click(function(){
+    $('#addDateMeeting').hide();
+    $('.formDateNewMeeting').show();
+});
+
+/*** END Frequency ***/

@@ -91,6 +91,8 @@
           <actionMethod actionName="futureLeader"/>
           <actionMethod actionName="getmemberscell"/>
           <actionMethod actionName="saveFutureLeader"/>
+          <actionMethod actionName="saveFutureHost"/>
+          <actionMethod actionName="futureHost"/>
         </controllerFile>
         <controllerFile controllerName="Password">
           <actionMethod actionName="index"/>
@@ -162,6 +164,7 @@
           <dbTableFile dbTableName="CellLeadership"/>
           <dbTableFile dbTableName="CoreSuggestions"/>
           <dbTableFile dbTableName="CellGoalFutureLeader"/>
+          <dbTableFile dbTableName="CellGoalFutureHost"/>
         </dbTableDirectory>
         <modelFile modelName="Cell"/>
         <modelFile modelName="Participantes"/>
@@ -172,6 +175,7 @@
         <modelFile modelName="Member"/>
         <modelFile modelName="Church"/>
         <modelFile modelName="Meeting"/>
+        <modelFile modelName="TextAreaDecorator"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>
@@ -382,6 +386,12 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Api">
             <viewScriptFile forActionName="saveFutureLeader"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Api">
+            <viewScriptFile forActionName="saveFutureHost"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Api">
+            <viewScriptFile forActionName="futureHost"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

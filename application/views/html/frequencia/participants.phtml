@@ -1,0 +1,42 @@
+<div class="row-fluid">
+    <div class="span4">
+        <div class="row-fluid">
+            <div class="span12">
+                <p style='font-size: 16px;'>Atual</p>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <strong style='color: #EE7621; font-size: 24px;font-weight: bold;'><?=$this->actualParticipants?></strong>
+            </div>
+        </div>
+        
+    </div><!--/.span4 -->
+    <div class="span4">
+        <div class="row-fluid">
+            <div class="span12">
+                <p style='font-size: 16px;'>Alvo</p>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <strong style='color: #EE7621; font-size: 24px;font-weight: bold;'><?=$this->goalParticipants?></strong>
+            </div>
+        </div>
+        
+    </div><!--/.span4 -->
+    <div class="span4">
+        <div class="row-fluid">
+            <div class="span12">
+                <p style='font-size: 16px;'>Faltam</p>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <strong style='color: #EE7621; font-size: 24px;font-weight: bold;'><? if($this->goalParticipants < $this->actualParticipants) echo 0; else echo $this->goalParticipants-$this->actualParticipants;?></strong>
+            </div>
+        </div>
+        
+    </div><!--/.span4 -->
+
+</div>

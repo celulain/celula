@@ -17,30 +17,30 @@
 <?}else{ foreach($this->futureLeaders as $futureLeaders){?>
 <div class="row-fluid">
     <div class="span8">
-        <p><?=$futureLeaders['name']?></p>
+        <p style='font-size: 16px;'><?=$futureLeaders['name']?></p>
         <input type="hidden" value="<?=$futureLeaders['user_id']?>" id="goal_future_leader_<?=$futureLeaders['user_id']?>" class='cell_goal_future_leader' />
     </div>
     <div class="span4">
         <span class="avaliacao-star">
-            <a href="#um#<?=$futureLeaders['user_id']?>" rel="tooltip" title="Um" id="um" class='um'>
+            <a href="#um#<?=$futureLeaders['user_id']?>" rel="tooltip" title="Comprometido com a célula" id="um" class='um'>
                 <i id='um_star_<?=$futureLeaders['user_id']?>' class="icon-star<?if(!$futureLeaders['um']) echo '-empty';?>"></i>
             </a>
-            <a href="#dois#<?=$futureLeaders['user_id']?>" rel="tooltip" title="Dois" id="dois" class='dois'>
+            <a href="#dois#<?=$futureLeaders['user_id']?>" rel="tooltip" title="Comprometido com Deus" id="dois" class='dois'>
                 <i id='dois_star_<?=$futureLeaders['user_id']?>' class="icon-star<?if(!$futureLeaders['dois']) echo '-empty';?>"></i>
             </a>
-            <a href="#tres#<?=$futureLeaders['user_id']?>" rel="tooltip" title="Tres" id="tres" class='tres'>
+            <a href="#tres#<?=$futureLeaders['user_id']?>" rel="tooltip" title="Comprometido com a Central" id="tres" class='tres'>
                 <i id='tres_star_<?=$futureLeaders['user_id']?>' class="icon-star<?if(!$futureLeaders['tres']) echo '-empty';?>"></i>
             </a>
-            <a href="#quatro#<?=$futureLeaders['user_id']?>" rel="tooltip" title="Quatro" id="quatro" class='quatro'>
+            <a href="#quatro#<?=$futureLeaders['user_id']?>" rel="tooltip" title="Bom testemunho de vida" id="quatro" class='quatro'>
                 <i id='quatro_star_<?=$futureLeaders['user_id']?>' class="icon-star<?if(!$futureLeaders['quatro']) echo '-empty';?>"></i>
             </a>
-            <a href="#cinco#<?=$futureLeaders['user_id']?>" rel="tooltip" title="Cinco" id="cinco" class='cinco'>
+            <a href="#cinco#<?=$futureLeaders['user_id']?>" rel="tooltip" title="Boa capacidade de liderança" id="cinco" class='cinco'>
                 <i id='cinco_star_<?=$futureLeaders['user_id']?>' class="icon-star<?if(!$futureLeaders['cinco']) echo '-empty';?>"></i>
             </a>
-            <a href="#seis#<?=$futureLeaders['user_id']?>" rel="tooltip" title="Seis" id="seis" class='seis'>
+            <a href="#seis#<?=$futureLeaders['user_id']?>" rel="tooltip" title="Membro da Central" id="seis" class='seis'>
                 <i id='seis_star_<?=$futureLeaders['user_id']?>' class="icon-star<?if(!$futureLeaders['seis']) echo '-empty';?>"></i>
             </a>
-            <a href="#sete#<?=$futureLeaders['user_id']?>" rel="tooltip" title="Um" id="sete" class='sete'>
+            <a href="#sete#<?=$futureLeaders['user_id']?>" rel="tooltip" title="Completar o Treinamento-CCM" id="sete" class='sete'>
                 <i id='sete_star_<?=$futureLeaders['user_id']?>' class="icon-star<?if(!$futureLeaders['sete']) echo '-empty';?>"></i>
             </a>
         </span>

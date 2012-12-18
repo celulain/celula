@@ -213,6 +213,16 @@ $sql_cell_info = "
 		g.codigo IN (SELECT cell_id FROM celula_ibcbh.cell)
 ";
 
+// O nickname a partir de uma determinada data, estava como NULL. Retirar isso!
+$cell_nickname_null = "
+	UPDATE
+		celula_ibcbh.core_user
+	SET
+		nickname=''
+	WHERE
+		nickname IS NULL
+";
+
 
 $sql_leadership = "
 

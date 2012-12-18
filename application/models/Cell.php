@@ -165,6 +165,34 @@ class Application_Model_Cell
 		}
 	}
 	
+	/**
+	*	Insert a new future host on database.
+	*
+	*	@param $cellId
+	*	@param $futureHostName
+	*	@access public
+	*	@return boolean
+	*/
+	public function insertNewFutureHost($cellId,$futureHostName='')
+	{
+		$authNamespace = new Zend_Session_Namespace('userInformation');
+		$futureHost = new Application_Model_DbTable_CellGoalFutureHost();
+		$futureHostRow = $futureHost->fetchRow($futureHost->select()->where('cell_id = ?',$cellId));
+		if(!count($futureHostRow) && $cellId == $authNamespace->cell_id_leader)
+		{
+			$newRow = $futureHost->createRow();
+			$newRow->cell_id = $cellId;
+			$newRow->name = $futureHostName;
+			$newRow->um = 0;
+			$newRow->dois = 0;
+			$newRow->tres = 0;
+			$newRow->quatro = 0;
+			$newRow->cinco = 0;
+			$newRow->save();
+			return true;
+		}
+	}
+
 	public function returnMembers($cellId)
 	{
 		$cell = new Application_Model_DbTable_Cell();
@@ -249,19 +277,60 @@ class Application_Model_Cell
 		$futureLeader = new Application_Model_DbTable_CellGoalFutureLeader();
 		$data = substr_replace($data ,"",-3);
 		$rowLeaders = explode('|||',$data);
+		$i=0;
 		foreach($rowLeaders as $rows)
 		{
 			$leader = explode('|*|',$rows);
 			$aux = explode('_',$leader[0]);
 			$leaderId = $aux[2];
 			$status = 0;
-			if($leader[1] == 'icon-star')
+			if($leader[1] == 'icon-star' && $leaderId != 1)
 			{
 				$status = 1;
 			}
-			$row = $futureLeader->fetchRow($futureLeader->select()->where('user_id = ?',$leaderId));
-			$row->$aux[0] = $status;
-			$row->save();
+			if($leaderId != 1)
+			{
+				$row = $futureLeader->fetchRow($futureLeader->select()->where('user_id = ?',$leaderId));
+				$row->$aux[0] = $status;
+				$row->save();
+			}
+			if($i == 6) return true;
+			$i++;
+		}
+		return true;
+	}
+
+	/**
+	*	Save a new future host on database.
+	*
+	*	@param $cellId
+	*	@param $data
+	*	@access public
+	*	@return boolean
+	*/
+	public function saveFutureHost($id,$data)
+	{
+		$futureHost = new Application_Model_DbTable_CellGoalFutureHost();
+		$data = substr_replace($data ,"",-3);
+		$rowLeaders = explode('|||',$data);
+		$i=0;
+		foreach($rowLeaders as $rows)
+		{
+			$leader = explode('|*|',$rows);
+			$aux = explode('_host',$leader[0]);
+			if(count($aux) != 1)
+			{
+				$status = 0;
+				if($leader[1] == 'icon-star')
+				{
+					$status = 1;
+				}
+				$row = $futureHost->fetchRow($futureHost->select()->where('id = ?',$id));
+				$row->$aux[0] = $status;
+				$row->save();
+				if($i == 4) return true;
+				$i++;
+			}
 		}
 		return true;
 	}
@@ -317,13 +386,13 @@ class Application_Model_Cell
 
 	public function presenceMeeting($cellId)
 	{
-		$cell = new Application_Model_DbTable_CellMeeting();
+		$cell = new Application_Model_DbTable_CellUser();
 		$select = $cell->select()->setIntegrityCheck(false);
-		$select	->from(array('cm' => 'cell_meeting'), array('dateMeeting'=>'DATE_FORMAT(cm.date,"%d-%m")','meeting_id'))
-				->joinInner(array('cu' => 'cell_user'),'cu.cell_id = cm.cell_id', array('user_id') )
+		$select	->from(array('cu' => 'cell_user'))
+				->joinInner(array('u' => 'core_user'),'u.user_id=cu.user_id',array('name' => 'IF(u.nickname="",CONCAT(u.name," ",u.surname),u.nickname)'))
+				->joinLeft(array('cm' => 'cell_meeting'),'cu.cell_id = cm.cell_id', array('dateMeeting'=>'DATE_FORMAT(cm.date,"%d-%m")','meeting_id'))
 				->joinLeft(array('cmp' => 'cell_meeting_presence'),'cu.user_id=cmp.user_id and cmp.meeting_id=cm.meeting_id',array('presence'=>'if(cmp.user_id is null,0,1)'))
-				->where('cm.cell_id = ?', $cellId)
-				->group(array('cm.date','cu.user_id'))
+				->where('cu.cell_id = ?', $cellId)
 				->order('cm.date ASC');
 		return $cell->fetchAll($select);
 	}
@@ -439,6 +508,68 @@ class Application_Model_Cell
 		return false;
 	}
 
+	private function returnAmountMeetings($cellId)
+	{
+		$cellMeeting = new Application_Model_DbTable_CellMeeting();
+		$amount = $cellMeeting->fetchAll($cellMeeting->select()->where('cell_id = ?',$cellId));
+		if(count($amount) > 4)
+			return 4;
+		return count($amount);
+	}
+
+	public function returnFrequencyCell($cellId,$amountMeetings=4)
+	{
+		$cell = new Application_Model_DbTable_CellUser();
+		$select = $cell->select()->setIntegrityCheck(false);
+		$select	->from(array('cu' => 'cell_user'),array('user_id'))
+				->joinInner(array('u' => 'core_user'),'u.user_id=cu.user_id',array('name' => 'IF(u.nickname="",CONCAT(u.name," ",u.surname),u.nickname)'))
+				->joinInner(array('cr' => 'cell_role'),'cu.role_id=cr.role_id',array('roleName' => 'name'))
+				->joinLeft(array('cm' => 'cell_meeting'),'cu.cell_id = cm.cell_id', array('meeting_id','date'))
+				->joinLeft(array('cmp' => 'cell_meeting_presence'),'cmp.meeting_id=cm.meeting_id AND cu.user_id=cmp.user_id',
+																	array('presence_id' => 'IFNULL(cmp.meeting_id,0)'))
+				->where('cu.cell_id = ?', $cellId)
+				->order('cm.date DESC');
+				// echo $select;exit;
+		return $cell->fetchAll($select);
+	}
+
+	public function returnMembersFrequency($cellId)
+	{
+		$cell = new Application_Model_DbTable_CellUser();
+		$select = $cell->select()->setIntegrityCheck(false);
+		$select	->from(array('cu' => 'cell_user'),array('user_id'))
+				->joinInner(array('u' => 'core_user'),'u.user_id=cu.user_id',array('name' => 'IF(u.nickname="",CONCAT(u.name," ",u.surname),u.nickname)'))
+				->joinInner(array('uf' => 'core_user_information'),'uf.user_id=cu.user_id',array())
+				->joinInner(array('cr' => 'cell_role'),'cu.role_id=cr.role_id',array('roleName' => 'name'))
+				->where('cu.cell_id = ?', $cellId)
+				->where('uf.type = 1');
+		return $cell->fetchAll($select);
+	}
+
+	public function returnVisitantsFrequency($cellId)
+	{
+		$cell = new Application_Model_DbTable_CellUser();
+		$select = $cell->select()->setIntegrityCheck(false);
+		$select	->from(array('cu' => 'cell_user'),array('user_id'))
+				->joinInner(array('u' => 'core_user'),'u.user_id=cu.user_id',array('name' => 'IF(u.nickname="",CONCAT(u.name," ",u.surname),u.nickname)'))
+				->joinInner(array('uf' => 'core_user_information'),'uf.user_id=cu.user_id',array())
+				->joinInner(array('cr' => 'cell_role'),'cu.role_id=cr.role_id',array('roleName' => 'name'))
+				->where('cu.cell_id = ?', $cellId)
+				->where('uf.type = ?', 2);
+		return $cell->fetchAll($select);
+	}
+
+	public function returnDates($cellId,$amountMeetings=4)
+	{
+		$cell = new Application_Model_DbTable_CellMeeting();
+		$select = $cell->select()->setIntegrityCheck(false);
+		$select	->from(array('cell_meeting'),array('date_formated'=>'DATE_FORMAT(date,"%d/%m/%Y")','meeting_id'))
+				->where('cell_id = ?',$cellId)
+				->limit($amountMeetings)
+				->order('date DESC');
+		return $cell->fetchAll($select);
+	}
+
 	/**
 	*
 	*	Render a view of date multiplication on the celula's controller.
@@ -488,6 +619,61 @@ class Application_Model_Cell
 			$view->futureLeaders = $futureLeaders;
 		}
 		return $view->render('frequencia/futureLeader.phtml');
+	}
+
+	/**
+	*
+	*	Render a view of future host on the celula's controller.
+	*
+	*	@param $cellId
+	*	@access public
+	*	@return Zend_View
+	*/
+	public function viewFutureHost($cellId)
+	{
+		$registry = Zend_Registry::getInstance();
+		$view = $registry->get('view');
+		$futureHost = new Application_Model_DbTable_CellGoalFutureHost();
+		$host = $futureHost->fetchRow($futureHost->select()->where('cell_id = ?',$cellId));
+		if(!count($host))
+		{
+			$view->futureHost = false;
+		}
+		else
+		{
+			$view->futureHost = $host;
+		}
+		return $view->render('frequencia/futureHost.phtml');
+	}
+
+	/**
+	*
+	*	Render a view of actual and goal participants on the celula's controller.
+	*
+	*	@param $cellId
+	*	@access public
+	*	@return Zend_View
+	*/
+	public function viewParticipants($cellId)
+	{
+		$registry = Zend_Registry::getInstance();
+		$view = $registry->get('view');
+        // $view->goalParticipants = $this->returnGoalParticipants($authNamespace->cell_id_leader);
+        $view->goalParticipants = 12;
+        $view->actualParticipants = $this->returnGoalActualParticipants($cellId);
+		return $view->render('frequencia/participants.phtml');
+	}
+
+	public function viewFrequency($cellId)
+	{
+		$registry = Zend_Registry::getInstance();
+		$view = $registry->get('view');
+		$amountMeetings = $this->returnAmountMeetings($cellId);
+		$view->dates = $this->returnDates($cellId,$amountMeetings);
+		$view->members = $this->returnMembersFrequency($cellId);
+		$view->visitants = $this->returnVisitantsFrequency($cellId);
+		$view->frequency = $this->returnFrequencyCell($cellId,$amountMeetings);
+		return $view->render('frequencia/frequency.phtml');
 	}
 }
 

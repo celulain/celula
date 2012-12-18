@@ -1,0 +1,50 @@
+<?if (!$this->futureHost){ ?>
+<div class="row-fluid">
+    <div class="span12">
+        <h4><a style="color: #666;" id="showFutureHost">Defina um novo anfitrião</a></h4>
+        <div id="formFutureHost" style="display: none;">
+            <input type="text" id="futureHost" class="input-block-level" /><br />
+            <div id="buttonFutureHost" style="display: none;">
+                <a class="btn btn-primary" data-toggle="modal" id="saveAddFutureHost">
+                    <i class="icon-plus"></i>
+                    Salvar
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<?}else{ ?>
+<div class="row-fluid">
+    <div class="span8">
+        <p style='font-size: 16px;'><?=$this->futureHost->name?></p>
+        <input type="hidden" value="<?=$this->futureHost->id?>" id="goal_future_host" class='cell_goal_future_host' />
+    </div>
+    <div class="span4">
+        <span class="avaliacao-star">
+            <a href="#um_host#<?=$this->futureHost->id?>" rel="tooltip" title="Comprometido com Deus, célula e igreja" id="um_host" class='um_host'>
+                <i id='um_host_star_<?=$this->futureHost->id?>' class="icon-star<?if(!$this->futureHost->um) echo '-empty';?>"></i>
+            </a>
+            <a href="#dois_host#<?=$this->futureHost->id?>" rel="tooltip" title="Hospitaleiro, 
+amável e generoso" id="dois_host" class='dois_host'>
+                <i id='dois_host_star_<?=$this->futureHost->id?>' class="icon-star<?if(!$this->futureHost->dois) echo '-empty';?>"></i>
+            </a>
+            <a href="#tres_host#<?=$this->futureHost->id?>" rel="tooltip" title="Aprovado pela família" id="tres_host" class='tres_host'>
+                <i id='tres_host_star_<?=$this->futureHost->id?>' class="icon-star<?if(!$this->futureHost->tres) echo '-empty';?>"></i>
+            </a>
+            <a href="#quatro_host#<?=$this->futureHost->id?>" rel="tooltip" title="Boa localização" id="quatro_host" class='quatro_host'>
+                <i id='quatro_host_star_<?=$this->futureHost->id?>' class="icon-star<?if(!$this->futureHost->quatro) echo '-empty';?>"></i>
+            </a>
+            <a href="#cinco_host#<?=$this->futureHost->id?>" rel="tooltip" title="Possuir espaço físico adequado" id="cinco_host" class='cinco_host'>
+                <i id='cinco_host_star_<?=$this->futureHost->id?>' class="icon-star<?if(!$this->futureHost->cinco) echo '-empty';?>"></i>
+            </a>
+        </span>
+    </div>
+</div>
+<?}?>
+
+<div id="buttonSaveFutureHost" style="display: none;">
+    <a class="btn btn-primary" data-toggle="modal" id="savefutureHost">
+        <i class="icon-plus"></i>
+        Salvar
+    </a>
+</div>

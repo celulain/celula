@@ -1,0 +1,110 @@
+<div class="span12">
+    <div class="tab-content">
+        <div class="tab-pane active" id="frequencia">
+            <div class="span12">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <? foreach($this->dates as $date){?>
+                            <th>
+                                <input type="text" id="" class="input-small datepicker" maxlength='10' value='<?=$date->date_formated?>' />
+                            </th>
+                            <?}?>
+                            <th>
+                                <a class="btn" data-toggle="modal" id="addDateMeeting">
+                                    <i class="icon-plus"></i>
+                                </a>
+                                <div class='formDateNewMeeting' style='display: none;'>
+                                    <input type="text" id="dateNewMeeting" class="input-small datepicker" maxlength='10' />
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="8"><h4>Membros IBC</h4></td>
+                        </tr>
+                        <? foreach($this->members as $member) { ?>
+			            <tr>
+			                <td><?=$member->name?></td>
+                            <td class="td-left"><?=$member->roleName?></td>
+                            <?foreach($this->frequency as $frequency){?>
+                                <?if(isset($frequency->presence_id) && $frequency->presence_id >= 1 && $frequency->user_id== $member->user_id){?>
+                                    <? foreach($this->dates as $date){ if($frequency->meeting_id == $date->meeting_id){?>
+                                     <td class="frequencia">
+                                        <input class="<?=$frequency->meeting_id?>" type="checkbox" checked="checked" id="<?=$frequency->meeting_id.'_'.$frequency->user_id?>" />
+                                    </td>
+                                    <?}}?>
+                                <?}elseif($frequency->user_id == $member->user_id){?>
+                                    <? foreach($this->dates as $date){ if($frequency->meeting_id == $date->meeting_id){?>
+                                    <td>
+                                        <input class="<?=$frequency->meeting_id?>" type="checkbox" id="<?=$frequency->meeting_id.'_'.$frequency->user_id?>" />
+                                    </td>
+                                    <?}}?>
+                                <?}?>
+                            <?}?>
+                            <td>
+                                <div class='formDateNewMeeting' style='display: none;'>
+                                    <input type="checkbox" />
+                                </div>
+                            </td>
+			            </tr>
+                        <?}?>
+                        <?if(count($this->visitants)){?>
+			            <tr>
+                          <td colspan="8"><h4>Não Membros</h4></td>
+                        </tr>
+                        <?}?>
+                        <? foreach($this->visitants as $visitants) { ?>
+                        <tr>
+                            <td><?=$visitants->name?></td>
+                            <td class="td-left"><?=$visitants->roleName?></td>
+                            <?foreach($this->frequency as $frequency){?>
+                                <?if(isset($frequency->presence_id) && $frequency->presence_id >= 1 && $frequency->user_id== $visitants->user_id){?>
+                                    <? foreach($this->dates as $date){ if($frequency->meeting_id == $date->meeting_id){?>
+                                     <td class="frequencia">
+                                        <input class="<?=$frequency->meeting_id?>" type="checkbox" checked="checked" id="<?=$frequency->meeting_id.'_'.$visitants->user_id?>" />
+                                    </td>
+                                    <?}}?>
+                                <?}elseif($frequency->user_id == $visitants->user_id){?>
+                                    <? foreach($this->dates as $date){ if($frequency->meeting_id == $date->meeting_id){?>
+                                    <td>
+                                        <input class="<?=$frequency->meeting_id?>" type="checkbox" id="<?=$frequency->meeting_id.'_'.$visitants->user_id?>" />
+                                    </td>
+                                    <?}}?>
+                                <?}?>
+                            <?}?>
+                            <td>
+                                <div class='formDateNewMeeting' style='display: none;'>
+                                    <input type="checkbox" />
+                                </div>
+                            </td>
+                        </tr>
+                        <?}?>
+                        <tr>
+                            <td colspan="2">&nbsp;</td>
+                             <? foreach($this->dates as $date){?>
+                            <td>
+                                <div class='formDateNewMeeting'>
+                                    <a class="btn btn-primary" href="#add_participante" data-toggle="modal">
+                                        Salvar
+                                    </a>
+                                </div>
+                            </td>
+                            <?}?>
+                            <td>
+                                <div class='formDateNewMeeting' style='display: none;'>
+                                    <a class="btn btn-primary" href="#add_participante" data-toggle="modal">
+                                        Salvar
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div><!--/.span12 -->
+        </div><!--/.tab-pane -->
+    </div><!--/.tab-content -->
+</div><!--/.span12 -->

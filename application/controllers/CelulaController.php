@@ -21,22 +21,16 @@ class CelulaController extends Zend_Controller_Action
 
     public function frequenciaAction()
     {
-        try{
     	$this->_helper->layout()->setLayout('layout');
     	$authNamespace = new Zend_Session_Namespace('userInformation');
         $cell = new Application_Model_Cell();
         $this->view->formNoteCell = new Application_Form_Addnotecell();
-     //    $this->view->membersRows = $cell->returnMembers($authNamespace->cell_id_leader);
-     //    $this->view->dateMeetings = $cell->dateMeeting($authNamespace->cell_id_leader);
-     //    $this->view->presenceMeeting = $cell->presenceMeeting($authNamespace->cell_id_leader);
-        // $this->view->goalParticipants = $cell->returnGoalParticipants($authNamespace->cell_id_leader);
-        // $this->view->actualParticipants = $cell->returnGoalActualParticipants($authNamespace->cell_id_leader);
         $this->view->dateMultiplication = $cell->viewDateMultiplication($authNamespace->cell_id_leader);
         $this->view->futureLeader = $cell->viewFutureLeader($authNamespace->cell_id_leader);
+        $this->view->futureHost = $cell->viewFutureHost($authNamespace->cell_id_leader);
+        $this->view->frequency = $cell->viewFrequency($authNamespace->cell_id_leader);
+        $this->view->participants = $cell->viewParticipants($authNamespace->cell_id_leader);
     	$this->view->cell_id = $authNamespace->cell_id_leader;
-    }catch(Zend_Exception $e){
-        echo $e->getMessage();
-    }
     }
 
     public function cadastroAction()

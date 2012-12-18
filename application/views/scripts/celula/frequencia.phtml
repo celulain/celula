@@ -9,88 +9,7 @@
         </div><!--/.row-fluid -->
             
         <div class="row-fluid">
-            <div class="span12">
-
-                <div class="tab-content">
-                    <div class="tab-pane active" id="frequencia">
-                        <div class="span12">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th class="th-left">Nome</th>
-                                        <th>29/11/2012</th>
-                                        <th>22/11/2012</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td colspan="8"><h4>Membros IBC</h4></td>
-                                    </tr>
-						            <tr>
-						                <td>Blá</td>
-                                        <td class="td-left">Líder</td>
-                                        <td class="frequencia">
-                                            <input type="checkbox" checked="checked" />
-                                        </td>
-                                        <td class="frequencia">
-                                            <input type="checkbox" checked="checked" />
-                                        </td>
-						            </tr>
-                                    <tr>
-                                        <td>Blo</td>
-                                        <td class="td-left">Lider em Treinamento</td>
-                                        <td class="frequencia">
-                                            <input type="checkbox" checked="checked" />
-                                        </td>
-                                        <td class="frequencia">
-                                            <input type="checkbox" checked="checked" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Blu</td>
-                                        <td class="td-left">Participante</td>
-                                        <td class="frequencia">
-                                            <input type="checkbox" checked="checked" />
-                                        </td>
-                                        <td class="frequencia">
-                                            <input type="checkbox" />
-                                        </td>
-                                    </tr>
-						            <tr>
-                                      <td colspan="8"><h4>Não Membros</h4></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Blabla</td>
-                                        <td class="td-left">Visitante</td>
-                                        <td class="frequencia">
-                                            <input type="checkbox"/>
-                                        </td>
-                                        <td class="frequencia">
-                                            <input type="checkbox" checked="checked"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">&nbsp;</td>
-                                        <td>
-                                            <a class="btn btn-primary" href="#add_participante" data-toggle="modal">
-                                                <i class="icon-plus"></i>
-                                                Reunião
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-primary" href="#add_participante" data-toggle="modal">
-                                                <i class="icon-plus"></i>
-                                                Reunião
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div><!--/.span12 -->
-                    </div><!--/.tab-pane -->
-                </div><!--/.tab-content -->
-            </div><!--/.span12 -->
+            <?=$this->frequency?>
         </div><!--/.row-fluid -->
     </div><!--/span8 -->
     
@@ -144,71 +63,19 @@
                 </div>
                 <div id="submeta4" class="accordion-body in collapse">
                     <div class="accordion-inner">
-                        <div class="row-fluid">
-                            <div class="span4">
-                                <div class="row-fluid">
-                                    <div class="span12">
-                                        Atual
-                                    </div>
-                                </div>
-                                <div class="row-fluid">
-                                    <div class="span12">
-                                        <strong>10</strong>
-                                    </div>
-                                </div>
-                                
-                            </div><!--/.span4 -->
-                            <div class="span4">
-                                <div class="row-fluid">
-                                    <div class="span12">
-                                        Alvo
-                                    </div>
-                                </div>
-                                <div class="row-fluid">
-                                    <div class="span12">
-                                        <strong>12</strong>
-                                    </div>
-                                </div>
-                                
-                            </div><!--/.span4 -->
-                            <div class="span4">
-                                <div class="row-fluid">
-                                    <div class="span12">
-                                        Faltam
-                                    </div>
-                                </div>
-                                <div class="row-fluid">
-                                    <div class="span12">
-                                        <strong>2</strong>
-                                    </div>
-                                </div>
-                                
-                            </div><!--/.span4 -->
-
-                        </div>
-
+                        <?=$this->participants?>
                     </div>
                 </div>
             </div><!--/.accordion-group -->
             <div class="accordion-group">
                 <div class="accordion-heading">
-                    <a href="#submeta5" class="accordion-toggle submetas-info" data-toggle="collapse" data-parent="#submetas">
+                    <a href="#submeta3" class="accordion-toggle submetas-info" data-toggle="collapse" data-parent="#submetas">
                         Novo Anfitrião
                     </a>
                 </div>
-                <div id="submeta5" class="accordion-body in collapse">
+                <div id="submeta3" class="accordion-body in collapse">
                     <div class="accordion-inner">
-                        <div class="row-fluid">
-                            <form action="">
-                                <div class="input-append">
-                                    <span class="input-large uneditable-input">
-                                        João Paulo Santos
-                                    </span><button class="btn"><i class="icon-pencil"></i></button>
-                                </div>
-                                
-                            </form>
-                        </div>
-                        
+                        <?=$this->futureHost?>
                     </div>
                 </div>
             </div><!--/.accordion-group -->
