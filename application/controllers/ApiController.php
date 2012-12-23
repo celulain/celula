@@ -174,6 +174,7 @@ class ApiController extends Zend_Controller_Action
      *
      *
      *
+     *
      */
     public function dateMultiplicationAction()
     {
@@ -195,6 +196,7 @@ class ApiController extends Zend_Controller_Action
      *   @return boolean
      *
      *
+     *
      */
     public function futureLeaderAction()
     {
@@ -212,6 +214,7 @@ class ApiController extends Zend_Controller_Action
      *   
      *   @access public
      *   @return boolean
+     *
      *
      *
      */
@@ -240,6 +243,7 @@ class ApiController extends Zend_Controller_Action
      *   @return boolean
      *
      *
+     *
      */
     public function saveFutureLeaderAction()
     {
@@ -257,6 +261,7 @@ class ApiController extends Zend_Controller_Action
      *   
      *   @access public
      *   @return boolean
+     *
      *
      *
      */
@@ -278,6 +283,7 @@ class ApiController extends Zend_Controller_Action
      *   @return boolean
      *
      *
+     *
      */
     public function futureHostAction()
     {
@@ -290,8 +296,30 @@ class ApiController extends Zend_Controller_Action
         }
     }
 
+    /**
+     *   Action responsable to insert a number of goal of participants.
+     *   
+     *   @access public
+     *   @return boolean
+     *
+     *
+     *
+     */
+    public function saveGoalParticipantsAction()
+    {
+        $this->_helper->layout()->setLayout('json');
+        if($this->getRequest()->isPost())
+        {
+            $data = $this->getRequest()->getPost();
+            $cell = new Application_Model_Cell();
+            echo $cell->saveGoalParticipants($data['cell_id'],$data['goalParticipants']);
+        }
+    }
+
 
 }
+
+
 
 
 

@@ -210,7 +210,9 @@ class Application_Model_Cell
 	{
 		$goalParticipants = new Application_Model_DbTable_CellGoalParticipants();
 		$goalParticipants = $goalParticipants->fetchRow($goalParticipants->select()->where("cell_id = ?",$cellId));
-		return $goalParticipants->participants;
+		if(count($goalParticipants))
+			return $goalParticipants->participants;
+		return 0;
 	}
 	
 	public function returnGoalActualParticipants($cellId)
@@ -658,8 +660,7 @@ class Application_Model_Cell
 	{
 		$registry = Zend_Registry::getInstance();
 		$view = $registry->get('view');
-        // $view->goalParticipants = $this->returnGoalParticipants($authNamespace->cell_id_leader);
-        $view->goalParticipants = 12;
+        $view->goalParticipants = $this->returnGoalParticipants($cellId);
         $view->actualParticipants = $this->returnGoalActualParticipants($cellId);
 		return $view->render('frequencia/participants.phtml');
 	}
@@ -674,6 +675,36 @@ class Application_Model_Cell
 		$view->visitants = $this->returnVisitantsFrequency($cellId);
 		$view->frequency = $this->returnFrequencyCell($cellId,$amountMeetings);
 		return $view->render('frequencia/frequency.phtml');
+	}
+
+	/**
+	*	Save a number of goal to participants.
+	*
+	*	@param $cellId
+	*	@param $numberGoalParticipants
+	*	@access public
+	*	@return integer
+	*/
+	public function saveGoalParticipants($cellId,$numberGoalParticipants)
+	{
+		$goalParticipants = new Application_Model_DbTable_CellGoalParticipants();
+		$goalParticipantsRow = $goalParticipants->fetchRow($goalParticipants->select()->where("cell_id = ?",$cellId));
+		if(count($goalParticipantsRow))
+		{
+			$goalParticipantsRow->participants = $numberGoalParticipants;
+			$goalParticipantsRow->date = new Zend_Db_Expr('NOW()');
+			$goalParticipantsRow->save();
+			return 1;
+		}
+		else
+		{
+			$newRow = $goalParticipants->createRow();
+			$newRow->cell_id = $cellId;
+			$newRow->participants = $numberGoalParticipants;
+			$newRow->date = new Zend_Db_Expr('NOW()');
+			$newRow->save();
+			return 1;
+		}
 	}
 }
 

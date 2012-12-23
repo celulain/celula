@@ -329,6 +329,31 @@ $('#saveAddFutureHost').click(function(){
 /** END Future Host **/
 
 
+/** Goal Participants **/
+$('#showGoalParticipants').click(function(){
+    $('#formGoalParticipants').show('slow');
+});
+
+$('#goalParticipants').keyup(function(){
+    $('#buttonSaveGoalParticipants').show();
+})
+
+$('#saveGoalParticipants').click(function(){
+    $.ajax({
+      url: '/api/save-goal-participants',
+      type: "post",
+      data: 'cell_id='+ $("#cell_id").val() +'&goalParticipants='+ $('#goalParticipants').val(),
+      success: function(data) {
+        console.log(data);
+        if(data == 1){
+            document.location.reload(true);
+        }
+      }
+    });
+});
+
+
+/** END Goal Participants**/
 
 /*** Frequency ***/
 

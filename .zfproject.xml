@@ -93,6 +93,7 @@
           <actionMethod actionName="saveFutureLeader"/>
           <actionMethod actionName="saveFutureHost"/>
           <actionMethod actionName="futureHost"/>
+          <actionMethod actionName="saveGoalParticipants"/>
         </controllerFile>
         <controllerFile controllerName="Password">
           <actionMethod actionName="index"/>
@@ -392,6 +393,9 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Api">
             <viewScriptFile forActionName="futureHost"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Api">
+            <viewScriptFile forActionName="saveGoalParticipants"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
