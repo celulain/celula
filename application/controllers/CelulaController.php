@@ -67,7 +67,6 @@ class CelulaController extends Zend_Controller_Action
     public function membrosAction()
     {
     	$this->_helper->layout()->setLayout('layout');
-    	try{
     	$authNamespace = new Zend_Session_Namespace('userInformation');
     	$cellClass = new Application_Model_Cell();
     	$newParticipantForm = new Application_Form_Participantes();
@@ -82,15 +81,6 @@ class CelulaController extends Zend_Controller_Action
     			$cellClass->saveMember($data,$data['user_id']);
     			$newParticipantForm->reset();
     		}
-    		else
-    		{
-    			if($newParticipantForm->isErrors())
-    			{
-    				echo "tem erros";
-    				print_r($newParticipantForm->getMessages());
-    				exit;
-    			}
-    		}
     	}
     	
     	$participantes = new Application_Model_Participantes();
@@ -101,10 +91,6 @@ class CelulaController extends Zend_Controller_Action
     	$this->view->cell_id = $authNamespace->cell_id_leader;
     	$this->view->membersRows = $members;
     	$this->view->participantesForm = $forms;
-    	}catch(Zend_Exception $e){
-    		echo $e->getMessage();
-    	}
-    	
     }
 
     public function perfilAction()
