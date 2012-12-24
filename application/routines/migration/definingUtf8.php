@@ -26,8 +26,8 @@ while($col = mysql_fetch_array($rs)){
 		WHERE 
 			user_id=".$col['user_id']."
 	";
-
-	echo $sql_update."\n";
+	mysql_query($sql_update);
+	// echo $sql_update."\n";
 }
 
 
@@ -51,7 +51,7 @@ while($col = mysql_fetch_array($rs_address)){
 		WHERE 
 			user_id=".$col['user_id']."
 	";
-
-	echo $sql_update."\n";
+	mysql_query($sql_update);
+	// echo $sql_update."\n";
 }
 ?>
