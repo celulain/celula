@@ -15,6 +15,6 @@ $sql = "
 ";
 $rs = mysql_query($sql);
 while($col = mysql_fetch_row($rs)){
-	echo $rs."\n";
+	echo $col['name']."\n";
 }
 ?>
