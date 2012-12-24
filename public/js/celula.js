@@ -12,8 +12,14 @@ function savePresence(meeting_id){
 
 $("#state").change(function(){
     $("#city").load('/admin/return-cities/state/'+this.value);
-})
+});
 
+$(document).ready(function() {
+    $("#cpf").mask("999.999.999-99");
+    $("#birthday").mask("99/99/9999");
+    $("#zipcode").mask("99999-999");
+    $("#phone").mask("(99) 9999-9999"); 
+});
 
 /** DatePicker Jquery UI DateMultiplication**/
 $("#showDateMultiplication").click(function(){
@@ -193,7 +199,7 @@ $('#futureLeader').keyup(function(){
             return ui.item.label;
         }
     });
-})
+});
 
 $('#saveAddFutureLeader').click(function(){
     $.ajax({
@@ -363,3 +369,26 @@ $('#addDateMeeting').click(function(){
 });
 
 /*** END Frequency ***/
+
+
+
+
+/*** Participants ***/
+
+$('#submitbuttonNewParticipant').click(function(){
+    alert('sd');
+});
+
+$('#name').keyup(function(){
+    // $('#submitbuttonNewParticipant').attr('disable',false);
+    $('#name').autocomplete({
+        source: "/api/getmember",
+        minLength: 3,
+        select: function (event, ui) {
+            $("#futureLeader").val(ui.item.label);
+            $("#idFutureLeader").val(ui.item.id);
+            return ui.item.label;
+        }
+    });
+});
+/*** END Participants ***/

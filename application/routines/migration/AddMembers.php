@@ -151,7 +151,7 @@ $sql_cell_leader = "
 	GROUP BY
 		m.CodMembro
 	ORDER BY
-		m.CodMembro ASC
+		m.CodMembro ASC;
 
 ";
 

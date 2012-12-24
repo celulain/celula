@@ -93,7 +93,7 @@ class Application_Form_Participantes extends Zend_Form
     	
     	$idUser = new Zend_Form_Element_Hidden("user_id");
     	
-    	$this->addElements(array($name, $nickname, $gender, $birthday, $baptized, $position, $idUser, $submit));
+    	$this->addElements(array($baptized, $name, $nickname, $gender, $birthday, $position, $idUser));
     }
     
     public function setUserId($userId){ $this->userId = $userId; }

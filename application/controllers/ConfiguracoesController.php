@@ -24,7 +24,8 @@ class ConfiguracoesController extends Zend_Controller_Action
         	$user_detailed_row->name = $data['name'];
         	$user_detailed_row->surname = $data['surname'];
         	$user_detailed_row->gender = $data['gender'];
-        	$user_detailed_row->birthday = $data['birthday'];
+            $birthday = explode('-',$data['birthday']);
+        	$user_detailed_row->birthday = $birthday[2].'/'.$birthday[1].'/'.$birthday[0];
         	$user_detailed_row->nickname = $data['nickname'];
         	$user_detailed_row->save();
         }
@@ -33,7 +34,8 @@ class ConfiguracoesController extends Zend_Controller_Action
         $this->view->surname = $row->surname;
         $this->view->gender = $row->gender;
         $this->view->nickname = $row->nickname;
-        $this->view->birthday = $row->birthday;
+        $birthday = explode('-',$row->birthday);
+        $this->view->birthday = $birthday[2].'/'.$birthday[1].'/'.$birthday[0];
     }
 
     public function enderecoAction()
@@ -49,7 +51,7 @@ class ConfiguracoesController extends Zend_Controller_Action
         	$user_row->apartament = $data['apartament'];
         	$user_row->district = $data['district'];
         	$user_row->city_id = $data['city_id'];
-        	$user_row->zip_code = $data['zip_code'];
+        	$user_row->zip_code = $data['zipcode'];
         	$user_row->save();
         }
         $this->view->address = $user_row->address;
