@@ -14,7 +14,7 @@ $sql = "
 		core_user
 ";
 $rs = mysql_query($sql);
-while($col = mysql_fetch_row($rs)){
+while($col = mysql_fetch_array($rs)){
 	echo $col['name']."\n";
 }
 ?>
