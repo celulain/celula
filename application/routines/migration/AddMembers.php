@@ -134,6 +134,7 @@ $sql_cell_leader = "
 	INSERT INTO
 		celula_ibcbh.cell_user
 	SELECT
+		NULL,
 		g.Codigo,
 		cm.user_id_antigo,
 		DATE(NOW()),
@@ -160,6 +161,7 @@ $sql_cell_member = "
 	INSERT INTO
 		celula_ibcbh.cell_user
 	SELECT 
+		NULL,
 		c.Celula,
 		cm.user_id_antigo,
 		DATE(NOW()),
@@ -175,7 +177,8 @@ $sql_cell_member = "
 		AND c.Tipo=1
 		AND cm.user_id_antigo NOT IN (SELECT user_id FROM celula_ibcbh.cell_user)
 	GROUP BY 
-		cm.user_id_antigo
+		c.Membro,
+		c.Celula
 
 ";
 

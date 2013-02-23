@@ -1,32 +1,48 @@
-<section class="access shadow">
-  <div class="content">
-    <h1 class="login-title">Sistema de Células</h1>
-    <form action="/auth/login" method="post">
-      <!-- <b>Mensagem de erro</b> -->
-      <div class=""></div>
-      <div class="field margin30">
-        
-        <input placeholder="Nome de usuário" id="login" name="login" size="30" title="Nome de usuário" type="text">
+<div class="masthead">
+        <h3 class="muted">Igreja Batista Central</h3>
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="container">
+              <ul class="nav">
+                <li class="active"><a href="#">Células</a></li>
+                <li><a href="http://ibcbh.com.br/Conteudos/Default.aspx?IdCanal=3&IdArea=3">A Igreja</a></li>
+                <li><a href="http://ibcbh.com.br/Conteudos/Default.aspx?IdCanal=4&IdArea=4">Células</a></li>
+                <li><a href="http://ibcbh.com.br/Conteudos/Default.aspx?IdCanal=5&IdArea=5">Ministérios</a></li>
+                <li><a href="http://ibcbh.com.br/Conteudos/Default.aspx?IdCanal=7&IdArea=7">CCM</a></li>
+                <li><a href="http://ibcbh.com.br/Conteudos/Default.aspx?IdCanal=6&IdArea=6">Missões</a></li>
+                <li><a href="http://ibcbh.com.br/Palavra/Default.aspx?IdCanal=8&IdArea=8">Palavra</a></li>
+              </ul>
+            </div>
+          </div>
+        </div><!-- /.navbar -->
       </div>
-      <div class="field margin20">
-        
-        <input placeholder="Senha" id="password" name="password" size="30" title="Senha" type="password">
-      </div>
-      <div class="field margin25">
-        <input class="btn btn-primary btn-login" name="" type="submit" value="Entrar">
-      </div>
-    </form>
-  </div>
-  
-  <div class="footer">
-    <p class="center">
-      <a href="/password/new">Esqueceu a senha?</a>
-       · 
-      <a href="/register">Não tenho cadastro <?php echo ( sizeof( $this->messages ) > 0 ) ? $this->messages[0] : ""; ?></a>
-    </p>
-    <p class="center">
-        <a href="/search">Procurando uma célula?</a>
-    </p>
-  </div>
 
-</section>
+      <!-- Jumbotron -->
+      <div class="jumbotron">
+        <h1>Sistema de Células</h1>
+        <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+        <a class="btn btn-large btn-success" href="/auth/login">Entrar</a>
+      </div>
+
+      <hr>
+
+      <!-- Example row of columns -->
+      <div class="row-fluid">
+        <div class="span4">
+          <h2>Notícia 1</h2>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn" href="#">veja mais &raquo;</a></p>
+        </div>
+        <div class="span4">
+          <h2>Notícia 2</h2>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn" href="#">veja mais &raquo;</a></p>
+       </div>
+        <div class="span4">
+          <h2>Notícia 3</h2>
+          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa.</p>
+          <p><a class="btn" href="#">veja mais &raquo;</a></p>
+        </div>
+      </div>
+
+      <hr>
