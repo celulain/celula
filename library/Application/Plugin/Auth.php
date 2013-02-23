@@ -52,10 +52,21 @@ class Application_Plugin_Auth extends Zend_Controller_Plugin_Abstract
     public function preDispatch(Zend_Controller_Request_Abstract $request)
     {
     	if(!$this->_isAuthorized($request->getControllerName(),$request->getActionName()))
-    	{
-    		header("Location: /error/notallowed");
-    		return;
-    	}
+        {
+            if(!isset($_SESSION['userInformation']))
+            {
+                $requestUri = Zend_Controller_Front::getInstance()->getRequest()->getRequestUri();
+                $session = new Zend_Session_Namespace('lastRequest');
+                $session->lastRequestUri = $requestUri;
+                header('Location: /auth/login');
+                exit;
+            }
+            else
+            {
+                header("Location: /auth/login");
+                return;
+            }
+        }
     }
 
     /**

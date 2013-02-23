@@ -11,7 +11,7 @@ $sql_migration = "
 		NULL,
 		m.CodMembro
 	FROM
-		celula_antigo.tblmembros m
+		celula_antigo_atualizado.tblmembros m
 	ORDER BY
 		m.CodMembro ASC;
 ";
@@ -27,7 +27,7 @@ $sql_membresia = "
 		m.Apelido,
 		m.DataNascMembro
 	FROM
-		celula_antigo.tblmembros m
+		celula_antigo_atualizado.tblmembros m
 	INNER JOIN
 		celula_migration.users_migration cm ON (cm.user_id_antigo=m.CodMembro)
 	ORDER BY
@@ -47,7 +47,7 @@ $sql_membresia_endereco = "
 		m.CepEndMembro,
 		m.FoneResMembro		
 	FROM
-		celula_antigo.tblmembros m
+		celula_antigo_atualizado.tblmembros m
 	INNER JOIN
 		celula_migration.users_migration cm ON (cm.user_id_antigo=m.CodMembro)
 	ORDER BY
@@ -67,7 +67,7 @@ $sql_membresia_informacoes_adicionais = "
 		m.DataBatismo,
 		m.EstadoCivilMembro		
 	FROM
-		celula_antigo.tblmembros m
+		celula_antigo_atualizado.tblmembros m
 	INNER JOIN
 		celula_migration.users_migration cm ON (cm.user_id_antigo=m.CodMembro)
 	ORDER BY
@@ -90,13 +90,13 @@ $sql_login = "
 		SHA1('ibcbh'),
 		u.usudatacadastro
 	FROM
-		celula_antigo.tblmembros m
+		celula_antigo_atualizado.tblmembros m
 	INNER JOIN
-		celula_antigo.tblgrupos g ON (g.Lider=m.CodMembro)
+		celula_antigo_atualizado.tblgrupos g ON (g.Lider=m.CodMembro)
 	INNER JOIN
-		celula_antigo.tblusuarioxcelula tl ON (tl.codcel=g.Codigo)
+		celula_antigo_atualizado.tblusuarioxcelula tl ON (tl.codcel=g.Codigo)
 	INNER JOIN 
-		celula_antigo.tblusuario u ON (tl.codusu=u.usucod)
+		celula_antigo_atualizado.tblusuario u ON (tl.codusu=u.usucod)
 	INNER JOIN
 		celula_migration.users_migration cm ON (cm.user_id_antigo=m.CodMembro)
 	WHERE
@@ -118,9 +118,9 @@ $sql_cell = "
 		IFNULL(g.DataCriacao,DATE(NOW())),
 		NULL
 	FROM
-		celula_antigo.tblmembros m
+		celula_antigo_atualizado.tblmembros m
 	INNER JOIN
-		celula_antigo.tblgrupos g ON (g.Lider=m.CodMembro)
+		celula_antigo_atualizado.tblgrupos g ON (g.Lider=m.CodMembro)
 	INNER JOIN
 		celula_migration.users_migration cm ON (cm.user_id_antigo=m.CodMembro)
 	GROUP BY
@@ -140,15 +140,17 @@ $sql_cell_leader = "
 		DATE(NOW()),
 		1
 	FROM
-		celula_antigo.tblmembros m
+		celula_antigo_atualizado.tblmembros m
 	INNER JOIN
-		celula_antigo.tblgrupos g ON (g.Lider=m.CodMembro)
+		celula_antigo_atualizado.tblgrupos g ON (g.Lider=m.CodMembro)
 	INNER JOIN
-		celula_antigo.tblusuarioxcelula tl ON (tl.codcel=g.Codigo)
+		celula_antigo_atualizado.tblusuarioxcelula tl ON (tl.codcel=g.Codigo)
 	INNER JOIN 
-		celula_antigo.tblusuario u ON (tl.codusu=u.usucod)
+		celula_antigo_atualizado.tblusuario u ON (tl.codusu=u.usucod)
 	INNER JOIN 
 		celula_migration.users_migration cm ON (cm.user_id_antigo=m.CodMembro)
+	WHERE
+		g.Codigo IN (SELECT cell_id FROM celula_ibcbh.cell)
 	GROUP BY
 		m.CodMembro
 	ORDER BY
@@ -167,15 +169,16 @@ $sql_cell_member = "
 		DATE(NOW()),
 		2
 	FROM  
-		celula_antigo.tblcellgradereuniao c
+		celula_antigo_atualizado.tblcellgradereuniao c
 	INNER JOIN
-		celula_antigo.tblmembros m ON (c.Membro=m.CodMembro)
+		celula_antigo_atualizado.tblmembros m ON (c.Membro=m.CodMembro)
 	INNER JOIN 
 		celula_migration.users_migration cm ON (cm.user_id_antigo=m.CodMembro)
 	WHERE 
 		1 #c.Celula=178
 		AND c.Tipo=1
 		AND cm.user_id_antigo NOT IN (SELECT user_id FROM celula_ibcbh.cell_user)
+		AND c.Celula IN (SELECT cell_id FROM celula_ibcbh.cell)
 	GROUP BY 
 		c.Membro,
 		c.Celula
@@ -185,7 +188,7 @@ $sql_cell_member = "
 $sql_cell_address = "
 
 	INSERT INTO
-		celula.cell_host
+		celula_ibcbh.cell_host
 	SELECT
 		g.Codigo,
 		CONVERT(g.Endereco USING utf8),
@@ -195,7 +198,7 @@ $sql_cell_address = "
 		2700,
 		g.Cep
 	FROM
-		celula_antigo.tblgrupos g
+		celula_antigo_atualizado.tblgrupos g
 	WHERE
 		g.codigo IN (SELECT cell_id FROM celula_ibcbh.cell)
 
@@ -211,7 +214,7 @@ $sql_cell_info = "
 		0,
 		g.Horarioentrada
 	FROM 
-		celula_antigo.tblgrupos g
+		celula_antigo_atualizado.tblgrupos g
 	WHERE
 		g.codigo IN (SELECT cell_id FROM celula_ibcbh.cell)
 ";
