@@ -175,6 +175,7 @@ class ApiController extends Zend_Controller_Action
      *
      *
      *
+     *
      */
     public function dateMultiplicationAction()
     {
@@ -197,6 +198,7 @@ class ApiController extends Zend_Controller_Action
      *
      *
      *
+     *
      */
     public function futureLeaderAction()
     {
@@ -214,6 +216,7 @@ class ApiController extends Zend_Controller_Action
      *   
      *   @access public
      *   @return boolean
+     *
      *
      *
      *
@@ -244,6 +247,7 @@ class ApiController extends Zend_Controller_Action
      *
      *
      *
+     *
      */
     public function saveFutureLeaderAction()
     {
@@ -261,6 +265,7 @@ class ApiController extends Zend_Controller_Action
      *   
      *   @access public
      *   @return boolean
+     *
      *
      *
      *
@@ -284,6 +289,7 @@ class ApiController extends Zend_Controller_Action
      *
      *
      *
+     *
      */
     public function futureHostAction()
     {
@@ -304,6 +310,7 @@ class ApiController extends Zend_Controller_Action
      *
      *
      *
+     *
      */
     public function saveGoalParticipantsAction()
     {
@@ -316,6 +323,21 @@ class ApiController extends Zend_Controller_Action
         }
     }
 
+    public function removeParticipantCellAction()
+    {
+        // remove-participant-cell
+        $this->_helper->layout()->setLayout('json');
+        if($this->getRequest()->isPost())
+        {
+            $data = $this->getRequest()->getPost();
+            $cell = new Application_Model_Cell();
+            echo $cell->removeParticipant($data['cell_id'],$data['user_id']);
+        }
+        return 0;
+    }
+
 
 }
+
+
 

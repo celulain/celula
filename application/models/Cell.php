@@ -5,10 +5,17 @@ class Application_Model_Cell
 
 	public function saveMember($data,$userId=0)
 	{
-		$userId = $this->saveUserDetailed($data,$userId);
-		$this->saveUserAddress($data,$userId);
-		$this->saveUserInformation($data,$userId);
-		$this->saveCellUser($data,$userId);
+		if($userId != 0)
+		{
+			$this->saveCellUser($data,$userId);
+		}
+		else
+		{
+			$userId = $this->saveUserDetailed($data,$userId);
+			$this->saveUserAddress($data,$userId);
+			$this->saveUserInformation($data,$userId);
+			$this->saveCellUser($data,$userId);
+		}
 		return $userId;
 	}
 	
@@ -544,7 +551,7 @@ class Application_Model_Cell
 				->joinInner(array('uf' => 'core_user_information'),'uf.user_id=cu.user_id',array())
 				->joinInner(array('cr' => 'cell_role'),'cu.role_id=cr.role_id',array('roleName' => 'name'))
 				->where('cu.cell_id = ?', $cellId)
-				->where('uf.type = 1');
+				->where('cu.role_id != ?', 3);
 		return $cell->fetchAll($select);
 	}
 
@@ -557,7 +564,7 @@ class Application_Model_Cell
 				->joinInner(array('uf' => 'core_user_information'),'uf.user_id=cu.user_id',array())
 				->joinInner(array('cr' => 'cell_role'),'cu.role_id=cr.role_id',array('roleName' => 'name'))
 				->where('cu.cell_id = ?', $cellId)
-				->where('uf.type = ?', 2);
+				->where('cu.role_id = ?', 3);
 		return $cell->fetchAll($select);
 	}
 
@@ -705,6 +712,18 @@ class Application_Model_Cell
 			$newRow->save();
 			return 1;
 		}
+	}
+
+	public function removeParticipant($cellId,$userId)
+	{
+		$cell = new Application_Model_DbTable_CellUser();
+		$cellRow = $cell->fetchRow($cell->select()->where("cell_id = ?",$cellId)->where("user_id = ?",$userId));
+		if(count($cellRow))
+		{
+			$cellRow->delete();
+			return 1;
+		}
+		return 0;
 	}
 }
 

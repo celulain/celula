@@ -375,20 +375,88 @@ $('#addDateMeeting').click(function(){
 
 /*** Participants ***/
 
+function saveParticipant(){
+    $.ajax({
+      url: '/api/save-participant',
+      type: "post",
+      data: 'cell_id='+ $("#cell_id").val() +'&goalParticipants='+ $('#goalParticipants').val(),
+      success: function(data) {
+        console.log(data);
+        if(data == 1){
+            document.location.reload(true);
+        }
+      }
+    });
+}
+
 $('#submitbuttonNewParticipant').click(function(){
-    alert('sd');
+    if(checkParticipantData()){
+        $('.form-horizontal').submit();
+    }
+    else{
+        alert('faltam dados');
+    }
 });
 
 $('#name').keyup(function(){
-    // $('#submitbuttonNewParticipant').attr('disable',false);
-    $('#name').autocomplete({
-        source: "/api/getmember",
-        minLength: 3,
-        select: function (event, ui) {
-            $("#futureLeader").val(ui.item.label);
-            $("#idFutureLeader").val(ui.item.id);
-            return ui.item.label;
-        }
-    });
+    if($('#baptized-1').attr("checked") == "checked"){
+        $('#name').autocomplete({
+            source: "/api/getmember",
+            minLength: 3,
+            select: function (event, ui) {
+                $("#user_id").val(ui.item.id);
+                $("#name").prop('disabled', true);
+                $("#nickname").prop('disabled', true);
+                $("#birthday").prop('disabled', true);
+                $('input[name=gender]').attr('disabled','disabled');
+                return ui.item.label;
+            }
+        });
+    }
 });
+
+
+$("input[name='baptized']").change(function(){
+    $("#name").prop('disabled', false);
+    $("#nickname").prop('disabled', false);
+    $("#birthday").prop('disabled', false);
+    $("#user_id").val(0);
+    $("#name").val('');
+    $('input[name=gender]').val('');
+    $('input[name=gender]:checked').length = 0;
+    $('input[name=gender]').prop('disabled', false);
+});
+
+$("input[name='position']").change(function(){
+    checkParticipantData();
+});
+
+$("input[name='gender']").change(function(){
+    checkParticipantData();
+});
+
+
+function checkParticipantData(){
+    if($("#name").val() != '' && $('input[name=position]:checked').length != 0 && $('input[name=gender]:checked').length != 0 && $('input[name=baptized]:checked').length != 0){
+        $('#submitbuttonNewParticipant').prop('disabled', false);
+        return true;
+    }
+    else{
+        $('#submitbuttonNewParticipant').prop('disabled', true);
+        return false;
+    }
+}
+
+function removeParticipant(user_id){
+    $.ajax({
+      url: '/api/remove-participant-cell',
+      type: "post",
+      data: 'cell_id='+ $("#cell_id").val() +'&user_id='+user_id,
+      success: function(data) {
+        if(data == 1){
+            document.location.reload(true);
+        }
+      }
+    });
+}
 /*** END Participants ***/

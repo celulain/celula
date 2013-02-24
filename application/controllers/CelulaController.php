@@ -36,7 +36,6 @@ class CelulaController extends Zend_Controller_Action
     public function cadastroAction()
     {
     	$this->_helper->layout()->setLayout('layout');
-    	try{
     	$authNamespace = new Zend_Session_Namespace('userInformation');
 		$cellHost = new Application_Model_DbTable_CellHost();
 		$cell = new Application_Model_Cell();
@@ -58,10 +57,6 @@ class CelulaController extends Zend_Controller_Action
 						);
 		$cellProfileForm->populate($values);
 		$this->view->cellProfileForm = $cellProfileForm;
-    	}catch(Zend_Exception $e){
-    		echo $e->getMessage();
-    	}
-       
     }
 
     public function membrosAction()
@@ -74,13 +69,13 @@ class CelulaController extends Zend_Controller_Action
     	if($this->getRequest()->isPost())
     	{
     		$data = $this->getRequest()->getPost();
-    		if($newParticipantForm->isValid($data))
-    		{
+            if(isset($data['birthday']) && $data['birthday'] != '')
+            {
                 $flag = explode('/',$data['birthday']);
                 $data['birthday'] = $flag[2].'-'.$flag[1].'-'.$flag[0];
-    			$cellClass->saveMember($data,$data['user_id']);
-    			$newParticipantForm->reset();
-    		}
+            }
+			$cellClass->saveMember($data,$data['user_id']);
+			$newParticipantForm->reset();
     	}
     	
     	$participantes = new Application_Model_Participantes();
