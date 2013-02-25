@@ -66,7 +66,7 @@ class Application_Form_CellProfile extends Zend_Form
     	$city		->setLabel('Cidade:')
 			    	->setRequired(true)
 			    	->addMultiOptions(array(
-			    			'1' => 'Belo horizonte',
+			    			'1' => 'Belo Horizonte',
 			    			'2' => 'Contagem'))
 			    	->setSeparator('')
                     ->addDecorators(array(
