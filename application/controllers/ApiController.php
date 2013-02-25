@@ -31,7 +31,7 @@ class ApiController extends Zend_Controller_Action
         $user = new Application_Model_DbTable_CoreUser();
         $select = $user->select()->setIntegrityCheck(false);
         $select ->from(array('u' => 'core_user'), array('id' => 'user_id','label' => 'CONCAT(name," ",surname)'))
-                ->where('u.name LIKE ?', '%'.utf8_encode($search).'%')
+                ->where('CONCAT(u.name," ",u.surname) LIKE ?', '%'.$search.'%')
                 ->limit(8);
         $rs = $user->fetchAll($select);   
         $aux = $rs->toArray();  
