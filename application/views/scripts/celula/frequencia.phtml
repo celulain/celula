@@ -39,7 +39,7 @@
                 </div>
                 <div id="submeta2" class="accordion-body in collapse">
                     <div class="accordion-inner">
-                        <input class="span12" type="range">
+                        Ainda não há dados suficientes.
                     </div>
                 </div>
             </div><!--/.accordion-group -->
@@ -88,7 +88,15 @@
 <div class="modal hide" id="add_participante">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">×</button>
-        <h3>Salvar</h3>
+        <h3>Salvar</h3><br />
+        <div class="alert alert-error hide" id="alertErrorDate">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>Ops!</strong> Adicione uma data para reunião.
+        </div>
+        <div class="alert alert-error hide" id="alertErrorData">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>Ops!</strong> Preencha os dados corretos da reunião.
+        </div>
     </div>
     <div class="modal-body">
         <?=$this->formNoteCell?>

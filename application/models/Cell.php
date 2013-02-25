@@ -5,7 +5,7 @@ class Application_Model_Cell
 
 	public function saveMember($data,$userId=0)
 	{
-		if($userId != 0)
+		if($userId != 0 && !isset($data['name']))
 		{
 			$this->saveCellUser($data,$userId);
 		}
@@ -358,6 +358,18 @@ class Application_Model_Cell
 		$multiplication = strtotime($multiplicationDate);
 		$datediff = $now - $multiplication;
 		return (floor($datediff/648000)*-1);
+	}
+
+	public function profileCellHour($data,$cellId)
+	{
+		$cellDetailed = new Application_Model_DbTable_CellDetailed();
+		$cellDetailedRow = $cellDetailed->fetchRow($cellDetailed->select()->where("cell_id = ?",$cellId));
+		if(count($cellDetailedRow))
+		{
+			$cellDetailedRow->week_day_id = $data['dayWeek'];
+			$cellDetailedRow->hour_start = $data['hourStart'].'00';
+			$cellDetailedRow->save();
+		}
 	}
 	
 	public function profileCell($data,$cellId)
@@ -724,6 +736,41 @@ class Application_Model_Cell
 			return 1;
 		}
 		return 0;
+	}
+
+	public function saveNewMeeting($data,$cellId)
+	{
+		$cellMeeting = new Application_Model_DbTable_CellMeeting();
+		$cellMeetingNew = $cellMeeting->createRow();
+		$cellMeetingNew->cell_id = $cellId;
+		$cellMeetingNew->host_id = 1;
+		$cellMeetingNew->lesson = $data['licao'];
+		$cellMeetingNew->altar_boy = $data['ministrante'];
+		$cellMeetingNew->events = $data['acontecimentos'];
+		$dateMeeting = explode('/',$data['dateMeeting']);
+		$cellMeetingNew->date = $dateMeeting[2] . '-' . $dateMeeting[1] . '-' . $dateMeeting[0];
+		$cellMeetindId = $cellMeetingNew->save();
+		$this->saveNewMeetingPresence($data,$cellId,$cellMeetindId);
+	}
+
+	protected function saveNewMeetingPresence($data,$cellId,$meetingId)
+	{
+		$presences = explode('*',$data['presenceMeeting']);
+		foreach($presences as $presenceMeeting)
+		{
+			$meeting = explode('||',$presenceMeeting);
+			if($meeting[0] == 'true')
+			{
+				$cellMeetingPresence = new Application_Model_DbTable_CellMeetingPresence();
+				$cellMeeting = $cellMeetingPresence->createRow();
+				$cellMeeting->meeting_id = $meetingId;
+				$aux = explode('_',$meeting[1]);
+				$cellMeeting->user_id = $aux[1];
+				$cellMeeting->save();
+				unset($cellMeeting);
+				unset($cellMeetingPresence);
+			}
+		}
 	}
 }
 

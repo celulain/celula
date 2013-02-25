@@ -13,7 +13,7 @@
                             </th>
                             <?}?>
                             <th>
-                                <a class="btn" data-toggle="modal" id="addDateMeeting">
+                                <a class="btn" data-toggle="modal" id="addDateMeeting" rel="tooltip" title="Adicionar reunião">
                                     <i class="icon-plus"></i>
                                 </a>
                                 <div class='formDateNewMeeting' style='display: none;'>
@@ -47,7 +47,7 @@
                             <?}?>
                             <td>
                                 <div class='formDateNewMeeting' style='display: none;'>
-                                    <input type="checkbox" />
+                                    <input type="checkbox" class="checkNewPresence" name="presenceNewMeeting_<?=$member->user_id?>" id="presenceNewMeeting_<?=$member->user_id?>" />
                                 </div>
                             </td>
 			            </tr>
@@ -78,7 +78,7 @@
                             <?}?>
                             <td>
                                 <div class='formDateNewMeeting' style='display: none;'>
-                                    <input type="checkbox" />
+                                    <input type="checkbox" class="checkNewPresence" name="presenceNewMeeting_<?=$member->user_id?>" id="presenceNewMeeting_<?=$visitants->user_id?>" />
                                 </div>
                             </td>
                         </tr>
@@ -87,11 +87,11 @@
                             <td colspan="2">&nbsp;</td>
                              <? foreach($this->dates as $date){?>
                             <td>
-                                <div class='formDateNewMeeting'>
+                                <!-- <div class='formDateNewMeeting'>
                                     <a class="btn btn-primary" href="#add_participante" data-toggle="modal">
-                                        Salvar
+                                        Alterar
                                     </a>
-                                </div>
+                                </div> -->
                             </td>
                             <?}?>
                             <td>

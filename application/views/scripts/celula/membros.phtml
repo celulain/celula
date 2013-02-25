@@ -72,7 +72,7 @@
     <button type="button" class="close" data-dismiss="modal">×</button>
     <h3><?=$formul->getUserName()?></h3>
     <div style='text-align: right;'>
-        <input type="submit" name="submit" id="submitbutton" value="Salvar" class="btn btn-success">
+        <input onclick='editMember(<?=$formul->getUserId()?>);' type="submit" name="submit" id="submitbutton" value="Salvar" class="btn btn-success">
     </div>
   </div>
   <div class="modal-body">

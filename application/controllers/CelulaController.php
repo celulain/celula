@@ -24,6 +24,11 @@ class CelulaController extends Zend_Controller_Action
     	$this->_helper->layout()->setLayout('layout');
     	$authNamespace = new Zend_Session_Namespace('userInformation');
         $cell = new Application_Model_Cell();
+        if($this->getRequest()->isPost())
+        {
+            $data = $this->getRequest()->getPost();
+            $cell->saveNewMeeting($data,$authNamespace->cell_id_leader);
+        }
         $this->view->formNoteCell = new Application_Form_Addnotecell();
         $this->view->dateMultiplication = $cell->viewDateMultiplication($authNamespace->cell_id_leader);
         $this->view->futureLeader = $cell->viewFutureLeader($authNamespace->cell_id_leader);
@@ -43,7 +48,14 @@ class CelulaController extends Zend_Controller_Action
 		if($this->getRequest()->isPost())
 		{
 			$data = $this->getRequest()->getPost();
-			$cell->profileCell($data,$authNamespace->cell_id_leader);
+            if(isset($data['dayWeek']))
+            {
+                $cell->profileCellHour($data,$authNamespace->cell_id_leader);
+            }
+            else
+            {
+                $cell->profileCell($data,$authNamespace->cell_id_leader);
+            }
 		}
 		$cellHost = $cellHost->fetchRow($cellHost->select()->where("cell_id = ?",$authNamespace->cell_id_leader));
 		$values = array	(
@@ -57,6 +69,8 @@ class CelulaController extends Zend_Controller_Action
 						);
 		$cellProfileForm->populate($values);
 		$this->view->cellProfileForm = $cellProfileForm;
+        $cellDetailed = new Application_Model_DbTable_CellDetailed();
+        $this->view->cellDetailed = $cellDetailed->fetchRow($cellDetailed->select()->where("cell_id = ?",$authNamespace->cell_id_leader));
     }
 
     public function membrosAction()
@@ -90,7 +104,8 @@ class CelulaController extends Zend_Controller_Action
 
     public function perfilAction()
     {
-        // action body
+        $cellDetailed = new Application_Model_DbTable_CellDetailed();
+        $this->view->cellDetailed = $cellDetailed->fetchRow($cellDetailed->select()->where("cell_id = ?",$authNamespace->cell_id_leader));
     }
 
     public function readAction()

@@ -33,14 +33,28 @@ class Application_Form_Addnotecell extends Zend_Form
 				    	->addFilter('StringTrim')
 				    	->addValidator('NotEmpty')
 				    	->setDecorators(array($textDecorator));
+
+        // $range = new Zend_Form_Element_Range('range');
+        // $range
+        //     ->setLabel('Minimum and Maximum Amount')
+        //     ->setAttributes(array(
+        //         'min'  => '0',   // default minimum is 0
+        //         'max'  => '100', // default maximum is 100
+        //         'step' => '1',   // default interval is 1
+        //     ));
+        //     <div class="accordion-inner">
+        //     <input class="span12" type="range">
+        // </div>
     	 
+        $presence = new Zend_Form_Element_Hidden("presenceMeeting");
+        $date = new Zend_Form_Element_Hidden("dateMeeting");
     				
     	$submit = new Zend_Form_Element_Submit('button');
     	$submit	->setLabel('Salvar')
     			->setAttrib('id', 'submitbutton')
                 ->setAttrib('class', 'btn btn-primary');
     	
-    	$this->addElements(array($licao, $ministrante, $acontecimentos,  $submit));
+    	$this->addElements(array($licao, $ministrante, $acontecimentos, $presence, $date, $submit));
     }
 
 

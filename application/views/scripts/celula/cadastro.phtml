@@ -6,22 +6,23 @@
             <div class="control-group">
                 <label class="control-label" for="input01">Dia da semana</label>
                 <div class="controls">
-                    <select class="span2" name="" id="">
-                        <option value="1">Segunda-feira</option>
-                        <option value="2">Terça-feira</option>
-                        <option value="3">Quarta-feira</option>
-                        <option value="4">Quinta-feira</option>
-                        <option value="5">Sexta-feira</option>
-                        <option value="6">Sábado</option>
+                    <select class="span2" name="dayWeek" id="dayWeek">
+                        <option value="2" <?if($this->cellDetailed->week_day_id == 2) echo 'selected="seleted"';?>>Segunda-feira</option>
+                        <option value="3" <?if($this->cellDetailed->week_day_id == 3) echo 'selected="seleted"';?>>Terça-feira</option>
+                        <option value="4" <?if($this->cellDetailed->week_day_id == 4) echo 'selected="seleted"';?>>Quarta-feira</option>
+                        <option value="5" <?if($this->cellDetailed->week_day_id == 5) echo 'selected="seleted"';?>>Quinta-feira</option>
+                        <option value="6" <?if($this->cellDetailed->week_day_id == 6) echo 'selected="seleted"';?>>Sexta-feira</option>
+                        <option value="7" <?if($this->cellDetailed->week_day_id == 7) echo 'selected="seleted"';?>>Sábado</option>
                     </select>
                 </div><!--/.controls -->
             </div><!--/.control-group -->
             <div class="control-group">
                 <label class="control-label" for="input01">Hora início</label>
                 <div class="controls">
-                    <input type="text" class="span1" id="input01" placeholder="hh:mm" value="">
+                    <input type="text" class="span1" name="hourStart" placeholder="hh:mm" value="<?=substr($this->cellDetailed->hour_start, 0, -3);?>" maxlength="5">
                 </div><!--/.controls -->
             </div><!--/.control-group -->
+            <div class="form-actions"><button type="submit" class="btn btn-primary" id="submitbutton" name="submit">Salvar</button></div>
         </fieldset>
     </form>
 </div><!--/.row-fluid -->

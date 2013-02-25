@@ -167,6 +167,7 @@
           <dbTableFile dbTableName="CoreSuggestions"/>
           <dbTableFile dbTableName="CellGoalFutureLeader"/>
           <dbTableFile dbTableName="CellGoalFutureHost"/>
+          <dbTableFile dbTableName="CellDetailed"/>
         </dbTableDirectory>
         <modelFile modelName="Cell"/>
         <modelFile modelName="Participantes"/>

@@ -24,8 +24,8 @@ class ConfiguracoesController extends Zend_Controller_Action
         	$user_detailed_row->name = $data['name'];
         	$user_detailed_row->surname = $data['surname'];
         	$user_detailed_row->gender = $data['gender'];
-            $birthday = explode('-',$data['birthday']);
-        	$user_detailed_row->birthday = $birthday[2].'/'.$birthday[1].'/'.$birthday[0];
+            $birthday = explode('/',$data['birthday']);
+        	$user_detailed_row->birthday = $birthday[2].'-'.$birthday[1].'-'.$birthday[0];
         	$user_detailed_row->nickname = $data['nickname'];
         	$user_detailed_row->save();
         }
@@ -67,19 +67,27 @@ class ConfiguracoesController extends Zend_Controller_Action
     	$authNamespace = new Zend_Session_Namespace('userInformation');
     	$userAddress = new Application_Model_DbTable_CoreUserAddress();
     	$user_row = $userAddress->fetchRow($userAddress->select()->where("user_id = ?",$authNamespace->user_id));
-    	if($this->getRequest()->isPost())
+        $userSystem = new Application_Model_DbTable_CoreUserSystem();
+        $userSystem_row = $userSystem->fetchRow($userSystem->select()->where("user_id = ?",$authNamespace->user_id));
+    	if($this->getRequest()->isPost() && count($user_row))
         {
         	$data = $this->getRequest()->getPost();
         	$user_row->phone = $data['phone'];
         	$user_row->save();
+            if(count($userSystem_row))
+            {
+                $userSystem_row->email = $data['email'];
+                $userSystem_row->save();
+            }
         }
         $this->view->phone = $user_row->phone;
+        $this->view->email = $userSystem_row->email;
     }
 
     public function senhaAction()
     {
         $authNamespace = new Zend_Session_Namespace('userInformation');
-        $user = new Application_Model_DbTable_CoreUser();
+        $user = new Application_Model_DbTable_CoreUserSystem();
         if($this->getRequest()->isPost())
         {
         	$data = $this->getRequest()->getPost();

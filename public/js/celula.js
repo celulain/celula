@@ -398,6 +398,10 @@ $('#submitbuttonNewParticipant').click(function(){
     }
 });
 
+function editMember(user_id){
+    document.forms["participant" + user_id].submit();
+}
+
 $('#name').keyup(function(){
     if($('#baptized-1').attr("checked") == "checked"){
         $('#name').autocomplete({
@@ -460,3 +464,45 @@ function removeParticipant(user_id){
     });
 }
 /*** END Participants ***/
+
+
+
+
+/*** FREQUENCIA ***/
+
+$('#addDateMeeting').tooltip();
+
+$('#submitbutton').click(function(){
+    console.log('1');
+    var date = $('#dateNewMeeting').val();
+    console.log('2');
+    var presence = '';
+    $(".checkNewPresence").each(function () {
+        presence += this.checked + '||' + this.id + '*';
+    });
+    console.log('3');
+    var licao = $('#licao').val();
+    var ministrante = $('#ministrante').val();
+    var acontecimentos = $('#acontecimentos').val();
+    console.log('4');
+    if(presence != '' && date != '' && licao != '' && ministrante != ''){
+        $('#presenceMeeting').val(presence);
+        $('#dateMeeting').val(date);
+        document.form.submit();
+    }
+    else{
+        console.log('5');
+        if(date == ''){
+            $("#alertErrorDate").show();
+            
+        }
+        else if(licao == '' || ministrante == ''){
+            $("#alertErrorData").show();
+        }
+        console.log('6');
+    }
+
+    return false;
+});
+
+/*** END FREQUENCIA ***/
