@@ -26,6 +26,7 @@ class ApiController extends Zend_Controller_Action
     public function getmemberAction()
     {
         $this->_helper->layout()->setLayout('json');
+	mysql_connect('localhost','root','[=celula]mysql');
         $search = mysql_real_escape_string($_GET['term']);
         $user = new Application_Model_DbTable_CoreUser();
         $select = $user->select()->setIntegrityCheck(false);
