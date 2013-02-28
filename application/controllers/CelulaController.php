@@ -5,13 +5,7 @@ class CelulaController extends Zend_Controller_Action
 
     public function init()
     {
-    	
-    	$contextSwitch = $this->_helper->getHelper('contextSwitch');
-    	$contextSwitch->addActionContexts(array(
-    			'save'=> 'json',
-    			'read'=> 'json'
-    			))
-    			->initContext();
+
     }
 
     public function indexAction()
@@ -36,6 +30,7 @@ class CelulaController extends Zend_Controller_Action
         $this->view->frequency = $cell->viewFrequency($authNamespace->cell_id_leader);
         $this->view->participants = $cell->viewParticipants($authNamespace->cell_id_leader);
     	$this->view->cell_id = $authNamespace->cell_id_leader;
+        $this->view->lastMeetings = $cell->lastMeetings($authNamespace->cell_id_leader);
     }
 
     public function cadastroAction()
@@ -118,8 +113,22 @@ class CelulaController extends Zend_Controller_Action
         $this->_helper->layout()->setLayout('json');
     }
 
+    public function editAction()
+    {
+        if($this->getRequest()->isPost())
+        {
+            $authNamespace = new Zend_Session_Namespace('userInformation');
+            $data = $this->getRequest()->getPost();
+            $cell = new Application_Model_Meeting();
+            $cell->editMeeting($data,$authNamespace->cell_id_leader);
+        }
+        $this->_redirect('/celula/frequencia');
+    }
+
 
 }
+
+
 
 
 

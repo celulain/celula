@@ -23,6 +23,7 @@
           <actionMethod actionName="perfil"/>
           <actionMethod actionName="read"/>
           <actionMethod actionName="save"/>
+          <actionMethod actionName="edit"/>
         </controllerFile>
         <controllerFile controllerName="Admin">
           <actionMethod actionName="index"/>
@@ -401,6 +402,9 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Api">
             <viewScriptFile forActionName="removeParticipantCell"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Celula">
+            <viewScriptFile forActionName="edit"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

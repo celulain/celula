@@ -7,11 +7,6 @@
                         <tr>
                             <th></th>
                             <th></th>
-                            <? foreach($this->dates as $date){?>
-                            <th>
-                                <input type="text" id="" class="input-small datepicker" maxlength='10' value='<?=$date->date_formated?>' />
-                            </th>
-                            <?}?>
                             <th>
                                 <a class="btn" data-toggle="modal" id="addDateMeeting" rel="tooltip" title="Adicionar reunião">
                                     <i class="icon-plus"></i>
@@ -19,6 +14,16 @@
                                 <div class='formDateNewMeeting' style='display: none;'>
                                     <input type="text" id="dateNewMeeting" class="input-small datepicker" maxlength='10' />
                                 </div>
+                            </th>
+                            <? foreach($this->dates as $date){?>
+                            <th>
+                                <input type="text" id="date_meeting_<?=$date->meeting_id?>" class="input-small datepicker" maxlength='10' value='<?=$date->date_formated?>' />
+                            </th>
+                            <?}?>
+                            <th>
+                                <a class="btn" data-toggle="modal" id="showMoreMeeting" rel="tooltip" title="Mostrar reuniões mais antigas">
+                                    <i class="icon-forward"></i>
+                                </a>
                             </th>
                         </tr>
                     </thead>
@@ -30,6 +35,11 @@
 			            <tr>
 			                <td class="td-left"><?=$member->name?></td>
                             <td class="td-left"><?=$member->roleName?></td>
+                            <td>
+                                <div class='formDateNewMeeting' style='display: none;'>
+                                    <input type="checkbox" class="checkNewPresence" name="presenceNewMeeting_<?=$member->user_id?>" id="presenceNewMeeting_<?=$member->user_id?>" />
+                                </div>
+                            </td>
                             <?foreach($this->frequency as $frequency){?>
                                 <?if(isset($frequency->presence_id) && $frequency->presence_id >= 1 && $frequency->user_id== $member->user_id){?>
                                     <? foreach($this->dates as $date){ if($frequency->meeting_id == $date->meeting_id){?>
@@ -46,9 +56,7 @@
                                 <?}?>
                             <?}?>
                             <td>
-                                <div class='formDateNewMeeting' style='display: none;'>
-                                    <input type="checkbox" class="checkNewPresence" name="presenceNewMeeting_<?=$member->user_id?>" id="presenceNewMeeting_<?=$member->user_id?>" />
-                                </div>
+                                &nbsp;
                             </td>
 			            </tr>
                         <?}?>
@@ -61,6 +69,11 @@
                         <tr>
                             <td class="td-left"><?=$visitants->name?></td>
                             <td class="td-left"><?=$visitants->roleName?></td>
+                            <td>
+                                <div class='formDateNewMeeting' style='display: none;'>
+                                    <input type="checkbox" class="checkNewPresence" name="presenceNewMeeting_<?=$member->user_id?>" id="presenceNewMeeting_<?=$visitants->user_id?>" />
+                                </div>
+                            </td>
                             <?foreach($this->frequency as $frequency){?>
                                 <?if(isset($frequency->presence_id) && $frequency->presence_id >= 1 && $frequency->user_id== $visitants->user_id){?>
                                     <? foreach($this->dates as $date){ if($frequency->meeting_id == $date->meeting_id){?>
@@ -77,29 +90,30 @@
                                 <?}?>
                             <?}?>
                             <td>
-                                <div class='formDateNewMeeting' style='display: none;'>
-                                    <input type="checkbox" class="checkNewPresence" name="presenceNewMeeting_<?=$member->user_id?>" id="presenceNewMeeting_<?=$visitants->user_id?>" />
-                                </div>
+                                &nbsp;
                             </td>
                         </tr>
                         <?}?>
                         <tr>
                             <td colspan="2">&nbsp;</td>
-                             <? foreach($this->dates as $date){?>
-                            <td>
-                                <!-- <div class='formDateNewMeeting'>
-                                    <a class="btn btn-primary" href="#add_participante" data-toggle="modal">
-                                        Alterar
-                                    </a>
-                                </div> -->
-                            </td>
-                            <?}?>
                             <td>
                                 <div class='formDateNewMeeting' style='display: none;'>
                                     <a class="btn btn-primary" href="#add_participante" data-toggle="modal">
                                         Salvar
                                     </a>
                                 </div>
+                            </td>
+                             <? foreach($this->dates as $date){?>
+                            <td>
+                                <div class='formDateNewMeeting'>
+                                    <a class="btn btn-primary" href="#edit_meeting_<?=$date->meeting_id?>" data-toggle="modal">
+                                        Alterar
+                                    </a>
+                                </div>
+                            </td>
+                            <?}?>
+                            <td>
+                                &nbsp;
                             </td>
                         </tr>
                     </tbody>

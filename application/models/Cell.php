@@ -533,8 +533,8 @@ class Application_Model_Cell
 	{
 		$cellMeeting = new Application_Model_DbTable_CellMeeting();
 		$amount = $cellMeeting->fetchAll($cellMeeting->select()->where('cell_id = ?',$cellId));
-		if(count($amount) > 4)
-			return 4;
+		if(count($amount) > 3)
+			return 3;
 		return count($amount);
 	}
 
@@ -771,6 +771,19 @@ class Application_Model_Cell
 				unset($cellMeetingPresence);
 			}
 		}
+	}
+
+	public function lastMeetings($cellId)
+	{
+		$amountMeetings = $this->returnAmountMeetings($cellId);
+		$cell = new Application_Model_DbTable_CellMeeting();
+		$select = $cell->select()->setIntegrityCheck(false);
+		$select	->from(array('cell_meeting'),array('date_formated'=>'DATE_FORMAT(date,"%d/%m/%Y")','meeting_id',
+								'lesson','altar_boy','events'))
+				->where('cell_id = ?',$cellId)
+				->limit($amountMeetings)
+				->order('date DESC');
+		return $cell->fetchAll($select);
 	}
 }
 

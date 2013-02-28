@@ -102,3 +102,45 @@
         <?=$this->formNoteCell?>
     </div>
 </div>
+
+<? foreach($this->lastMeetings as $meetings){?>
+<form action="/celula/edit" method="post" class="form-horizontal" name='form_<?=$meetings->meeting_id?>' id='form_<?=$meetings->meeting_id?>'>
+    <div class="modal hide" id="edit_meeting_<?=$meetings->meeting_id?>">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3>Editar Célula - <?=$meetings->date_formated?></h3><br />
+            <div class="alert alert-error hide" id="alertErrorDate">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong>Ops!</strong> Adicione uma data para reunião.
+            </div>
+            <div class="alert alert-error hide" id="alertErrorData">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong>Ops!</strong> Preencha os dados corretos da reunião.
+            </div>
+        </div>
+        <div class="modal-body">
+            <dl class="zend_form">
+                <div class="control-group">
+                    <label class="control-label" for="licao">Lição:</label>
+                    <div class="controls"><input id="licao_<?=$meetings->meeting_id?>" name="licao" type="text" value="<?=$meetings->lesson?>"></div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="ministrante">Ministrante:</label>
+                    <div class="controls"><input id="ministrante_<?=$meetings->meeting_id?>" name="ministrante" type="text" value="<?=$meetings->altar_boy?>"></div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="acontecimentos">Acontecimentos:</label>
+                    <div class="controls"><textarea id="acontecimentos_<?=$meetings->meeting_id?>" name="acontecimentos" cols="40" rows="4"><?=$meetings->events?></textarea></div>
+                </div>
+                <dt id="button-label">&nbsp;</dt>
+                <dd id="button-element">
+                    <input type="button" name="button" id="" value="Salvar" class="btn btn-primary" onclick="editMeeting(<?=$meetings->meeting_id?>)">
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <input type="hidden" value="<?=$meetings->meeting_id?>" name="meeting_id" id="meeting_id_<?=$meetings->meeting_id?>">
+    <input type="hidden" value="" name="meeting_date" id="meeting_date_<?=$meetings->meeting_id?>">
+    <input type="hidden" value="" name="meeting_presence" id="meeting_presence_<?=$meetings->meeting_id?>">
+</form>
+<? } ?>

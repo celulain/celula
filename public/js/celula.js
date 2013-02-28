@@ -471,38 +471,55 @@ function removeParticipant(user_id){
 /*** FREQUENCIA ***/
 
 $('#addDateMeeting').tooltip();
+$('#showMoreMeeting').tooltip();
 
 $('#submitbutton').click(function(){
-    console.log('1');
     var date = $('#dateNewMeeting').val();
-    console.log('2');
     var presence = '';
     $(".checkNewPresence").each(function () {
         presence += this.checked + '||' + this.id + '*';
     });
-    console.log('3');
     var licao = $('#licao').val();
     var ministrante = $('#ministrante').val();
     var acontecimentos = $('#acontecimentos').val();
-    console.log('4');
     if(presence != '' && date != '' && licao != '' && ministrante != ''){
         $('#presenceMeeting').val(presence);
         $('#dateMeeting').val(date);
         document.form.submit();
     }
     else{
-        console.log('5');
         if(date == ''){
             $("#alertErrorDate").show();
-            
         }
         else if(licao == '' || ministrante == ''){
             $("#alertErrorData").show();
         }
-        console.log('6');
     }
-
     return false;
 });
+
+function editMeeting(meeting_id){
+    var date_meeting = $('#date_meeting_' + meeting_id).val();
+    var presences = '';
+    $.each($('.' + meeting_id ), function(index, value) {
+        presences += value.id + '||' + value.checked + '*';
+    });
+    var lesson = $('#licao_' + meeting_id).val();
+    var altar_boy = $('#ministrante_' + meeting_id).val();
+    var events = $('#acontecimentos_' + meeting_id).val();
+    var meeting_id = $('#meeting_id_' + meeting_id).val();
+
+    $('#meeting_date_' + meeting_id).val(date_meeting);
+    $('#meeting_presence_' + meeting_id).val(presences);
+
+    document.forms["form_" + meeting_id].submit();
+    // alert(meeting_id);
+    // alert(date_meeting);
+    // alert(presences);
+    // alert(lesson);
+    // alert(altar_boy);
+    // alert(events);
+    return false;
+}
 
 /*** END FREQUENCIA ***/
