@@ -55,9 +55,9 @@ class Application_Plugin_Auth extends Zend_Controller_Plugin_Abstract
         {
             if(!isset($_SESSION['userInformation']))
             {
-                $requestUri = Zend_Controller_Front::getInstance()->getRequest()->getRequestUri();
-                $session = new Zend_Session_Namespace('lastRequest');
-                $session->lastRequestUri = $requestUri;
+                // $requestUri = Zend_Controller_Front::getInstance()->getRequest()->getRequestUri();
+                // $session = new Zend_Session_Namespace('lastRequest');
+                // $session->lastRequestUri = $requestUri;
                 header('Location: /auth/login');
                 exit;
             }
