@@ -39,7 +39,7 @@
                 </div>
                 <div id="submeta2" class="accordion-body in collapse">
                     <div class="accordion-inner">
-                        Ainda não há dados suficientes.
+                        <?=$this->presence?>
                     </div>
                 </div>
             </div><!--/.accordion-group -->
@@ -99,7 +99,33 @@
         </div>
     </div>
     <div class="modal-body">
-        <?=$this->formNoteCell?>
+        <form enctype="application/x-www-form-urlencoded" class="form-horizontal" action="" method="post">
+            <dl class="zend_form">
+                <div class="control-group">
+                    <label class="control-label" for="licao">Lição:</label>
+                    <div class="controls"><input id="licao" name="licao" type="text" value=""></div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="ministrante">Ministrante:</label>
+                    <div class="controls"><input id="ministrante" name="ministrante" type="text" value=""></div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="ministrante">Presença de Deus:</label>
+                     <div class="controls"><input type="range" name="presenca" min="1" max="100"></div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="acontecimentos">Acontecimentos:</label>
+                    <div class="controls"><textarea id="acontecimentos" name="acontecimentos" cols="40" rows="4"></textarea></div>
+                </div>
+                <dd id="presenceMeeting-element">
+                    <input type="hidden" name="presenceMeeting" value="" id="presenceMeeting"></dd>
+                    <dd id="dateMeeting-element">
+                    <input type="hidden" name="dateMeeting" value="" id="dateMeeting"></dd>
+                    <dt id="button-label">&nbsp;</dt><dd id="button-element">
+                    <input type="submit" name="button" id="submitbutton" value="Salvar" class="btn btn-primary">
+                </dd>
+            </dl>
+        </form>
     </div>
 </div>
 
@@ -127,6 +153,10 @@
                 <div class="control-group">
                     <label class="control-label" for="ministrante">Ministrante:</label>
                     <div class="controls"><input id="ministrante_<?=$meetings->meeting_id?>" name="ministrante" type="text" value="<?=$meetings->altar_boy?>"></div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="ministrante">Presença de Deus:</label>
+                     <div class="controls"><input type="range" name="presenca" min="1" max="100" value="<?=$meetings->presence?>"></div>
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="acontecimentos">Acontecimentos:</label>

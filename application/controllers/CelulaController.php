@@ -29,6 +29,7 @@ class CelulaController extends Zend_Controller_Action
         $this->view->futureHost = $cell->viewFutureHost($authNamespace->cell_id_leader);
         $this->view->frequency = $cell->viewFrequency($authNamespace->cell_id_leader);
         $this->view->participants = $cell->viewParticipants($authNamespace->cell_id_leader);
+        $this->view->presence = $cell->viewPresence($authNamespace->cell_id_leader);
     	$this->view->cell_id = $authNamespace->cell_id_leader;
         $this->view->lastMeetings = $cell->lastMeetings($authNamespace->cell_id_leader);
     }

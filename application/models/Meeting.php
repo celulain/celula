@@ -44,6 +44,7 @@ class Application_Model_Meeting
 		$cellMeetingRow->altar_boy = $data['ministrante'];
 		$cellMeetingRow->events = $data['acontecimentos'];
 		$dateMeeting = explode('/',$data['meeting_date']);
+		if(isset($data['presenca'])) $cellMeetingRow->presence = $data['presenca'];
 		$cellMeetingRow->date = $dateMeeting[2] . '-' . $dateMeeting[1] . '-' . $dateMeeting[0];
 		$cellMeetingId = $cellMeetingRow->save();
 		$this->saveMeetingPresence($cellMeetingRow,$data,$cellId,$cellMeetingId);
@@ -80,6 +81,20 @@ class Application_Model_Meeting
 					unset($cellMeetingPresence);
 				}
 			}
+		}
+	}
+
+	public function returnPresence($cellId)
+	{
+		$cellMeeting = new Application_Model_DbTable_CellMeeting();
+		$cellMeetingRow = $cellMeeting->fetchAll($cellMeeting->select()->where('cell_id = ?',$cellId));
+		if(count($cellMeetingRow) > 3)
+		{
+			return "gráfico";
+		}
+		else
+		{
+			return "Ainda não blabla";
 		}
 	}
 

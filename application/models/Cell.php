@@ -749,6 +749,7 @@ class Application_Model_Cell
 		$cellMeetingNew->lesson = $data['licao'];
 		$cellMeetingNew->altar_boy = $data['ministrante'];
 		$cellMeetingNew->events = $data['acontecimentos'];
+		if(isset($data['presenca'])) $cellMeetingNew->presence = $data['presenca'];
 		$dateMeeting = explode('/',$data['dateMeeting']);
 		$cellMeetingNew->date = $dateMeeting[2] . '-' . $dateMeeting[1] . '-' . $dateMeeting[0];
 		$cellMeetindId = $cellMeetingNew->save();
@@ -781,7 +782,7 @@ class Application_Model_Cell
 		$cell = new Application_Model_DbTable_CellMeeting();
 		$select = $cell->select()->setIntegrityCheck(false);
 		$select	->from(array('cell_meeting'),array('date_formated'=>'DATE_FORMAT(date,"%d/%m/%Y")','meeting_id',
-								'lesson','altar_boy','events'))
+								'lesson','altar_boy','events','presence'))
 				->where('cell_id = ?',$cellId)
 				->limit($amountMeetings)
 				->order('date DESC');
@@ -797,6 +798,15 @@ class Application_Model_Cell
 			$futureHostRow->delete();
 		}
 		return true;
+	}
+
+	public function viewPresence($cellId)
+	{
+		$registry = Zend_Registry::getInstance();
+		$view = $registry->get('view');
+		$meeting = new Application_Model_Meeting();
+		$view->presence = $meeting->returnPresence($cellId);
+		return $view->render('frequencia/presence.phtml');
 	}
 }
 

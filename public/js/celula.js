@@ -539,3 +539,102 @@ function editMeeting(meeting_id){
 }
 
 /*** END FREQUENCIA ***/
+
+
+/**** PRESENÇA ****/
+
+var data = [
+    {
+      year : 2006,
+      books : 54
+    },
+    {
+      year : 2007,
+      books : 60
+    },
+    {
+      year : 2008,
+      books : 56
+    },
+    {
+      year : 2009,
+      books : 46
+    },
+    {
+      year : 2010,
+      books : 35
+    }
+  ];
+
+var barWidth = 30,
+    width = (barWidth + 10) * data.length,
+    height = 100;
+
+var chart = d3.select("#visPresence")
+  .append("svg:svg")
+  .attr("width", 500)
+  .attr("height", height);
+
+
+
+var xScale = d3.scale.linear()
+  .domain([0, data.length])
+  .range([0, width]);
+
+var yScale = d3.scale.linear()
+  .domain([0, d3.max(data,function(datum){ return datum.books; })])
+  .range([0, height]);
+
+chart.selectAll("rect")
+  .data(data)
+  .enter()
+  .append("svg:rect")
+  .attr("x", function(datum, index){ return xScale(index); })
+  .attr("y", function(datum){ return height - yScale(datum.books); })
+  .attr("height", function(datum) { return yScale(datum.books); })
+  .attr("width", barWidth)
+  .attr("fill", "#2d578b")
+  .attr("id",function(datum,index){ return datum.year + "_" + index;})
+  .attr("class", "rect")
+  .on("mouseover",function(){ d3.select(this).style("fill","green");})
+  .on("mouseout", function(){ d3.select(this).style("fill","#2d578b");})
+  .on("mousedown", text);
+
+chart.selectAll("text")
+  .data(data)
+  .enter()
+  .append("svg:text")
+  .attr("x",function(datum,index){ return xScale(index) + barWidth;})
+  .attr("y", function(datum){ return height - yScale(datum.books);})
+  .attr("dx", -barWidth/2)
+  .attr("dy", "1.2em")
+  .attr("text-anchor", "middle")
+  .text(function(datum){ return datum.books;})
+  .attr("fill","white");
+
+chart.selectAll("text.yAxis")
+  .data(data)
+  .enter()
+  .append("svg:text")
+  .attr("x", function(datum,index){ return xScale(index) + barWidth})
+  .attr("y", height)
+  .attr("dx", -barWidth/2)
+  .attr("text-anchor", "middle")
+  .attr("style", "font-size: 12; font-family: Helvetica")
+  .attr("fill", "black")
+  .text(function(datum){ return datum.year;})
+  .attr("transform","translate(0,18)")
+  .attr("class", "yAxis");
+
+
+function text(){
+  d3.select(this)
+    .transition()
+    .duration(1000)
+    .attr("x",40)
+    .transition()
+    .duration(1000)
+    .attr("x", $(this).attr("x") );
+}
+
+/*** END PRESENÇA ****/
