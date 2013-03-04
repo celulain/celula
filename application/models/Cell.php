@@ -300,13 +300,12 @@ class Application_Model_Cell
 			{
 				$status = 1;
 			}
-			if($leaderId != 1)
+			if($leaderId != 1 && $leaderId != "star")
 			{
 				$row = $futureLeader->fetchRow($futureLeader->select()->where('user_id = ?',$leaderId));
 				$row->$aux[0] = $status;
 				$row->save();
 			}
-			if($i == 6) return true;
 			$i++;
 		}
 		return true;
