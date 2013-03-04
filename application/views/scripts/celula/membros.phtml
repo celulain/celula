@@ -23,7 +23,7 @@
                     <th>Função</th>
                     <th>Categoria</th>
                     <th>&nbsp;</th>
-                    <th>&nbsp;</th>
+                    <!-- <th>&nbsp;</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -41,7 +41,7 @@
                     <td><?if($members->type == 1)echo "Membro IBC"; else echo "Não membro";?></td>
                     <td><?if ($members->role != 'Lider'){?><a style='color: #000' href="#remove_participante<?=$members->user_id?>" data-toggle="modal"><i class="icon-trash"></i></a>
                         <?}?></td>
-                    <td><i class="icon-envelope"></i></a></td>
+                    <!-- <td><i class="icon-envelope"></i></a></td> -->
 	            </tr>
 	            <?
 	            }
