@@ -106,7 +106,7 @@ class Application_Acl_Setup
                     ->allow( 'user', 'api', array('subgoals','presence','getmember','getparticipants',
                         'saveparticipant','reunioes','cell','suggestions','date-multiplication','future-leader',
                         'getmemberscell','save-future-leader','save-future-host','future-host',
-                        'save-goal-participants', 'remove-participant-cell') )
+                        'save-goal-participants', 'remove-participant-cell', 'remove-future-host') )
         			->allow( 'user', 'celula', array('index','frequencia','membros','cadastro','perfil','edit') )
         			->allow( 'user', 'recursos', array('licoes-de-celula','louvor','dinamicas') )
         			->allow( 'user', 'configuracoes', array('perfil','contato','endereco','senha') )
@@ -118,7 +118,7 @@ class Application_Acl_Setup
                     ->allow( 'admin', 'api', array('subgoals','presence','getmember','getparticipants',
                         'saveparticipant','reunioes','cell','suggestions','date-multiplication','future-leader',
                         'getmemberscell','save-future-leader','save-future-host','future-host',
-                        'save-goal-participants', 'remove-participant-cell') )
+                        'save-goal-participants', 'remove-participant-cell', 'remove-future-host') )
         			->allow( 'admin', 'admin',array('index','addmembro','dados','editmembro','pastores','perfil','sistema','dinamicas','louvor','licoes','return-cities','addlider','editlider','removelider','hierarquia') )
         			->allow( 'admin', 'celula', array('index','frequencia','membros','cadastro','perfil','edit') )
         			->allow( 'admin', 'recursos', array('licoes-de-celula','louvor','dinamicas') )

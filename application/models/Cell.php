@@ -787,5 +787,16 @@ class Application_Model_Cell
 				->order('date DESC');
 		return $cell->fetchAll($select);
 	}
+
+	public function removeFutureHost($cellId)
+	{
+		$futureHost = new Application_Model_DbTable_CellGoalFutureHost();
+		$futureHostRow = $futureHost->fetchRow($futureHost->select()->where("cell_id = ?",$cellId));
+		if(count($futureHostRow))
+		{
+			$futureHostRow->delete();
+		}
+		return true;
+	}
 }
 

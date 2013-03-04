@@ -332,6 +332,22 @@ $('#saveAddFutureHost').click(function(){
       }
     });
 });
+
+
+
+$('#removeFutureHost').click(function(){
+    $.ajax({
+      url: '/api/remove-future-host',
+      type: "post",
+      data: 'cell_id='+ $("#cell_id").val() +'&futureHost='+ $('#futureHost').val(),
+      success: function(data) {
+        console.log(data);
+        if(data == 1){
+            document.location.reload(true);
+        }
+      }
+    });
+});
 /** END Future Host **/
 
 

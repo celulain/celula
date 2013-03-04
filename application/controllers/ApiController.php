@@ -26,7 +26,7 @@ class ApiController extends Zend_Controller_Action
     public function getmemberAction()
     {
         $this->_helper->layout()->setLayout('json');
-	mysql_connect('localhost','root','[=celula]mysql');
+	   mysql_connect('localhost','root','[=celula]mysql');
         $search = mysql_real_escape_string($_GET['term']);
         $user = new Application_Model_DbTable_CoreUser();
         $select = $user->select()->setIntegrityCheck(false);
@@ -135,6 +135,7 @@ class ApiController extends Zend_Controller_Action
     }catch(Zend_Exception $e){
         echo $e->getMessage();
     }
+    
     }
 
     public function suggestionsAction()
@@ -177,6 +178,7 @@ class ApiController extends Zend_Controller_Action
      *
      *
      *
+     *
      */
     public function dateMultiplicationAction()
     {
@@ -200,6 +202,7 @@ class ApiController extends Zend_Controller_Action
      *
      *
      *
+     *
      */
     public function futureLeaderAction()
     {
@@ -217,6 +220,7 @@ class ApiController extends Zend_Controller_Action
      *   
      *   @access public
      *   @return boolean
+     *
      *
      *
      *
@@ -249,6 +253,7 @@ class ApiController extends Zend_Controller_Action
      *
      *
      *
+     *
      */
     public function saveFutureLeaderAction()
     {
@@ -266,6 +271,7 @@ class ApiController extends Zend_Controller_Action
      *   
      *   @access public
      *   @return boolean
+     *
      *
      *
      *
@@ -291,6 +297,7 @@ class ApiController extends Zend_Controller_Action
      *
      *
      *
+     *
      */
     public function futureHostAction()
     {
@@ -308,6 +315,7 @@ class ApiController extends Zend_Controller_Action
      *   
      *   @access public
      *   @return boolean
+     *
      *
      *
      *
@@ -337,8 +345,21 @@ class ApiController extends Zend_Controller_Action
         return 0;
     }
 
+    public function removeFutureHostAction()
+    {
+        $this->_helper->layout()->setLayout('json');
+        if($this->getRequest()->isPost())
+        {
+            $data = $this->getRequest()->getPost();
+            $cell = new Application_Model_Cell();
+            echo $cell->removeFutureHost($data['cell_id']);
+        }
+    }
+
 
 }
+
+
 
 
 
