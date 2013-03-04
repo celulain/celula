@@ -118,7 +118,7 @@ class Application_Model_Cell
 				$data['position'] = 3;
 			elseif ($data['position'] == 5) 
 			{
-				$this->insertNewFutureLeader($userId);
+				$this->insertNewFutureLeader($userId,0);
 			}
 			$newUserCell->role_id = $data['position'];
 			$newUserCell->date_start = new Zend_Db_Expr('NOW()');
@@ -147,7 +147,7 @@ class Application_Model_Cell
 	*	@access public
 	*	@return boolean
 	*/
-	public function insertNewFutureLeader($userId)
+	public function insertNewFutureLeader($userId, $inserted=true)
 	{
 		$futureLeader = new Application_Model_DbTable_CellGoalFutureLeader();
 		$futureLeaderRow = $futureLeader->fetchRow($futureLeader->select()->where('user_id = ?',$userId));
@@ -164,10 +164,13 @@ class Application_Model_Cell
 			$newRow->sete = 0;
 			$newRow->save();
 
-			$userCell = new Application_Model_DbTable_CellUser();
-			$userCellRow = $userCell->fetchRow($userCell->select()->where("user_id = ?",$userId));
-			$userCellRow->role_id = 5;
-			$userCellRow->save();
+			if($inserted)
+			{
+				$userCell = new Application_Model_DbTable_CellUser();
+				$userCellRow = $userCell->fetchRow($userCell->select()->where("user_id = ?",$userId));
+				$userCellRow->role_id = 5;
+				$userCellRow->save();
+			}
 			return true;
 		}
 	}
