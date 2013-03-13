@@ -179,6 +179,7 @@ class ApiController extends Zend_Controller_Action
      *
      *
      *
+     *
      */
     public function dateMultiplicationAction()
     {
@@ -203,6 +204,7 @@ class ApiController extends Zend_Controller_Action
      *
      *
      *
+     *
      */
     public function futureLeaderAction()
     {
@@ -220,6 +222,7 @@ class ApiController extends Zend_Controller_Action
      *   
      *   @access public
      *   @return boolean
+     *
      *
      *
      *
@@ -254,6 +257,7 @@ class ApiController extends Zend_Controller_Action
      *
      *
      *
+     *
      */
     public function saveFutureLeaderAction()
     {
@@ -271,6 +275,7 @@ class ApiController extends Zend_Controller_Action
      *   
      *   @access public
      *   @return boolean
+     *
      *
      *
      *
@@ -298,6 +303,7 @@ class ApiController extends Zend_Controller_Action
      *
      *
      *
+     *
      */
     public function futureHostAction()
     {
@@ -315,6 +321,7 @@ class ApiController extends Zend_Controller_Action
      *   
      *   @access public
      *   @return boolean
+     *
      *
      *
      *
@@ -356,8 +363,20 @@ class ApiController extends Zend_Controller_Action
         }
     }
 
+    public function returnPresenceAction()
+    {
+        $this->_helper->layout()->setLayout('json');
+        $authNamespace = new Zend_Session_Namespace('userInformation');
+        $presence = new Application_Model_Presence();
+        echo $presence->returnPresence($authNamespace->cell_id_leader);
+        
+        // echo Zend_Json::encode($presence->returnPresence($authNamespace->cell_id_leader));
+    }
+
 
 }
+
+
 
 
 

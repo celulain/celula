@@ -543,98 +543,86 @@ function editMeeting(meeting_id){
 
 /**** PRESENÇA ****/
 
-var data = [
-    {
-      year : 2006,
-      books : 54
-    },
-    {
-      year : 2007,
-      books : 60
-    },
-    {
-      year : 2008,
-      books : 56
-    },
-    {
-      year : 2009,
-      books : 46
-    },
-    {
-      year : 2010,
-      books : 35
+$(document).ready(function() {
+    
+    
+    var margin = {top: 10, right: 10, bottom: 20, left: 12},
+        margin2 = {top: 230, right: 10, bottom: 20, left: 12},
+        width = 420 - margin.left - margin.right,
+        height = 150 - margin.top - margin.bottom,
+        height2 = 150 - margin2.top - margin2.bottom;
+
+    var parseDate = d3.time.format("%Y-%m-%d").parse;
+
+    var x = d3.time.scale().range([0, width]),
+        x2 = d3.time.scale().range([0, width]),
+        y = d3.scale.linear().range([height, 0]),
+        y2 = d3.scale.linear().range([height2, 0]);
+
+    var xAxis = d3.svg.axis().scale(x).orient("bottom"),
+        xAxis2 = d3.svg.axis().scale(x2).orient("bottom"),
+        yAxis = d3.svg.axis().scale(y).orient("left");
+
+    var brush = d3.svg.brush()
+        .x(x2)
+        .on("brush", brush);
+
+    var area = d3.svg.area()
+        .interpolate("monotone")
+        .x(function(d) { return x(d.date); })
+        .y0(height)
+        .y1(function(d) { return y(d.presence); });
+
+    var area2 = d3.svg.area()
+        .interpolate("monotone")
+        .x(function(d) { return x2(d.date); })
+        .y0(height2)
+        .y1(function(d) { return y2(d.presence); });
+
+    var svg = d3.select("#visPresence").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom);
+
+    svg.append("defs").append("clipPath")
+        .attr("id", "clip")
+      .append("rect")
+        .attr("width", width)
+        .attr("height", height);
+
+    var focus = svg.append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var context = svg.append("g")
+        .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
+
+    d3.csv("/api/return-presence", function(error, data) {
+
+      data.forEach(function(d) {
+        d.date = parseDate(d.date);
+        d.presence = +d.presence;
+      });
+
+      x.domain(d3.extent(data.map(function(d) { return d.date; })));
+      y.domain([0, d3.max(data.map(function(d) { return d.presence; }))]);
+      x2.domain(x.domain());
+      y2.domain(y.domain());
+
+      focus.append("path")
+          .datum(data)
+          .attr("clip-path", "url(#clip)")
+          .attr("d", area);
+
+      focus.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis);
+
+    });
+
+    function brush() {
+      x.domain(brush.empty() ? x2.domain() : brush.extent());
+      focus.select("path").attr("d", area);
+      focus.select(".x.axis").call(xAxis);
     }
-  ];
-
-var barWidth = 30,
-    width = (barWidth + 10) * data.length,
-    height = 100;
-
-var chart = d3.select("#visPresence")
-  .append("svg:svg")
-  .attr("width", 500)
-  .attr("height", height);
-
-
-
-var xScale = d3.scale.linear()
-  .domain([0, data.length])
-  .range([0, width]);
-
-var yScale = d3.scale.linear()
-  .domain([0, d3.max(data,function(datum){ return datum.books; })])
-  .range([0, height]);
-
-chart.selectAll("rect")
-  .data(data)
-  .enter()
-  .append("svg:rect")
-  .attr("x", function(datum, index){ return xScale(index); })
-  .attr("y", function(datum){ return height - yScale(datum.books); })
-  .attr("height", function(datum) { return yScale(datum.books); })
-  .attr("width", barWidth)
-  .attr("fill", "#2d578b")
-  .attr("id",function(datum,index){ return datum.year + "_" + index;})
-  .attr("class", "rect")
-  .on("mouseover",function(){ d3.select(this).style("fill","green");})
-  .on("mouseout", function(){ d3.select(this).style("fill","#2d578b");})
-  .on("mousedown", text);
-
-chart.selectAll("text")
-  .data(data)
-  .enter()
-  .append("svg:text")
-  .attr("x",function(datum,index){ return xScale(index) + barWidth;})
-  .attr("y", function(datum){ return height - yScale(datum.books);})
-  .attr("dx", -barWidth/2)
-  .attr("dy", "1.2em")
-  .attr("text-anchor", "middle")
-  .text(function(datum){ return datum.books;})
-  .attr("fill","white");
-
-chart.selectAll("text.yAxis")
-  .data(data)
-  .enter()
-  .append("svg:text")
-  .attr("x", function(datum,index){ return xScale(index) + barWidth})
-  .attr("y", height)
-  .attr("dx", -barWidth/2)
-  .attr("text-anchor", "middle")
-  .attr("style", "font-size: 12; font-family: Helvetica")
-  .attr("fill", "black")
-  .text(function(datum){ return datum.year;})
-  .attr("transform","translate(0,18)")
-  .attr("class", "yAxis");
-
-
-function text(){
-  d3.select(this)
-    .transition()
-    .duration(1000)
-    .attr("x",40)
-    .transition()
-    .duration(1000)
-    .attr("x", $(this).attr("x") );
-}
-
+});
 /*** END PRESENÇA ****/

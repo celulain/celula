@@ -1,7 +1,21 @@
-<div class="row-fluid">
-    <div class="span12">
+<div class="row-fluid" style="margin-left: 20px;">
+    <div class="span11 well">
         <div class="page-header">
             <h1>Células</h1>
+            <table class="table table-bordered table-hover">
+            	<thead>
+	            	<th>Líder</th>
+	            	<th>Data de Multiplicação</th>
+            	</thead>
+            	<tbody>
+            		<? foreach($this->cells as $cell){ ?>
+	            	<tr>
+	            		<td><?=$cell['name']?></td>
+	            		<td><?=$cell['date_multiplication']?></td>
+	            	</tr>
+	            	<?}?>
+            	</tbody>
+            </table>
         </div>
     </div>
 </div>

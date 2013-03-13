@@ -63,36 +63,41 @@
                             <!-- <li><a href="/celula/perfil">Perfil</a></li> -->
                         </ul>
                     </li>
-                    <!--
+                    <? // Discipulador
+                    $leaderNamespace = new Zend_Session_Namespace('leadership');
+                    if(isset($leaderNamespace->position)){
+                    if($leaderNamespace->position == 1) {?>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Setor
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="/setor/celulas">Células</a></li>
-                            <li><a href="/setor/perfil">Perfil</a></li>
                         </ul>
                     </li>
-
+                    <?} }?>
+                    <? if(isset($leaderNamespace->position)){
+                    if($leaderNamespace->position == 2) {?>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Área
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="/area/setores">Setores</a></li>
-                            <li><a href="/area/perfil">Perfil</a></li>
                         </ul>
                     </li>
+                    <?} }?>
+                    <? if(isset($leaderNamespace->position)){
+                    if($leaderNamespace->position == 3) {?>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Rede
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="/rede/areas">Áreas</a></li>
-                            <li><a href="/rede/perfil">Perfil</a></li>
                         </ul>
                     </li>
-                  -->
+                    <?} }?>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Recursos
                             <b class="caret"></b>

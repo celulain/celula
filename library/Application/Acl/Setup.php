@@ -74,14 +74,13 @@ class Application_Acl_Setup
         $this->_acl->addResource( new Zend_Acl_Resource('api') );
     	$this->_acl->addResource( new Zend_Acl_Resource('celula') );
     	$this->_acl->addResource( new Zend_Acl_Resource('admin') );
-        $this->_acl->addResource( new Zend_Acl_Resource('app') );
     	$this->_acl->addResource( new Zend_Acl_Resource('recursos') );
     	$this->_acl->addResource( new Zend_Acl_Resource('configuracoes') );
     	$this->_acl->addResource( new Zend_Acl_Resource('error') );
         $this->_acl->addResource( new Zend_Acl_Resource('search') );
         $this->_acl->addResource( new Zend_Acl_Resource('password') );
         $this->_acl->addResource( new Zend_Acl_Resource('register') );
-        $this->_acl->addResource( new Zend_Acl_Resource('fixtures') );
+        $this->_acl->addResource( new Zend_Acl_Resource('setor') );
     }
 
     /**
@@ -99,6 +98,7 @@ class Application_Acl_Setup
                     ->allow( 'guest', 'register', 'index')
                     ->allow( 'guest', 'password', array('index','new'))
         			->allow( 'guest', 'auth', array('index', 'login') );
+
         $this->_acl	->allow( 'user', 'index', 'index' )
                     ->allow( 'user', 'search', 'index')
                     ->allow( 'user', 'register', 'index')
@@ -106,11 +106,13 @@ class Application_Acl_Setup
                     ->allow( 'user', 'api', array('subgoals','presence','getmember','getparticipants',
                         'saveparticipant','reunioes','cell','suggestions','date-multiplication','future-leader',
                         'getmemberscell','save-future-leader','save-future-host','future-host',
-                        'save-goal-participants', 'remove-participant-cell', 'remove-future-host') )
+                        'save-goal-participants', 'remove-participant-cell', 'remove-future-host', 'return-presence') )
         			->allow( 'user', 'celula', array('index','frequencia','membros','cadastro','perfil','edit') )
         			->allow( 'user', 'recursos', array('licoes-de-celula','louvor','dinamicas') )
         			->allow( 'user', 'configuracoes', array('perfil','contato','endereco','senha') )
-        			->allow( 'user', 'auth', array('index', 'login') );
+        			->allow( 'user', 'auth', array('index', 'login') )
+                    ->allow( 'user', 'setor', array('index', 'celulas'));
+
         $this->_acl	->allow( 'admin', 'index', 'index' )
                     ->allow( 'admin', 'search', 'index')
                     ->allow( 'admin', 'register', 'index')
@@ -118,12 +120,13 @@ class Application_Acl_Setup
                     ->allow( 'admin', 'api', array('subgoals','presence','getmember','getparticipants',
                         'saveparticipant','reunioes','cell','suggestions','date-multiplication','future-leader',
                         'getmemberscell','save-future-leader','save-future-host','future-host',
-                        'save-goal-participants', 'remove-participant-cell', 'remove-future-host') )
+                        'save-goal-participants', 'remove-participant-cell', 'remove-future-host', 'return-presence') )
         			->allow( 'admin', 'admin',array('index','addmembro','dados','editmembro','pastores','perfil','sistema','dinamicas','louvor','licoes','return-cities','addlider','editlider','removelider','hierarquia') )
         			->allow( 'admin', 'celula', array('index','frequencia','membros','cadastro','perfil','edit') )
         			->allow( 'admin', 'recursos', array('licoes-de-celula','louvor','dinamicas') )
         			->allow( 'admin', 'configuracoes', array('perfil','contato','endereco','senha') )
-        			->allow( 'admin', 'auth', array('index', 'login') );
+        			->allow( 'admin', 'auth', array('index', 'login') )
+                    ->allow( 'admin', 'setor', array('index', 'celulas'));
     }
 
     /**

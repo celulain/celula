@@ -97,6 +97,7 @@
           <actionMethod actionName="saveGoalParticipants"/>
           <actionMethod actionName="removeParticipantCell"/>
           <actionMethod actionName="removeFutureHost"/>
+          <actionMethod actionName="returnPresence"/>
         </controllerFile>
         <controllerFile controllerName="Password">
           <actionMethod actionName="index"/>
@@ -181,6 +182,8 @@
         <modelFile modelName="Church"/>
         <modelFile modelName="Meeting"/>
         <modelFile modelName="TextAreaDecorator"/>
+        <modelFile modelName="Setor"/>
+        <modelFile modelName="Presence"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>
@@ -409,6 +412,9 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Api">
             <viewScriptFile forActionName="removeFutureHost"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Api">
+            <viewScriptFile forActionName="returnPresence"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

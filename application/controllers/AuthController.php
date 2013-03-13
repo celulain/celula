@@ -75,6 +75,18 @@ class AuthController extends Zend_Controller_Action
     				{
     					$authNamespace->cell_id_leader = $user_cell->cell_id;
     				}
+
+                    $cellLeadership = new Application_Model_DbTable_CellLeadership();
+                    $leadership = $cellLeadership->fetchAll($cellLeadership->select()->where("leader_id = ?", $authNamespace->user_id)
+                                                                ->order('position'));
+                    if(count($leadership))
+                    {
+                        foreach($leadership as $leadershipRow)
+                        {
+                            $leaderNamespace = new Zend_Session_Namespace('leadership');
+                            $leaderNamespace->position = $leadershipRow->position;
+                        }
+                    }
     				
 					if($authNamespace->user_id == 1)
 					{

@@ -15,7 +15,9 @@ class SetorController extends Zend_Controller_Action
 
     public function celulasAction()
     {
-        // action body
+        $authNamespace = new Zend_Session_Namespace('userInformation');
+        $setor = new Application_Model_Setor();
+        $this->view->cells = $setor->returnCells($authNamespace->user_id);
     }
 
     public function perfilAction()
